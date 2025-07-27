@@ -31,9 +31,16 @@ export const messageSlice = createApi({
     getMessageByChatId: builder.query({
       query: (id) => `message/allBy-chatId/${id}`, // The 'id' parameter is used here
     }),
+    createMessage: builder.mutation({
+      query: (newMessage) => ({
+        url: '/message',
+        method: 'POST',
+        body: newMessage,
+      }),
+    }),
     
   }),
 })
 
 // Export the auto-generated hook
-export const { useGetMessagesQuery, useGetMessageByChatIdQuery  } = messageSlice
+export const { useGetMessagesQuery, useGetMessageByChatIdQuery, useCreateMessageMutation  } = messageSlice

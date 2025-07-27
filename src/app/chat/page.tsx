@@ -5,7 +5,7 @@ import {Color} from '../components/message'
 import { useRouter } from 'next/router'
 import SendIcon from '@mui/icons-material/Send';
 
-import { useGetMessageByChatIdQuery, Message } from '../lib/features/api/messageSlice'
+import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 
@@ -15,15 +15,37 @@ interface MessageExcerptProps {
 
 export default function page() {
 
+  
+
   const [messageText, setMessageText] = useState('');
   const [authorId, setAuthorId] = useState('');
-   const [chatId, setChatId] = useState('');
+  const [chatId, setChatId] = useState('');
 
-  const handleSend = () => {
+  
+
+  const  handleSend = async () => {
+    const authorIdInt = parseInt(authorId, 10); // Десяткова система
+    const chatIdInt = parseInt(chatId, 10);
+
   console.log("Text for sending:", messageText);
-  console.log("authorId:", authorId);
-  console.log("chatId:", chatId);
+  console.log("authorId:", authorIdInt);
+  console.log("chatId:", chatIdInt);
   setMessageText('')
+  try {
+    await createPost({ content: messageText , chatId: chatIdInt , userId: authorIdInt}).unwrap();
+    console.log('Message created!');
+  } catch (err) {
+    console.error('Failed to create post:', err);
+  }
+};
+
+const handleSubmit = async () => {
+  try {
+    await createPost({ title: 'Hello', content: 'World' }).unwrap();
+    console.log('Post created!');
+  } catch (err) {
+    console.error('Failed to create post:', err);
+  }
 };
 
   // const id = useSearchParams()
@@ -39,6 +61,8 @@ export default function page() {
       isError,
       error
     } = useGetMessageByChatIdQuery(2)
+
+    const [createPost] = useCreateMessageMutation();
 
     let contentMessage: React.ReactNode
 
