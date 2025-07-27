@@ -7,8 +7,8 @@ export default function page() {
     <div className='flex flex-row place-content-center border w-full min-h-full'>
         <div className="messages border w-200 h-80 ">
             chat page
-            <Message direction={Color.Red} content="text content in props"/>
-            <Message direction={Color.Blue} content="text content in props"/>
+            <Message color={Color.Red} content="text content in props"/>
+            <Message color={Color.Blue} content="text content in props"/>
         </div>
         
     </div>

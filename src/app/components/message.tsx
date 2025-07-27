@@ -6,12 +6,12 @@ export enum Color {
 }
 
 type Props = {
-  direction: Color;
+  color: Color;
   content: string;
 };
 
-export default function Message({ direction, content }: Props) {
-  if(direction === Color.Red){
+export default function Message({ color, content }: Props) {
+  if(color === Color.Red){
     return(
        <div className='flex flex-end border rounded-sm bg-red-400 p-1 m-2 w-60 max-w-100'>
       {content}
