@@ -13,15 +13,19 @@ type Props = {
 export default function MessageBox({ color, content }: Props) {
   if(color === Color.Red){
     return(
-       <div className='flex flex-end border rounded-sm bg-red-400 p-1 m-2 w-60 max-w-100'>
-      {content}
-    </div>
+      <div className="wrapper flex flex-row flex-end m-2">
+        <div className=' border rounded-lg rounded-bl-none bg-red-400 p-1 w-60 max-w-100'>
+          {content}
+        </div>
+      </div>
     )
   }
 
   return (
-    <div className='flex flex-end border rounded-sm bg-blue-400 p-1 m-2 w-60 max-w-100'>
-      {content}
+    <div className="wrapper flex flex-row flex-end m-2 justify-end">
+      <div className=' border rounded-lg rounded-br-none bg-blue-400 p-1 w-60 max-w-100 '>
+        {content}
+      </div>
     </div>
   )
 

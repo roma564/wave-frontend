@@ -4,7 +4,7 @@ import React from 'react'
 // import { Spinner } from '@/components/Spinner'
 // import { TimeAgo } from '@/components/TimeAgo'
 
-import { useGetMessagesQuery, Message } from '../lib/features/api/apiSlice'
+import { useGetMessagesQuery, Message } from '../lib/features/api/messageSlice'
 
 // import { messageAuthor } from './messageAuthor'
 // import { ReactionButtons } from './ReactionButtons'

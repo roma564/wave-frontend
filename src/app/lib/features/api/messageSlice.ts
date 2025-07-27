@@ -15,7 +15,7 @@ type Message = {
 export type { Message }
 
 // Define our single API slice object
-export const apiSlice = createApi({
+export const messageSlice = createApi({
 
   reducerPath: 'api',
 
@@ -36,4 +36,4 @@ export const apiSlice = createApi({
 })
 
 // Export the auto-generated hook
-export const { useGetMessagesQuery, useGetMessageByChatIdQuery  } = apiSlice
+export const { useGetMessagesQuery, useGetMessageByChatIdQuery  } = messageSlice

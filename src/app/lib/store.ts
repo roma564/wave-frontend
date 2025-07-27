@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../lib/features/counter/counterSlice'
-import { apiSlice } from '../lib/features/api/apiSlice'
+import { messageSlice } from './features/api/messageSlice'
 
 
 
@@ -9,10 +9,10 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
        counter: counterReducer,
-       [apiSlice.reducerPath]: apiSlice.reducer
+       [messageSlice.reducerPath]: messageSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware().concat(messageSlice.middleware),
   })
 }
 
