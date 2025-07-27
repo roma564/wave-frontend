@@ -48,7 +48,7 @@ export const MessagesList = () => {
   if (isLoading) {
     content = 'loading'
   } else if (isSuccess) {
-    content = messages.map(message => <MessageExcerpt key={message.id} message={message} />)
+    content = messages.map((message) => <MessageExcerpt key={message.id} message={message} />)
   } else if (isError) {
     content = <div>{error.toString()}</div>
   }

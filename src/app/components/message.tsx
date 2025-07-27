@@ -10,7 +10,7 @@ type Props = {
   content: string;
 };
 
-export default function Message({ color, content }: Props) {
+export default function MessageBox({ color, content }: Props) {
   if(color === Color.Red){
     return(
        <div className='flex flex-end border rounded-sm bg-red-400 p-1 m-2 w-60 max-w-100'>
