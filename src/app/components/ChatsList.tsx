@@ -1,6 +1,7 @@
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import React from 'react'
 import { Chat, useGetChatsQuery } from '../lib/features/api/chatSlice'
+import { useGetLastMessageQuery } from '../lib/features/api/messageSlice'
 
 export default function ChatsList() {
 
@@ -9,11 +10,21 @@ export default function ChatsList() {
         isLoading,
         isSuccess,
         isError,
-        error
+        
       } = useGetChatsQuery()
 
 
   let content: React.ReactNode
+
+    const {
+        data: message,
+        isLoading: isMessagesLoading,
+        isSuccess: isMessagesSuccess,
+        isError: isMessagesError,
+        
+      } = useGetLastMessageQuery(2)
+
+  
       
           
       
@@ -37,19 +48,20 @@ export default function ChatsList() {
                 variant="body2"
                 sx={{ color: 'black', display: 'inline' }}
               >
-                Ali Connors
+                User ID: {message.userId} <br/>
               </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
+              {message.content}
             </React.Fragment>
           }
         />
       </ListItem>
   )
     console.log(chats)
+    console.log(message)
 
 
   } else if (isError) {
-    content = <div>{error.toString()}</div>
+    content = <div>{isError.toString()}</div>
   }
 
 
