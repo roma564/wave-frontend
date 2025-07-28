@@ -35,7 +35,7 @@ export default function ChatsList() {
   } else if (isSuccess) {
     content = chats.map((chat : Chat) => 
 
-    <ListItem className='border border-black rounded-md mt-2' alignItems="flex-start">
+    <ListItem key={chat.id} className='border border-black rounded-md mt-2' alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </ListItemAvatar>

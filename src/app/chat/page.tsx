@@ -86,7 +86,7 @@ const handleSubmit = async () => {
   return (
     <div className='flex flex-row place-content-center rounded-md border w-full min-h-full'>
       <ChatsList />
-        <div className="messages border w-200 p-1 rounded-md  h-screen  overflow-y-auto w-full">
+        <div className="messages border  p-1 rounded-md  h-screen  overflow-y-auto w-full">
             chat page
             {contentMessage}
             <div className="flex flex-row">
