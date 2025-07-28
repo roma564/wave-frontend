@@ -8,6 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
+import ChatsList from '../components/ChatsList'
 
 interface MessageExcerptProps {
   message: Message
@@ -35,7 +36,7 @@ export default function page() {
     await createPost({ content: messageText , chatId: chatIdInt , userId: authorIdInt}).unwrap();
     console.log('Message created!');
   } catch (err) {
-    console.error('Failed to create post:', err);
+    console.error('Failed to create message:', err);
   }
 };
 
@@ -84,10 +85,11 @@ const handleSubmit = async () => {
 
   return (
     <div className='flex flex-row place-content-center rounded-md border w-full min-h-full'>
-        <div className="messages border w-200 p-1 rounded-md  h-screen  overflow-y-auto">
+      <ChatsList />
+        <div className="messages border w-200 p-1 rounded-md  h-screen  overflow-y-auto w-full">
             chat page
             {contentMessage}
-            <div className="flex flex-row ">
+            <div className="flex flex-row">
               <TextField className='bg-white w-30  rounded-2xl no-underline active:no-underline '
               id="filled-search"
               label="Author ID"
