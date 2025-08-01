@@ -9,6 +9,9 @@ import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '.
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 import ChatsList from '../components/ChatsList'
+import Layout from '../components/layout'
+import ChatHeader from '../components/chat_header'
+import Form from '../components/Form'
 
 interface MessageExcerptProps {
   message: Message
@@ -40,14 +43,7 @@ export default function page() {
   }
 };
 
-const handleSubmit = async () => {
-  try {
-    await createPost({ title: 'Hello', content: 'World' }).unwrap();
-    console.log('Post created!');
-  } catch (err) {
-    console.error('Failed to create post:', err);
-  }
-};
+
 
   // const id = useSearchParams()
   
@@ -84,47 +80,24 @@ const handleSubmit = async () => {
   
 
   return (
-    <div className='flex flex-row place-content-center rounded-md border w-full min-h-full'>
-      <ChatsList />
-        <div className="messages border  p-1 rounded-md  h-screen  overflow-y-auto w-full">
-            chat page
-            {contentMessage}
-            <div className="flex flex-row">
-              <TextField className='bg-white w-30  rounded-2xl no-underline active:no-underline '
-              id="filled-search"
-              label="Author ID"
-              type="search"
-              variant="filled"
-              value={authorId}
-              onChange={(e) => setAuthorId(e.target.value)}/>
+    <Layout>
+      
+        <div className='flex flex-row place-content-center rounded-md border w-full min-h-full'>
+        <ChatsList />
+        <div className="messages-wrapper">
+             <div className="messages border  p-1 rounded-md  h-screen  overflow-y-auto w-full">
+              chat page
+              <ChatHeader/>
 
-               <TextField className='bg-white w-30 rounded-2xl no-underline active:no-underline '
-              id="filled-search"
-              label="Chat ID"
-              type="search"
-              variant="filled"
-              value={chatId}
-              onChange={(e) => setChatId(e.target.value)}/>
-
-                <TextField className='bg-white w-full rounded-2xl no-underline active:no-underline '
-              id="filled-search"
-              label="Message field"
-              type="search"
-              variant="filled"
-              value={messageText}
-              onChange={(e) => setMessageText(e.target.value)}/>
-
-             
-
-                <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend} >
-                  Send
-                </Button>
-
+              {contentMessage}
               
-            </div>
-            
+          </div>
         </div>
-    </div>
+         
+          <Form/>
+      </div>
+    </Layout>
+    
   )
 }
 
