@@ -23,7 +23,6 @@ export default function Layout({
         <header className="flex flex-row bg-[#696969]">
           <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
           <h1 className="text-2xl m-3 ml-0">Wavely</h1>
-          <ChatHeader/>
         </header>
 
         <div className="sidebar  max-h-full order border-white bg-[#696969]">

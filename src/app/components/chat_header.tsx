@@ -2,13 +2,39 @@ import React from 'react'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import PushPinIcon from '@mui/icons-material/PushPin';
+import { useGetChatByIdQuery } from '../lib/features/api/chatSlice';
 
 
 
-export default function ChatHeader() {
+
+
+export default function ChatHeader( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number}) {
+
+
+    const {
+        data: chat,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+      } = useGetChatByIdQuery(CURRENT_CHAT_ID)
+
+       let content: React.ReactNode
+
+        if (isLoading) {
+            content = 'loading'
+          } else if (isSuccess) {
+            content = chat.subject
+          } else if (isError) {
+            content = <div>{error.toString()}</div>
+          }
+
+
+  console.log("chat ChatHeader: " + chat)
+
   return (
     <div className='flex place-content-between items-center  flex-row  border '>
-      <h1 className='text-lg flex flex-col center pl-4'>Chat Subject</h1>
+      <h1 className='text-lg flex flex-col center pl-4'>{content}</h1>
       <div className="mock_icons w-25 flex place-content-between">
           <LocalPhoneIcon/>
           <VideoCameraFrontIcon/>

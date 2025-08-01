@@ -27,6 +27,10 @@ export const chatSlice = createApi({
 
       query: () => 'chat'
     }),
+
+    getChatById: builder.query({
+      query: (id) => `chat/${id}`
+    }),
      // The query accepts a number and returns a chat
     // getMessageByChatId: builder.query({
     //   query: (id) => `message/allBy-chatId/${id}`, // The 'id' parameter is used here
@@ -43,4 +47,4 @@ export const chatSlice = createApi({
 })
 
 // Export the auto-generated hook
-export const { useGetChatsQuery} = chatSlice
+export const { useGetChatsQuery, useGetChatByIdQuery} = chatSlice

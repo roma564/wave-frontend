@@ -3,6 +3,7 @@ import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typograp
 import React from 'react'
 import { Chat, useGetChatsQuery } from '../lib/features/api/chatSlice'
 import { useGetLastMessageQuery } from '../lib/features/api/messageSlice'
+import Link from 'next/link'
 
 export default function ChatsList() {
 
@@ -34,28 +35,38 @@ export default function ChatsList() {
   if (isLoading) {
     content = 'loading'
   } else if (isSuccess) {
+    //  <ul>
+    //       {posts.map((post) => (
+    //         <li key={post.id}>
+    //           <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+    //         </li>
+    //       ))}
+    //     </ul>
+
     content = chats.map((chat : Chat) => 
 
-    <ListItem key={chat.id} className='border border-black rounded-md mt-2' alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary={chat.subject}
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: 'black', display: 'inline' }}
-              >
-                User ID: {message.userId} <br/>
-              </Typography>
-              {message.content}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
+    <Link key={chat.id} href={`/chat/?chatId=${chat.id}`}>
+      <ListItem key={chat.id} className='border border-black rounded-md mt-2 hover:bg-sky-700' alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          </ListItemAvatar>
+          <ListItemText
+            primary={chat.subject}
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  sx={{ color: 'black', display: 'inline' }}
+                >
+                  User ID: {message.userId} <br/>
+                </Typography>
+                {message.content}
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+      </Link>
   )
     console.log(chats)
     console.log(message)
@@ -74,6 +85,8 @@ export default function ChatsList() {
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
           {content}
         </List>
+
+        
 
       
     </div>

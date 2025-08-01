@@ -13,24 +13,22 @@ import Layout from '../components/layout'
 import ChatHeader from '../components/chat_header'
 import Form from '../components/Form'
 
-interface MessageExcerptProps {
-  message: Message
-}
+
 
 export default function page() {
 
     const searchParams = useSearchParams()
  
-  const CURRENT_CHAT_ID = searchParams.get('chatId') || 2
+  const CURRENT_CHAT_ID : number = Number(searchParams.get('chatId')) || 2
  
   // URL -> `/dashboard?search=my-project`
   // `search` -> 'my-project'
 
   
 
-  const [messageText, setMessageText] = useState('');
-  const [authorId, setAuthorId] = useState('');
-  const [chatId, setChatId] = useState('');
+  // const [messageText, setMessageText] = useState('');
+  // const [authorId, setAuthorId] = useState('');
+  // const [chatId, setChatId] = useState('');
 
   
 
@@ -91,20 +89,19 @@ export default function page() {
         <div className='flex flex-row  rounded-md border w-full  h-screen'>
           <ChatsList />
           <div className="messages-wrapper flex flex-col w-full h-ful">
-            <ChatHeader/>
+            <ChatHeader CURRENT_CHAT_ID = {CURRENT_CHAT_ID}/>
 
 
             <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130">
-              chat page
               
 
               {contentMessage}
                 
             </div>
 
-            <Form/>
+            <Form CURRENT_CHAT_ID = {CURRENT_CHAT_ID}/>
 
-             <div>Search: {CURRENT_CHAT_ID}</div>
+             <div>ChatID: {CURRENT_CHAT_ID}</div>
           </div>
          
           
