@@ -68,7 +68,7 @@ export default function ChatsList() {
 
 
   return (
-    <div className='flex flex-col place-items-center border w-100 overflow-y-auto'>
+    <div className='flex flex-col place-items-center border h-full w-100 overflow-y-auto'>
         ChatList
 
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

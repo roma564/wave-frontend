@@ -19,6 +19,13 @@ interface MessageExcerptProps {
 
 export default function page() {
 
+    const searchParams = useSearchParams()
+ 
+  const CURRENT_CHAT_ID = searchParams.get('chatId') || 2
+ 
+  // URL -> `/dashboard?search=my-project`
+  // `search` -> 'my-project'
+
   
 
   const [messageText, setMessageText] = useState('');
@@ -27,21 +34,21 @@ export default function page() {
 
   
 
-  const  handleSend = async () => {
-    const authorIdInt = parseInt(authorId, 10); // Десяткова система
-    const chatIdInt = parseInt(chatId, 10);
+//   const  handleSend = async () => {
+//     const authorIdInt = parseInt(authorId, 10); // Десяткова система
+//     const chatIdInt = parseInt(chatId, 10);
 
-  console.log("Text for sending:", messageText);
-  console.log("authorId:", authorIdInt);
-  console.log("chatId:", chatIdInt);
-  setMessageText('')
-  try {
-    await createPost({ content: messageText , chatId: chatIdInt , userId: authorIdInt}).unwrap();
-    console.log('Message created!');
-  } catch (err) {
-    console.error('Failed to create message:', err);
-  }
-};
+//   console.log("Text for sending:", messageText);
+//   console.log("authorId:", authorIdInt);
+//   console.log("chatId:", chatIdInt);
+//   setMessageText('')
+//   try {
+//     await createPost({ content: messageText , chatId: chatIdInt , userId: authorIdInt}).unwrap();
+//     console.log('Message created!');
+//   } catch (err) {
+//     console.error('Failed to create message:', err);
+//   }
+// };
 
 
 
@@ -49,7 +56,6 @@ export default function page() {
   
 
   const CURRENT_USER_ID = 1
-  const CURRENT_CHAT_ID = 2
 
   const {
       data: messages = [],
@@ -57,7 +63,7 @@ export default function page() {
       isSuccess,
       isError,
       error
-    } = useGetMessageByChatIdQuery(2)
+    } = useGetMessageByChatIdQuery(CURRENT_CHAT_ID)
 
     const [createPost] = useCreateMessageMutation();
 
@@ -82,19 +88,26 @@ export default function page() {
   return (
     <Layout>
       
-        <div className='flex flex-row place-content-center rounded-md border w-full min-h-full'>
-        <ChatsList />
-        <div className="messages-wrapper">
-             <div className="messages border  p-1 rounded-md  h-screen  overflow-y-auto w-full">
+        <div className='flex flex-row  rounded-md border w-full  h-screen'>
+          <ChatsList />
+          <div className="messages-wrapper flex flex-col w-full h-ful">
+            <ChatHeader/>
+
+
+            <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130">
               chat page
-              <ChatHeader/>
+              
 
               {contentMessage}
-              
+                
+            </div>
+
+            <Form/>
+
+             <div>Search: {CURRENT_CHAT_ID}</div>
           </div>
-        </div>
          
-          <Form/>
+          
       </div>
     </Layout>
     
