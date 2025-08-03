@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MessageBox from '../components/message'
 import {Color} from '../components/message'
 import { useRouter } from 'next/router'
@@ -12,6 +12,19 @@ import ChatsList from '../components/ChatsList'
 import Layout from '../components/layout'
 import ChatHeader from '../components/chat_header'
 import Form from '../components/Form'
+
+
+import { io } from 'socket.io-client';
+
+// "undefined" means the URL will be computed from the `window.location` object
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
+
+export const socket = io(URL);
+
+//  type MessagePayload = {
+//     content: string,
+//     msg: string
+//  }
 
 
 
@@ -51,9 +64,35 @@ export default function page() {
 
 
   // const id = useSearchParams()
+
+
+
+  const [messages_, setMessages] = useState<Message[]>([])
+
+    const [value, setValue] = useState('')
+
+
+    useEffect(()=>{
+        socket.on('connect', ()=> {
+            console.log('Connected')
+        })
+        socket.on(String(CHAT_ID), (newMessage: Message)=>{
+            console.log('CHAT_ID event recieved')
+            console.log(newMessage)
+            setMessages((prev) => [...prev, newMessage])
+        })
+
+        return () => {
+            console.log('Unregistering events...')
+            socket.off('connect')
+            socket.off('onMessage')
+
+        }
+    }, [])
   
 
   const CURRENT_USER_ID = 1
+  const CHAT_ID = 2
 
   const {
       data: messages = [],
