@@ -30,44 +30,18 @@ export const socket = io(URL);
 
 export default function page() {
 
-    const searchParams = useSearchParams()
+  const searchParams = useSearchParams()
  
   const CURRENT_CHAT_ID : number = Number(searchParams.get('chatId')) || 2
+    const CURRENT_USER_ID = 1
  
-  // URL -> `/dashboard?search=my-project`
-  // `search` -> 'my-project'
-
-  
-
-  // const [messageText, setMessageText] = useState('');
-  // const [authorId, setAuthorId] = useState('');
-  // const [chatId, setChatId] = useState('');
-
-  
-
-//   const  handleSend = async () => {
-//     const authorIdInt = parseInt(authorId, 10); // Десяткова система
-//     const chatIdInt = parseInt(chatId, 10);
-
-//   console.log("Text for sending:", messageText);
-//   console.log("authorId:", authorIdInt);
-//   console.log("chatId:", chatIdInt);
-//   setMessageText('')
-//   try {
-//     await createPost({ content: messageText , chatId: chatIdInt , userId: authorIdInt}).unwrap();
-//     console.log('Message created!');
-//   } catch (err) {
-//     console.error('Failed to create message:', err);
-//   }
-// };
 
 
 
-  // const id = useSearchParams()
+  const [newMessages, setNewMessages] = useState<Message[]>([])
+  const [msgBoxes, setNewMsgBoxes] = useState<React.ReactNode[]>([])
+  const [socketMessages, setSocketMessages] = useState<Message[]>([])
 
-
-
-  const [messages_, setMessages] = useState<Message[]>([])
 
     const [value, setValue] = useState('')
 
@@ -76,10 +50,18 @@ export default function page() {
         socket.on('connect', ()=> {
             console.log('Connected')
         })
-        socket.on(String(CHAT_ID), (newMessage: Message)=>{
+        socket.on(String(CURRENT_CHAT_ID), (newMessage: Message)=>{
             console.log('CHAT_ID event recieved')
             console.log(newMessage)
-            setMessages((prev) => [...prev, newMessage])
+            const box = <MessageBox
+            key={newMessage.id}
+            color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+            content={newMessage.content}
+          />
+
+            
+            // setSocketMessages(prev => [...prev, newMessage])
+            setNewMsgBoxes(prev => [...prev, box])
         })
 
         return () => {
@@ -91,8 +73,7 @@ export default function page() {
     }, [])
   
 
-  const CURRENT_USER_ID = 1
-  const CHAT_ID = 2
+
 
   const {
       data: messages = [],
@@ -106,6 +87,18 @@ export default function page() {
 
     let contentMessage: React.ReactNode
 
+    useEffect(() => {
+      if (isSuccess && messages.length > 0) {
+        const boxes = messages.map((message: Message) => (
+          <MessageBox
+            key={message.id}
+            color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+            content={message.content}
+          />
+        ))
+        setNewMsgBoxes(boxes)
+      }
+    }, [isSuccess, messages])
     
 
   
@@ -113,9 +106,12 @@ export default function page() {
   if (isLoading) {
     contentMessage = 'loading'
   } else if (isSuccess) {
-    contentMessage = messages.map((message : Message) => 
-    <MessageBox key={message.id} color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red } content={message.content}/>)
-    console.log(messages)
+    
+    // contentMessage = messages.map((message : Message) => 
+    // <MessageBox key={message.id} color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red } content={message.content}/>)
+    // console.log(messages)
+    // setNewMsgBoxes((prev) => [...prev, contentMessage])
+
   } else if (isError) {
     contentMessage = <div>{error.toString()}</div>
   }
@@ -134,7 +130,23 @@ export default function page() {
             <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130">
               
 
-              {contentMessage}
+              {/* {messages.map((message: Message)  => (
+                  <MessageBox
+                    key={message.id}
+                    color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+                    content={message.content}
+                  />
+                ))}
+
+                {socketMessages.map(message => (
+                  <MessageBox
+                    key={`socket-${message.id}`}
+                    color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+                    content={message.content}
+                  />
+                ))} */}
+
+                {msgBoxes}
                 
             </div>
 

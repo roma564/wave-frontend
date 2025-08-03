@@ -30,7 +30,7 @@ export default function ChatHeader( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number
           }
 
 
-  console.log("chat ChatHeader: " + chat)
+  // console.log("chat ChatHeader: " + chat)
 
   return (
     <div className='flex place-content-between items-center  flex-row  border '>
