@@ -2,7 +2,7 @@
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import React from 'react'
 import { Chat, useGetChatsQuery } from '../lib/features/api/chatSlice'
-import { useGetLastMessageQuery } from '../lib/features/api/messageSlice'
+import { Message, useGetAllLastMessagesQuery, useGetLastMessageQuery } from '../lib/features/api/messageSlice'
 import Link from 'next/link'
 
 export default function ChatsList() {
@@ -19,12 +19,12 @@ export default function ChatsList() {
   let content: React.ReactNode
 
     const {
-        data: message,
+        data: messages = [],
         isLoading: isMessagesLoading,
         isSuccess: isMessagesSuccess,
         isError: isMessagesError,
         
-      } = useGetLastMessageQuery(2)
+      } = useGetAllLastMessagesQuery()
 
   
       
@@ -43,33 +43,42 @@ export default function ChatsList() {
     //       ))}
     //     </ul>
 
-    content = chats.map((chat : Chat) => 
+    const messageMap = messages.reduce((acc, msg) => {
+      acc[msg.chatId] = msg
+      return acc
+    }, {} as Record<string, Message>)
 
+    
+
+  content = chats.map((chat: Chat) => {
+  const message = messageMap[chat.id]
+
+  return (
     <Link key={chat.id} href={`/chat/?chatId=${chat.id}`}>
-      <ListItem key={chat.id} className='border border-black rounded-md mt-2 hover:bg-sky-700' alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </ListItemAvatar>
-          <ListItemText
-            primary={chat.subject}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  sx={{ color: 'black', display: 'inline' }}
-                >
-                  User ID: {message.userId} <br/>
-                </Typography>
-                {message.content}
-              </React.Fragment>
-            }
-          />
-        </ListItem>
-      </Link>
+      <ListItem className="border border-black rounded-md mt-2 hover:bg-sky-700" alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </ListItemAvatar>
+        <ListItemText
+          primary={chat.subject}
+          secondary={
+            <React.Fragment>
+              <Typography
+                component="span"
+                variant="body2"
+                sx={{ color: 'black', display: 'inline' }}
+              >
+                User ID: {message?.userId} <br />
+              </Typography>
+              {message?.content || 'Немає повідомлення'}
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+    </Link>
   )
-    console.log(chats)
-    console.log(message)
+})
+
 
 
   } else if (isError) {

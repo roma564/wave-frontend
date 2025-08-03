@@ -27,12 +27,15 @@ export const messageSlice = createApi({
       // The URL for the request is '/fakeApi/posts'
       query: () => 'message'
     }),
-     // The query accepts a number and returns a Post
+
     getMessageByChatId: builder.query({
-      query: (id) => `message/allBy-chatId/${id}`, // The 'id' parameter is used here
+      query: (id) => `message/allBy-chatId/${id}`, 
     }),
     getLastMessage: builder.query({
-      query: (id) => `message/lastBy-chatId/${id}`, // The 'id' parameter is used here
+      query: (id) => `message/lastBy-chatId/${id}`, 
+    }),
+    getAllLastMessages: builder.query<Message[], void>({
+      query: () => `message/allLast`, 
     }),
     createMessage: builder.mutation({
       query: (newMessage) => ({
@@ -46,4 +49,4 @@ export const messageSlice = createApi({
 })
 
 // Export the auto-generated hook
-export const { useGetMessagesQuery, useGetMessageByChatIdQuery, useCreateMessageMutation, useGetLastMessageQuery  } = messageSlice
+export const { useGetMessagesQuery, useGetMessageByChatIdQuery, useCreateMessageMutation, useGetLastMessageQuery, useGetAllLastMessagesQuery  } = messageSlice
