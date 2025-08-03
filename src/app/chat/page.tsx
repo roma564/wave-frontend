@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import MessageBox from '../components/message'
 import {Color} from '../components/message'
 import { useRouter } from 'next/router'
@@ -14,7 +14,10 @@ import ChatHeader from '../components/chat_header'
 import Form from '../components/Form'
 
 
+
+
 import { io } from 'socket.io-client';
+import { SocketProvider } from '../context/SocketContext'
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
@@ -28,12 +31,21 @@ export const socket = io(URL);
 
 
 
+
 export default function page() {
+
+  
 
   const searchParams = useSearchParams()
  
   const CURRENT_CHAT_ID : number = Number(searchParams.get('chatId')) || 2
-    const CURRENT_USER_ID = 1
+  const CURRENT_USER_ID = 1
+
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+
+
+  
  
 
 
@@ -43,7 +55,7 @@ export default function page() {
   const [socketMessages, setSocketMessages] = useState<Message[]>([])
 
 
-    const [value, setValue] = useState('')
+    
 
 
     useEffect(()=>{
@@ -71,6 +83,15 @@ export default function page() {
 
         }
     }, [])
+
+    
+
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+    }, [msgBoxes]);
+
+
+    
   
 
 
@@ -120,14 +141,15 @@ export default function page() {
 
   return (
     <Layout>
-      
+      <SocketProvider value={socket}>
+
         <div className='flex flex-row  rounded-md border w-full  h-screen'>
           <ChatsList />
-          <div className="messages-wrapper flex flex-col w-full h-ful">
+          <div className="messages-wrapper flex flex-col w-full ">
             <ChatHeader CURRENT_CHAT_ID = {CURRENT_CHAT_ID}/>
 
 
-            <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130">
+            <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130" >
               
 
               {/* {messages.map((message: Message)  => (
@@ -147,20 +169,28 @@ export default function page() {
                 ))} */}
 
                 {msgBoxes}
+                <div ref={messagesEndRef} />
                 
-            </div>
+            </div >
 
             <Form CURRENT_CHAT_ID = {CURRENT_CHAT_ID}/>
 
-             <div>ChatID: {CURRENT_CHAT_ID}</div>
+            <div>ChatID: {CURRENT_CHAT_ID}</div>
           </div>
-         
+        
           
       </div>
+
+      </SocketProvider>
+      
+      
+        
     </Layout>
     
   )
 }
+
+
 
 
 

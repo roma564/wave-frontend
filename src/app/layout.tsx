@@ -6,6 +6,9 @@ import StoreProvider from "./storeProvider";
 import { Provider } from 'react-redux'
 import ChatsList from "./components/ChatsList";
 
+
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,15 +31,16 @@ export default function RootLayout({
 }>) {
   return (
 
-    <StoreProvider>
-      <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-    </StoreProvider>
+    
+      
+        <html lang="en">
+          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <StoreProvider>
+                  {children}
+            </StoreProvider>         
+          </body>
+        </html>
+
     
   );
 }
