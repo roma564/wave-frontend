@@ -8,7 +8,7 @@ import { useGetChatByIdQuery } from '../lib/features/api/chatSlice';
 
 
 
-export default function ChatHeader( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number}) {
+export default function ChatHeader( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number }) {
 
 
     const {

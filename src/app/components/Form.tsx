@@ -3,8 +3,9 @@ import { useCreateMessageMutation } from '../lib/features/api/messageSlice';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { SocketContext } from '../context/SocketContext';
+import Link from 'next/link';
 
-export default function Form( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number}) {
+export default function Form( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number }) {
     
    
 
@@ -66,10 +67,11 @@ export default function Form( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number}) {
               onChange={(e) => setMessageText(e.target.value)}/>
 
              
-
-                <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend} >
-                  Send
-                </Button>
+              
+              <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend} >
+                Send
+              </Button>
+                
 
               
     </div>

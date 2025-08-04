@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./lib/features/counter/counterSlice";
 import { MessagesList } from "./components/MessagesList";
 import Layout from "./components/layout";
+import { Button } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import Link from "next/link";
 
 
 
@@ -25,7 +28,7 @@ export default function Home() {
         <header className="flex flex-row bg-[#696969]">
           <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
           <h1 className="text-2xl m-3 ml-0">Wavely</h1>
-          <ChatHeader></ChatHeader>
+          {/* <ChatHeader></ChatHeader> */}
         </header>
 
         <div className="sidebar  max-h-full order border-white bg-[#696969]">
@@ -55,7 +58,11 @@ export default function Home() {
         </div>
 
         {/* <MessagesList/> */}
-
+                <Link  href={`/chat/?chatId=${2}`}>
+                  <Button className='rounded-2xl ml-3 place-content-center' variant="contained" endIcon={<SendIcon />} >
+                    To chat
+                  </Button>
+                </Link>
         
 
     </div>

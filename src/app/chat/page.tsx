@@ -37,12 +37,13 @@ export default function page() {
   
 
   const searchParams = useSearchParams()
+  let CURRENT_CHAT_ID : number = Number(searchParams.get('chatId')) 
  
-  const CURRENT_CHAT_ID : number = Number(searchParams.get('chatId')) || 2
+  
+
   const CURRENT_USER_ID = 1
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
 
 
   
@@ -50,7 +51,8 @@ export default function page() {
 
 
 
-  const [newMessages, setNewMessages] = useState<Message[]>([])
+  // const [CURRENT_CHAT_ID, setChatId] = useState<number>(0)
+  
   const [msgBoxes, setNewMsgBoxes] = useState<React.ReactNode[]>([])
   const [socketMessages, setSocketMessages] = useState<Message[]>([])
 
@@ -82,13 +84,19 @@ export default function page() {
             socket.off('onMessage')
 
         }
-    }, [])
+    }, [searchParams])
 
     
 
     useEffect(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
     }, [msgBoxes]);
+
+    useEffect(() => {
+      CURRENT_CHAT_ID = Number(searchParams.get('chatId')) 
+      // setChatId(chat_id)
+      console.log("CURRENT_CHAT_ID on page: "+ CURRENT_CHAT_ID )
+    }, [searchParams]);
 
 
     
@@ -110,9 +118,9 @@ export default function page() {
 
     useEffect(() => {
       if (isSuccess && messages.length > 0) {
-        const boxes = messages.map((message: Message) => (
+        const boxes = messages.map((message: Message, index:number) => (
           <MessageBox
-            key={message.id}
+            key={message.id ?? `socket-${index}`}
             color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={message.content}
           />
