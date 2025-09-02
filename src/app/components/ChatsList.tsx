@@ -16,6 +16,8 @@ export default function ChatsList() {
       } = useGetChatsQuery()
 
 
+
+
   let content: React.ReactNode
 
     const {
@@ -60,7 +62,7 @@ export default function ChatsList() {
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </ListItemAvatar>
         <ListItemText
-          primary={chat.subject}
+          
           secondary={
             <React.Fragment>
               <Typography
@@ -68,6 +70,7 @@ export default function ChatsList() {
                 variant="body2"
                 sx={{ color: 'black', display: 'inline' }}
               >
+                {chat.subject} <br />
                 User ID: {message?.userId} <br />
               </Typography>
               {message?.content || 'Немає повідомлення'}

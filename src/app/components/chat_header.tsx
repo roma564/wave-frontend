@@ -8,7 +8,7 @@ import { useGetChatByIdQuery } from '../lib/features/api/chatSlice';
 
 
 
-export default function ChatHeader( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number }) {
+export default function ChatHeader( {current_chat_id}: {current_chat_id : number }) {
 
 
     const {
@@ -17,7 +17,7 @@ export default function ChatHeader( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number
         isSuccess,
         isError,
         error
-      } = useGetChatByIdQuery(CURRENT_CHAT_ID)
+      } = useGetChatByIdQuery(current_chat_id)
 
        let content: React.ReactNode
 

@@ -37,7 +37,7 @@ export default function page() {
   
 
   const searchParams = useSearchParams()
-  let CURRENT_CHAT_ID : number = Number(searchParams.get('chatId')) 
+  let current_chat_id : number = Number(searchParams.get('chatId')) 
  
   
 
@@ -51,7 +51,7 @@ export default function page() {
 
 
 
-  // const [CURRENT_CHAT_ID, setChatId] = useState<number>(0)
+  // const [current_chat_id, setChatId] = useState<number>(0)
   
   const [msgBoxes, setNewMsgBoxes] = useState<React.ReactNode[]>([])
   const [socketMessages, setSocketMessages] = useState<Message[]>([])
@@ -64,7 +64,7 @@ export default function page() {
         socket.on('connect', ()=> {
             console.log('Connected')
         })
-        socket.on(String(CURRENT_CHAT_ID), (newMessage: Message)=>{
+        socket.on(String(current_chat_id), (newMessage: Message)=>{
             console.log('CHAT_ID event recieved')
             console.log(newMessage)
             const box = <MessageBox
@@ -93,9 +93,9 @@ export default function page() {
     }, [msgBoxes]);
 
     useEffect(() => {
-      CURRENT_CHAT_ID = Number(searchParams.get('chatId')) 
+      current_chat_id = Number(searchParams.get('chatId')) 
       // setChatId(chat_id)
-      console.log("CURRENT_CHAT_ID on page: "+ CURRENT_CHAT_ID )
+      console.log("current_chat_id on page: "+ current_chat_id )
     }, [searchParams]);
 
 
@@ -110,7 +110,7 @@ export default function page() {
       isSuccess,
       isError,
       error
-    } = useGetMessageByChatIdQuery(CURRENT_CHAT_ID)
+    } = useGetMessageByChatIdQuery(current_chat_id)
 
     const [createPost] = useCreateMessageMutation();
 
@@ -154,7 +154,7 @@ export default function page() {
         <div className='flex flex-row  rounded-md border w-full  h-screen'>
           <ChatsList />
           <div className="messages-wrapper flex flex-col w-full ">
-            <ChatHeader CURRENT_CHAT_ID = {CURRENT_CHAT_ID}/>
+            <ChatHeader current_chat_id = {current_chat_id}/>
 
 
             <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130" >
@@ -181,9 +181,9 @@ export default function page() {
                 
             </div >
 
-            <Form CURRENT_CHAT_ID = {CURRENT_CHAT_ID}/>
+            <Form current_chat_id = {current_chat_id}/>
 
-            <div>ChatID: {CURRENT_CHAT_ID}</div>
+            <div>ChatID: {current_chat_id}</div>
           </div>
         
           

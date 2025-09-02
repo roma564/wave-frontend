@@ -3,6 +3,9 @@ import counterReducer from '../lib/features/counter/counterSlice'
 import { messageSlice } from './features/api/messageSlice'
 import { chatSlice } from './features/api/chatSlice'
 
+import { modeSlice } from './features/chatMode/modeSlice'
+import modeReducer from '../lib/features/chatMode/modeSlice'
+
 
 
 
@@ -10,6 +13,7 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
        counter: counterReducer,
+       mode: modeReducer,
        [messageSlice.reducerPath]: messageSlice.reducer,
        [chatSlice.reducerPath]: chatSlice.reducer
     },

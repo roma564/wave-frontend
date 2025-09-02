@@ -5,7 +5,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { SocketContext } from '../context/SocketContext';
 import Link from 'next/link';
 
-export default function Form( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number }) {
+export default function Form( {current_chat_id}: {current_chat_id : number }) {
     
    
 
@@ -25,10 +25,10 @@ export default function Form( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number }) {
 
         console.log("Text for sending:", messageText);
         console.log("authorId:", authorIdInt);
-        console.log("chatId:", CURRENT_CHAT_ID);
+        console.log("chatId:", current_chat_id);
         setMessageText('')
         try {
-          const message = { content: messageText , chatId: CURRENT_CHAT_ID , userId: authorIdInt}
+          const message = { content: messageText , chatId: current_chat_id , userId: authorIdInt}
             await createPost(message).unwrap();
             socket.emit('createMessage', message )
             console.log('Message created!');
@@ -38,7 +38,7 @@ export default function Form( {CURRENT_CHAT_ID}: {CURRENT_CHAT_ID : number }) {
         };
 
   const CURRENT_USER_ID = 1
-//   const CURRENT_CHAT_ID = 2
+//   const current_chat_id = 2
 
   return (
     <div className="flex flex-row h-auto border">
