@@ -11,6 +11,9 @@ enum SmileMode{
 export type mode = {
     name: string
     primary_color: string
+    secondary_color:string;
+    text_color:string,
+    secondary_text_color: string,
     bg_color: string
     chats: number[]
     awaliable_answ: string[]
@@ -23,9 +26,12 @@ export type mode = {
 
 const workMode : mode = {
     name:'workMode',
-    primary_color: '#fffff',
-    bg_color: '#fffff',
-    chats:[], //chat ID's
+    primary_color: '#3D99F5',
+    secondary_color:'#21364A',
+    text_color: '#E5E8EB',
+    secondary_text_color: '#8FADCC',
+    bg_color: '#0F1A24',
+    chats:[2], //chat ID's
     awaliable_answ: ['+', 'Питання', 'Підтримую'],
     scheduled_call_mode: true,
     stickers: false, // abled/disabled
@@ -34,9 +40,12 @@ const workMode : mode = {
 
 const familyMode: mode = {
     name:'familyMode',
-    primary_color: '#fffff',
-    bg_color: '#fffff',
-    chats:[], //chat ID's
+    text_color: '#1C1A0D',
+    secondary_text_color: '#9E8F47',
+    primary_color: '#FAD938',
+    secondary_color:'#F5F2E5',
+    bg_color: '#FFFFFF',
+    chats:[3], //chat ID's
     awaliable_answ: ['Обійняти', 'Підтримати', 'Як справи?'],
     scheduled_call_mode: false,
     stickers: true, // abled/disabled
@@ -45,9 +54,12 @@ const familyMode: mode = {
 
 const standartMode: mode = {
     name:'standartMode',
-    primary_color: '#fffff',
-    bg_color: '#fffff',
-    chats:[1 ,2 ,3], //chat ID's
+    primary_color: '#3D99F5',
+    secondary_color:'#21364A',
+    text_color: '#E5E8EB',
+    secondary_text_color: '#8FADCC',
+    bg_color: '#0F1A24',
+    chats:[2 ,3], //chat ID's
     awaliable_answ: ['Обійняти', 'Підтримати', 'Як справи?'],
     scheduled_call_mode: false,
     stickers: true, // abled/disabled

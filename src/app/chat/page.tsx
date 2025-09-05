@@ -18,6 +18,7 @@ import Form from '../components/Form'
 
 import { io } from 'socket.io-client';
 import { SocketProvider } from '../context/SocketContext'
+import { useAppSelector } from '../lib/hooks'
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
@@ -34,7 +35,7 @@ export const socket = io(URL);
 
 export default function page() {
 
-  
+  const currentMode = useAppSelector(state => state.mode.currentMode)
 
   const searchParams = useSearchParams()
   let current_chat_id : number = Number(searchParams.get('chatId')) 
@@ -151,7 +152,7 @@ export default function page() {
     <Layout>
       <SocketProvider value={socket}>
 
-        <div className='flex flex-row  rounded-md border w-full  h-screen'>
+        <div className='flex flex-row  rounded-md border w-full  h-screen' style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
           <ChatsList />
           <div className="messages-wrapper flex flex-col w-full ">
             <ChatHeader current_chat_id = {current_chat_id}/>

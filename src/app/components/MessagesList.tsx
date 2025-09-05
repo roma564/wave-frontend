@@ -5,6 +5,7 @@ import React from 'react'
 // import { TimeAgo } from '@/components/TimeAgo'
 
 import { useGetMessagesQuery, Message } from '../lib/features/api/messageSlice'
+import { useAppSelector } from '../lib/hooks';
 
 // import { messageAuthor } from './messageAuthor'
 // import { ReactionButtons } from './ReactionButtons'
@@ -13,6 +14,8 @@ import { useGetMessagesQuery, Message } from '../lib/features/api/messageSlice'
 interface MessageExcerptProps {
   message: Message
 }
+
+const currentMode = useAppSelector(state => state.mode.currentMode)
 
 function MessageExcerpt({ message }: MessageExcerptProps) {
   return (
@@ -54,7 +57,7 @@ export const MessagesList = () => {
   }
 
   return (
-    <section className="messages-list">
+    <section className="messages-list" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
       <h2>messages</h2>
       {content}
     </section>
