@@ -3,6 +3,7 @@ import { useAppSelector } from '../lib/hooks'
 import { useGetChatByIdQuery } from '../lib/features/api/chatSlice'
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Skeleton, Typography } from '@mui/material'
 import { useGetLastMessageQuery } from '../lib/features/api/messageSlice'
+import Link from 'next/link'
 
 
 
@@ -32,6 +33,7 @@ function ChatItem( { id }: { id: number } ) {
       }
       else if(isSuccess){
         content =
+        <Link href={`/chat?chatId=${id}`}>
           <ListItem className="border border-black rounded-md mt-2 hover:bg-sky-700" alignItems="flex-start">
             <ListItemAvatar>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -53,6 +55,7 @@ function ChatItem( { id }: { id: number } ) {
               }
             />
           </ListItem>
+          </Link>
       } 
       else if (isError) {
         content = <div>{isError.toString()}</div>
