@@ -1,75 +1,50 @@
 import React from 'react'
 import { useAppSelector } from '../lib/hooks'
 import { useGetChatByIdQuery } from '../lib/features/api/chatSlice'
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Skeleton, Typography } from '@mui/material'
+import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useGetLastMessageQuery } from '../lib/features/api/messageSlice'
 import Link from 'next/link'
 
+function ChatItem({ id }: { id: number }) {
+  const currentMode = useAppSelector(state => state.mode.currentMode)
 
+  const { data: chat, isLoading, isSuccess, isError } = useGetChatByIdQuery(id)
+  const { data: message } = useGetLastMessageQuery(id)
 
-function ChatItem( { id }: { id: number } ) {
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error loading chat</div>
 
-      const {
-        data: chat,
-        isLoading,
-        isSuccess,
-        isError,
-      } = useGetChatByIdQuery(id)
-
-      const {
-        data: message,
-        isLoading: isMessageLoading,
-        isSuccess: isMessageSuccess,
-        isError: isMessageError,
-      } = useGetLastMessageQuery(id)
-
-      let content: React.ReactNode
-
-
-
-      if (isLoading) {
-        content = 'Loading'
-        // content = <Skeleton variant="circular" width={40} height={40} />
-      }
-      else if(isSuccess){
-        content =
-        <Link href={`/chat?chatId=${id}`}>
-          <ListItem className=" mt-2 hover:bg-sky-700" alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    sx={{ color: 'black', display: 'inline' }}
-                  >
-                    {chat.subject} <br />
-                    User ID: {message?.userId} <br />
-                  </Typography>
-                  {message?.content || 'Немає повідомлення'}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          </Link>
-      } 
-      else if (isError) {
-        content = <div>{isError.toString()}</div>
-      }
-
+  console.log('Chat ID:', id)
+  console.log('Last message:', message)
 
   return (
-    
-       <div>
-        {content}
-       </div>
-    
+    <ListItem
+      component={Link}
+      href={`/chat?chatId=${id}`}
+      className="mt-2 hover:bg-sky-700"
+      alignItems="flex-start"
+    >
+      <ListItemAvatar>
+        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+      </ListItemAvatar>
+      <ListItemText
+          secondary={
+            <Typography
+              component="span"
+              variant="body2"
+              style={{ color: currentMode.text_color }}
+            >
+              {chat?.subject} <br />
+              User ID: {message?.userId} <br />
+              <span style={{ color: currentMode.secondary_text_color }}>
+                {message?.content || 'Немає повідомлення'}
+              </span>
+            </Typography>
+          }
+        />
+
+    </ListItem>
   )
 }
-
 
 export default ChatItem

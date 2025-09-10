@@ -4,6 +4,7 @@ import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { SocketContext } from '../context/SocketContext';
 import Link from 'next/link';
+import Cookies from 'js-cookie'
 
 export default function Form( {current_chat_id}: {current_chat_id : number }) {
     
@@ -11,11 +12,15 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
 
     const [createPost] = useCreateMessageMutation();
 
+    
+
     const [messageText, setMessageText] = useState('');
     const [authorId, setAuthorId] = useState('');
     const [chatId, setChatId] = useState('');
 
     const socket = useContext(SocketContext)
+    const userIdFromCookie = Cookies.get('id')
+    const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
 
    const  handleSend = async () => {
     const authorIdInt = parseInt(authorId, 10); // Десяткова система
@@ -28,7 +33,7 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
         console.log("chatId:", current_chat_id);
         setMessageText('')
         try {
-          const message = { content: messageText , chatId: current_chat_id , userId: authorIdInt}
+          const message = { content: messageText , chatId: current_chat_id , userId: CURRENT_USER_ID}
             await createPost(message).unwrap();
             socket.emit('createMessage', message )
             console.log('Message created!');
@@ -37,18 +42,18 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
         }
         };
 
-  const CURRENT_USER_ID = 1
+  // const CURRENT_USER_ID = 1
 //   const current_chat_id = 2
 
   return (
     <div className="flex flex-row h-auto ">
-              <TextField className='bg-white w-30  rounded-2xl no-underline active:no-underline '
+              {/* <TextField className='bg-white w-30  rounded-2xl no-underline active:no-underline '
               id="filled-search"
               label="Author ID"
               type="search"
               variant="filled"
               value={authorId}
-              onChange={(e) => setAuthorId(e.target.value)}/>
+              onChange={(e) => setAuthorId(e.target.value)}/> */}
 
                {/* <TextField className='bg-white w-30 rounded-2xl no-underline active:no-underline '
               id="filled-search"

@@ -12,6 +12,7 @@ import ChatsList from '../components/ChatsList'
 import Layout from '../components/layout'
 import ChatHeader from '../components/chat_header'
 import Form from '../components/Form'
+import Cookies from 'js-cookie'
 
 
 
@@ -39,10 +40,14 @@ export default function page() {
 
   const searchParams = useSearchParams()
   let current_chat_id : number = Number(searchParams.get('chatId')) 
+
+  const userIdFromCookie = Cookies.get('id')
+  const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
+
  
   
 
-  const CURRENT_USER_ID = 1
+  // const CURRENT_USER_ID = 1
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -181,13 +186,13 @@ export default function page() {
                 </div>
 
                 <Form current_chat_id={current_chat_id} />
-                <div>ChatID: {current_chat_id}</div>
+                
               </div>
             ) : (
               
-              <div className="flex items-center justify-center w-full text-gray-500">
-                <img src="/images/people_chat_blue.png" alt="Порожній чат" />
-                <p>Виберіть чат зі списку, щоб побачити повідомлення</p>
+              <div className="flex flex-col items-center  w-full text-gray-500">
+                <img src="/images/chat_nobg_yellow.png" alt="Порожній чат" className="w-130 h-130"/>
+                <p style={{ color: currentMode.secondary_text_color }} >Виберіть чат зі списку, щоб побачити повідомлення</p>
               </div>
             )}
           </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAppSelector } from '../lib/hooks';
 import { Avatar } from '@mui/material';
+import Cookies from 'js-cookie'
 
 export enum Color {
   Blue,
@@ -15,6 +16,9 @@ type Props = {
 export default function MessageBox({ color, content }: Props) {
   const currentMode = useAppSelector(state => state.mode.currentMode)
 
+  const avatarSrc = Cookies.get('avatar') || '/static/images/avatar/2.jpg'
+
+
   if(color === Color.Red){
     return(
       <div className="wrapper flex flex-row flex-end m-2">
@@ -28,10 +32,10 @@ export default function MessageBox({ color, content }: Props) {
 
   return (
     <div className="wrapper flex flex-row flex-end m-2 justify-end">
-      <div className='  rounded-lg  p-1 w-60 max-w-100 ' style={{ backgroundColor: currentMode.primary_color, color: currentMode.text_color }}>
+      <div className='rounded-lg p-1 w-60 max-w-100' style={{ backgroundColor: currentMode.primary_color, color: currentMode.text_color }}>
         {content}
       </div>
-      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" className='ml-2'/>
+      <Avatar alt="User Avatar" src={avatarSrc} className='ml-2' />
     </div>
   )
 
