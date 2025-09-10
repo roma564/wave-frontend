@@ -34,7 +34,7 @@ function ChatItem( { id }: { id: number } ) {
       else if(isSuccess){
         content =
         <Link href={`/chat?chatId=${id}`}>
-          <ListItem className="border border-black rounded-md mt-2 hover:bg-sky-700" alignItems="flex-start">
+          <ListItem className=" mt-2 hover:bg-sky-700" alignItems="flex-start">
             <ListItemAvatar>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>

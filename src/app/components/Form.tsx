@@ -41,7 +41,7 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
 //   const current_chat_id = 2
 
   return (
-    <div className="flex flex-row h-auto border">
+    <div className="flex flex-row h-auto ">
               <TextField className='bg-white w-30  rounded-2xl no-underline active:no-underline '
               id="filled-search"
               label="Author ID"

@@ -51,7 +51,7 @@ export default function Layout({
   return (
     <>
       {/* <ChatsList /> */}
-      <div className="flex flex-row place-content-between" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
+      <div className="flex flex-row border-b place-content-between" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
         <header className={`flex flex-row w-screen`}  >
           <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
           <h1 className="text-2xl m-3 ml-0">Wavely</h1>

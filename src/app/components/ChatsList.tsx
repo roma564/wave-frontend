@@ -12,15 +12,8 @@ export default function ChatsList() {
   const currentChats = useAppSelector(state => state.mode.currentMode).chats
 
 
-  const {
-        data: chats = [],
-        isLoading,
-        isSuccess,
-        isError,
-        
-      } = useGetChatsQuery()
-
-  
+  const currentMode = useAppSelector(state => state.mode.currentMode)
+  let bg_color = currentMode.bg_color
 
 
 
@@ -103,10 +96,10 @@ export default function ChatsList() {
 
 
   return (
-    <div className='flex flex-col place-items-center border h-full w-100 overflow-y-auto'>
+    <div className='flex flex-col border-r place-items-center h-full w-100 overflow-y-auto'>
         ChatList
 
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <List sx={{ width: '100%', maxWidth: 360, bgcolor: {bg_color} }}>
           {content}
           
         </List>

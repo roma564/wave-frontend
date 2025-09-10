@@ -33,13 +33,15 @@ export default function SignInForm() {
   };
 
   const handleGoogleSignIn = async () => {
-    try {
-      const response = await axios.get('/api/auth/google'); api.post('/api/auth/google', { email, password });
-      alert(`Google login initiated: ${response.data.message}`);
+    window.location.href = 'http://localhost:5000/auth/login/google';
+    // try {
+    //   // const response = await axios.get('/auth/login/google');
+    //   // alert(`Google login initiated: ${response.data.message}`);
+    //   // window.location.href = 'http://localhost:5000/auth/login/google';
 
-    } catch (error: any) {
-      alert(`Google login failed: ${error.response?.data?.message || error.message}`);
-    }
+    // } catch (error: any) {
+    //   alert(`Google login failed: ${error.response?.data?.message || error.message}`);
+    // }
   };
 
   return (

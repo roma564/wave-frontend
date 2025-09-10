@@ -146,57 +146,57 @@ export default function page() {
     contentMessage = <div>{error.toString()}</div>
   }
 
+
+//   if (!current_chat_id || isNaN(current_chat_id)) {
+//   return (
+//     <Layout>
+//       <div className="flex items-center justify-center h-screen text-gray-500">
+//         <p>Виберіть чат зі списку, щоб почати розмову</p>
+//       </div>
+//     </Layout>
+//   );
+// }
+
   
 
-  return (
-    <Layout>
-      <SocketProvider value={socket}>
+ 
+    return (
+      <Layout>
+        <SocketProvider value={socket}>
+          <div
+            className="flex flex-row rounded-md  w-full h-screen"
+            style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}
+          >
 
-        <div className='flex flex-row  rounded-md border w-full  h-screen' style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
-          <ChatsList />
-          <div className="messages-wrapper flex flex-col w-full ">
-            <ChatHeader current_chat_id = {current_chat_id}/>
+            <ChatsList />
 
 
-            <div className="messages border p-1  rounded-md overflow-y-auto w-full h-130" >
+            {current_chat_id ? (
+              <div className="messages-wrapper flex flex-col w-full">
+                <ChatHeader current_chat_id={current_chat_id} />
+
+                <div className="messages  p-1 rounded-md overflow-y-auto w-full h-130">
+                  {msgBoxes}
+                  <div ref={messagesEndRef} />
+                </div>
+
+                <Form current_chat_id={current_chat_id} />
+                <div>ChatID: {current_chat_id}</div>
+              </div>
+            ) : (
               
-
-              {/* {messages.map((message: Message)  => (
-                  <MessageBox
-                    key={message.id}
-                    color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
-                    content={message.content}
-                  />
-                ))}
-
-                {socketMessages.map(message => (
-                  <MessageBox
-                    key={`socket-${message.id}`}
-                    color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
-                    content={message.content}
-                  />
-                ))} */}
-
-                {msgBoxes}
-                <div ref={messagesEndRef} />
-                
-            </div >
-
-            <Form current_chat_id = {current_chat_id}/>
-
-            <div>ChatID: {current_chat_id}</div>
+              <div className="flex items-center justify-center w-full text-gray-500">
+                <img src="/images/people_chat_blue.png" alt="Порожній чат" />
+                <p>Виберіть чат зі списку, щоб побачити повідомлення</p>
+              </div>
+            )}
           </div>
-        
-          
-      </div>
+        </SocketProvider>
+      </Layout>
+    );
 
-      </SocketProvider>
-      
-      
-        
-    </Layout>
     
-  )
+  
 }
 
 
