@@ -27,7 +27,7 @@ export default function Home() {
       <div className="flex flex-col">
         <header className="flex flex-row bg-[#696969]">
           <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
-          <h1 className="text-2xl m-3 ml-0">Wavely</h1>
+          <h1 className="text-2xl m-3 ml-0">Wave</h1>
           {/* <ChatHeader></ChatHeader> */}
         </header>
 

@@ -9,6 +9,12 @@ type Message = {
   content: string;
   chatId: number;
   userId: number;
+  createdAt: string;
+  updatedAt: string;
+  author: {
+    name: string;
+    lastname: string;
+  };
 }
 
 

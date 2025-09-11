@@ -10,7 +10,7 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
     
    
 
-    const [createPost] = useCreateMessageMutation();
+    const [createMessage] = useCreateMessageMutation();
 
     
 
@@ -22,28 +22,25 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
     const userIdFromCookie = Cookies.get('id')
     const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
 
-   const  handleSend = async () => {
-    const authorIdInt = parseInt(authorId, 10); // Десяткова система
-    // const chatIdInt = parseInt(chatId, 10);
+ 
 
-    
+    const handleSend = async () => {
+      if (!messageText.trim() || !CURRENT_USER_ID || !current_chat_id) return;
 
-        console.log("Text for sending:", messageText);
-        console.log("authorId:", authorIdInt);
-        console.log("chatId:", current_chat_id);
-        setMessageText('')
-        try {
-          const message = { content: messageText , chatId: current_chat_id , userId: CURRENT_USER_ID}
-            await createPost(message).unwrap();
-            socket.emit('createMessage', message )
-            console.log('Message created!');
-        } catch (err) {
-            console.error('Failed to create message:', err);
-        }
-        };
+      try {
 
-  // const CURRENT_USER_ID = 1
-//   const current_chat_id = 2
+        socket.emit('createMessage', {
+          content: messageText,
+          chatId: current_chat_id,
+          userId: CURRENT_USER_ID,
+        });
+
+        setMessageText('');
+       
+      } catch (err) {
+        console.error('Failed to create message:', err);
+      }
+    };
 
   return (
     <div className="flex flex-row h-auto ">

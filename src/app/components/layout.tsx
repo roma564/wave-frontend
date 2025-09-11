@@ -8,7 +8,7 @@ import { decrement, increment } from '../lib/features/counter/counterSlice';
 import { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { setCurrentMode } from '../lib/features/chatMode/modeSlice';
-import { Color } from './message';
+import { Color } from './MessageBox';
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import UserInfo from './UserInfo';
@@ -54,7 +54,7 @@ export default function Layout({
       <div className="flex flex-row border-b place-content-between" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
         <header className={`flex flex-row w-screen`}  >
           <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
-          <h1 className="text-2xl m-3 ml-0">Wavely</h1>
+          <h1 className="text-2xl m-3 ml-0">Wave</h1>
           <h1 className="text-2xl m-3 ml-0">{currentMode.name}</h1>
           {/* <NotificationsIcon/> */}
           

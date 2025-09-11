@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import MessageBox from '../components/message'
-import {Color} from '../components/message'
+import MessageBox from '../components/MessageBox'
+import {Color} from '../components/MessageBox'
 import { useRouter } from 'next/router'
 import SendIcon from '@mui/icons-material/Send';
 
@@ -73,10 +73,13 @@ export default function page() {
         socket.on(String(current_chat_id), (newMessage: Message)=>{
             console.log('CHAT_ID event recieved')
             console.log(newMessage)
+            console.log(newMessage.author)
+
             const box = <MessageBox
             key={newMessage.id}
             color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={newMessage.content}
+            authorName={newMessage.author.name}
           />
 
             
@@ -129,6 +132,7 @@ export default function page() {
             key={message.id ?? `socket-${index}`}
             color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={message.content}
+            authorName={`${message.author.name}`}
           />
         ))
         setNewMsgBoxes(boxes)
