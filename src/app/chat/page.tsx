@@ -9,7 +9,7 @@ import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '.
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 import ChatsList from '../components/ChatsList'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import ChatHeader from '../components/chat_header'
 import Form from '../components/Form'
 import Cookies from 'js-cookie'

@@ -8,10 +8,12 @@ import { useAppDispatch, useAppSelector } from "./lib/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./lib/features/counter/counterSlice";
 import { MessagesList } from "./components/MessagesList";
-import Layout from "./components/layout";
+
 import { Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import Link from "next/link";
+import KeyFeatures from "./components/welcome_page/KeyFeatures";
+import Header from "./components/welcome_page/Header";
 
 
 
@@ -22,51 +24,42 @@ export default function Home() {
   const dispatch = useAppDispatch()
  
   return (
-  
-    <Layout>
-      <div className="flex flex-col">
-        <header className="flex flex-row bg-[#696969]">
-          <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
-          <h1 className="text-2xl m-3 ml-0">Wave</h1>
-          {/* <ChatHeader></ChatHeader> */}
-        </header>
+    
+    // <Layout>
+      <div className="flex flex-col bg-[#0d1730] ">
+          
+        <Header/>
+        <div className="flex flex-col items-center mt-10">
+          
+          <div className=" flex flex-col max-w-[1000px] items-center">
+          
+           
 
-        <div className="sidebar  max-h-full order border-white bg-[#696969]">
-
-        </div>
-
-         
-
-        
-
-        <div>
-          <div>
-            <button
-              aria-label="Increment value"
-              onClick={() => dispatch(increment())}
-            >
-              Increment
-            </button>
-            <span>{count}</span>
-            <button
-              aria-label="Decrement value"
-              onClick={() => dispatch(decrement())}
-            >
-              Decrement
-            </button>
-          </div>
-        </div>
-
-        {/* <MessagesList/> */}
-                <Link  href={`/chat/?chatId=${2}`}>
+          <div className="flex justify-between w-full ">
+            
+            <div className="items-center">
+                <h1 className="text-6xl w-100">The best chat for you</h1>
+                <p className="mt-20 mb-20">Connect with friends and family in a simple, intuitive space. Enjoy seamless conversations with enhanced features and a dynamic interface.</p>
+                <Link  href={`/chat`}>
                   <Button className='rounded-2xl ml-3 place-content-center' variant="contained" endIcon={<SendIcon />} >
                     To chat
                   </Button>
                 </Link>
+            </div>
+
+            <img src="/images/welcome_four.png" alt="Welcome" className="w-120" /> 
+          </div>
+    
+          <KeyFeatures/>
+        </div>
+        </div>
+
         
 
+        
+                
     </div>
-    </Layout>
+  // </Layout>
     
-  );
+);
 }

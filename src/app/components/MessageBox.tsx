@@ -25,7 +25,7 @@ export default function MessageBox({ color, content, authorName }: Props) {
       <div className="wrapper flex flex-row flex-end m-2">
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" className='flex flex-end mr-2' />
         <div className='flex flex-col'>
-          <div className="text-sm text-gray-500 mb-1">{authorName}</div>
+          <div className="text-sm text-gray-500 mb-1" style={{ color: currentMode.secondary_text_color }}>{authorName}</div>
           <div className='  rounded-lg  p-1 w-60 max-w-100' style={{ backgroundColor: currentMode.secondary_color, color: currentMode.text_color }}>
             {content}
           </div>
@@ -37,13 +37,14 @@ export default function MessageBox({ color, content, authorName }: Props) {
 
   return (
     <div className="wrapper flex flex-row flex-end m-2 justify-end">
-      <Avatar alt="User Avatar" src={avatarSrc} className='ml-2' />
+      
       <div className='flex flex-col'>
-        <div className="text-sm text-gray-500 mb-1">{authorName}</div>
+        <div className="text-sm mb-1 text-right" style={{ color: currentMode.secondary_text_color }}>{authorName}</div>
         <div className='rounded-lg p-1 w-60 max-w-100' style={{ backgroundColor: currentMode.primary_color, color: currentMode.text_color }}>
           {content}
         </div>
       </div>
+      <Avatar alt="User Avatar" src={avatarSrc} className='ml-2' />
      
     </div>
   )
