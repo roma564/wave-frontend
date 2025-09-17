@@ -5,6 +5,7 @@ import { chatSlice } from './features/api/chatSlice'
 
 import { modeSlice } from './features/chatMode/modeSlice'
 import modeReducer from '../lib/features/chatMode/modeSlice'
+import { userSlice } from './features/api/UserSlice'
 
 
 
@@ -15,10 +16,12 @@ export const makeStore = () => {
        counter: counterReducer,
        mode: modeReducer,
        [messageSlice.reducerPath]: messageSlice.reducer,
-       [chatSlice.reducerPath]: chatSlice.reducer
+       [chatSlice.reducerPath]: chatSlice.reducer,
+       [userSlice.reducerPath]: userSlice.reducer,
+
     },
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(messageSlice.middleware, chatSlice.middleware),
+    getDefaultMiddleware().concat(messageSlice.middleware, chatSlice.middleware, userSlice.middleware),
   })
 }
 

@@ -1,49 +1,60 @@
 import { useState } from 'react';
+import { useGetUsersQuery } from '../lib/features/api/UserSlice';
+import { useCreateChatMutation } from '../lib/features/api/chatSlice';
+import Cookies from 'js-cookie'
+
 
 export default function NewChatModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [chatName, setChatName] = useState('');
-  const [chatType, setChatType] = useState('personal');
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleCreate = () => {
+  const { data: users = [], isLoading, isError } = useGetUsersQuery();
+  const [createChat, { isLoading: isCreating }] = useCreateChatMutation();
 
-    console.log({ chatName, chatType });
-    setIsOpen(false);
-    setChatName('');
-  };
+  const userIdFromCookie = Cookies.get('id')
+ const CURRENT_USER_ID: number | undefined = userIdFromCookie
+  ? Number(userIdFromCookie)
+  : undefined;
 
-  const users = [
-  { id: 1, name: 'Гордійчук Роман Васильович' },
-  { id: 2, name: 'Roma Gordiychuk' },
-  { id: 3, name: 'Олена Петрівна' },
-  { id: 4, name: 'Іван Костюк' },
-];
 
-const [dropdownOpen, setDropdownOpen] = useState(false);
-const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
-const handleSelect = (id: number) => {
-  setSelectedUser(id);
-  setDropdownOpen(false);
-};
+  const handleCreate = async () => {
+    if (!chatName || !selectedUserId) return;
 
+    try {
+        await createChat({
+        subject: chatName,
+        userAId: CURRENT_USER_ID, 
+        userBId: selectedUserId,
+        }).unwrap();
+
+        setIsOpen(false);
+        setChatName('');
+        setSelectedUserId(null);
+    } catch (err) {
+        console.error('Помилка створення чату:', err);
+    }
+    };
 
   return (
     <div className="relative">
       {/* Floating "+" Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className=" right-6 bg-blue-600 text-white rounded-full w-14 h-14 text-3xl shadow-lg hover:bg-blue-700 transition"
+        className=" right-6 z-50 bg-blue-600 text-white rounded-full w-14 h-14 text-3xl shadow-lg hover:bg-blue-700 transition"
       >
         +
       </button>
 
       {/* Modal Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
             <h2 className="text-xl font-semibold mb-4">Створити новий чат</h2>
 
+            {/* Назва чату */}
             <label className="block mb-2 text-sm font-medium text-gray-700">
               Назва чату
             </label>
@@ -55,33 +66,42 @@ const handleSelect = (id: number) => {
               placeholder="Наприклад: Розмова з мамою"
             />
 
-                    {/* Dropdown for selecting user */}
+            {/* Dropdown користувачів */}
             <div className="mb-6 relative">
-            <button
+              <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="w-full px-3 py-2 border rounded-md bg-gray-100 hover:bg-gray-200 text-left"
-            >
-                {selectedUser
-                ? users.find((u) => u.id === selectedUser)?.name
-                : 'Оберіть користувача'}
-            </button>
+              >
+                {selectedUserId
+                  ? users.find((u) => u.id === selectedUserId)?.name
+                  : 'Оберіть користувача'}
+              </button>
 
-            {dropdownOpen && (
+              {dropdownOpen && (
                 <ul className="absolute z-10 mt-1 w-full bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto">
-                {users.map((user) => (
+                  {isLoading && (
+                    <li className="px-4 py-2 text-gray-500">Завантаження...</li>
+                  )}
+                  {isError && (
+                    <li className="px-4 py-2 text-red-500">Помилка завантаження</li>
+                  )}
+                  {users.map((user) => (
                     <li
-                    key={user.id}
-                    onClick={() => handleSelect(user.id)}
-                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                      key={user.id}
+                      onClick={() => {
+                        setSelectedUserId(user.id);
+                        setDropdownOpen(false);
+                      }}
+                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
                     >
-                    {user.name}
+                      {user.name}
                     </li>
-                ))}
+                  ))}
                 </ul>
-            )}
+              )}
             </div>
 
-
+            {/* Кнопки */}
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setIsOpen(false)}
