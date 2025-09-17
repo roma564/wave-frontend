@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
-import { useCreateMessageMutation } from '../lib/features/api/messageSlice';
+import { useCreateMessageMutation } from '@/app/lib/features/api/messageSlice';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { SocketContext } from '../context/SocketContext';
+import { SocketContext } from '@/app/context/SocketContext'; 
 import Link from 'next/link';
 import Cookies from 'js-cookie'
 

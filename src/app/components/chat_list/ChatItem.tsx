@@ -1,8 +1,8 @@
 import React from 'react';
-import { useAppSelector } from '../lib/hooks';
-import { useGetChatByIdQuery } from '../lib/features/api/chatSlice';
+import { useAppSelector } from '@/app/lib/hooks';
+import { useGetChatByIdQuery } from '@/app/lib/features/api/chatSlice';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography, Skeleton } from '@mui/material';
-import { useGetLastMessageQuery } from '../lib/features/api/messageSlice';
+import { useGetLastMessageQuery } from '@/app/lib/features/api/messageSlice';
 import Link from 'next/link';
 
 function ChatItem({ id }: { id: number }) {

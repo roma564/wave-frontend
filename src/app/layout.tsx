@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./storeProvider";
 import { Provider } from 'react-redux'
-import ChatsList from "./components/ChatsList";
+import ChatsList from "./components/chat_list/ChatsList";
 import { useAppSelector } from "./lib/hooks";
 
 

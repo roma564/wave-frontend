@@ -2,7 +2,7 @@ import React from 'react'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import PushPinIcon from '@mui/icons-material/PushPin';
-import { useGetChatByIdQuery } from '../lib/features/api/chatSlice';
+import { useGetChatByIdQuery } from '@/app/lib/features/api/chatSlice';
 
 
 

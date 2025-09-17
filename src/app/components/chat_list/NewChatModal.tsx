@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { useGetUsersQuery } from '../lib/features/api/UserSlice';
-import { useCreateChatMutation } from '../lib/features/api/chatSlice';
+import { useGetUsersQuery } from '../../lib/features/api/UserSlice';
+import { useCreateChatMutation } from '../../lib/features/api/chatSlice';
 import Cookies from 'js-cookie'
+import { addChatIdToMode } from '../../lib/features/chatMode/modeSlice';
+import { useAppDispatch } from '../../lib/hooks';
 
 
 export default function NewChatModal() {
@@ -12,6 +14,8 @@ export default function NewChatModal() {
 
   const { data: users = [], isLoading, isError } = useGetUsersQuery();
   const [createChat, { isLoading: isCreating }] = useCreateChatMutation();
+  const dispatch = useAppDispatch()
+   
 
   const userIdFromCookie = Cookies.get('id')
  const CURRENT_USER_ID: number | undefined = userIdFromCookie
@@ -24,11 +28,14 @@ export default function NewChatModal() {
     if (!chatName || !selectedUserId) return;
 
     try {
-        await createChat({
-        subject: chatName,
-        userAId: CURRENT_USER_ID, 
-        userBId: selectedUserId,
-        }).unwrap();
+        const newChat = await createChat({
+            subject: chatName,
+            userAId: CURRENT_USER_ID,
+            userBId: selectedUserId,
+            }).unwrap();
+
+        dispatch(addChatIdToMode({ modeName: 'standartMode', chatId: newChat.id }));
+
 
         setIsOpen(false);
         setChatName('');
@@ -50,9 +57,9 @@ export default function NewChatModal() {
 
       {/* Modal Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0   bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Створити новий чат</h2>
+            <h2 className="text-black text-xl font-semibold mb-4">Створити новий чат</h2>
 
             {/* Назва чату */}
             <label className="block mb-2 text-sm font-medium text-gray-700">
@@ -62,7 +69,7 @@ export default function NewChatModal() {
               type="text"
               value={chatName}
               onChange={(e) => setChatName(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-md mb-4 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Наприклад: Розмова з мамою"
             />
 
@@ -70,11 +77,14 @@ export default function NewChatModal() {
             <div className="mb-6 relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-full px-3 py-2 border rounded-md bg-gray-100 hover:bg-gray-200 text-left"
+                 className={`w-full px-3 py-2 border rounded-md text-left ${selectedUserId ? 'text-blue-700' : 'text-gray-500'
+  }`}
               >
-                {selectedUserId
-                  ? users.find((u) => u.id === selectedUserId)?.name
-                  : 'Оберіть користувача'}
+                <span className={selectedUserId ? 'text-blue-700' : 'text-gray-500'}>
+                  {selectedUserId
+                    ? users.find((u) => u.id === selectedUserId)?.name
+                    : 'Оберіть користувача'}
+                </span>
               </button>
 
               {dropdownOpen && (
@@ -92,7 +102,9 @@ export default function NewChatModal() {
                         setSelectedUserId(user.id);
                         setDropdownOpen(false);
                       }}
-                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                      className={`px-4 py-2 cursor-pointer hover:bg-blue-100 ${
+                        selectedUserId === user.id ? 'bg-blue-200 text-blue-800 font-semibold' : 'text-gray-700'
+                      }`}
                     >
                       {user.name}
                     </li>

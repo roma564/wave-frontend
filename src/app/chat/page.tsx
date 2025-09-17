@@ -1,17 +1,17 @@
 "use client"
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import MessageBox from '../components/MessageBox'
-import {Color} from '../components/MessageBox'
+import MessageBox from '../components/chat_area/MessageBox' 
+import { Color } from '../components/chat_area/MessageBox' 
 import { useRouter } from 'next/router'
 import SendIcon from '@mui/icons-material/Send';
 
 import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
-import ChatsList from '../components/ChatsList'
-import Layout from '../components/Layout'
-import ChatHeader from '../components/chat_header'
-import Form from '../components/Form'
+import ChatsList from '../components/chat_list/ChatsList'
+import Layout from '../components/header/Layout'
+import ChatHeader from '../components/chat_area/chat_header' 
+import Form from '../components/chat_area/Form' 
 import Cookies from 'js-cookie'
 
 

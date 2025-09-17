@@ -1,14 +1,14 @@
 
-import { useAppDispatch, useAppSelector } from '../lib/hooks';
-import ChatHeader from './chat_header';
-import ChatsList from './ChatsList'
+import { useAppDispatch, useAppSelector } from '../../lib/hooks';
+import ChatHeader from '../chat_area/chat_header'; 
+import ChatsList from '../chat_list/ChatsList'
 import MessageIcon from '@mui/icons-material/Message';
 
-import { decrement, increment } from '../lib/features/counter/counterSlice';
+import { decrement, increment } from '../../lib/features/counter/counterSlice';
 import { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { setCurrentMode } from '../lib/features/chatMode/modeSlice';
-import { Color } from './MessageBox';
+import { setCurrentMode } from '../../lib/features/chatMode/modeSlice';
+import { Color } from '../chat_area/MessageBox'; 
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import UserInfo from './UserInfo';

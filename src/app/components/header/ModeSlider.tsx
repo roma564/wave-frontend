@@ -19,7 +19,7 @@ const ModeSlider = () => {
     setActiveIndex((prev) => (prev + 1) % modes.length);
 
   return (
-    <div className="bg-gray-900 text-white p-4 rounded-lg w-full max-w-70 ">
+    <div className=" text-white p-4 rounded-lg w-full max-w-70 ">
       <div className="flex items-center justify-between">
         {/* Ліва стрілка */}
         <div className="flex flex-col items-center">

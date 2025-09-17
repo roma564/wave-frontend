@@ -22,6 +22,11 @@ export type mode = {
     smile_mode: SmileMode
 }
 
+export type AddChatIdPayload = {
+  modeName: string;
+  chatId: number;
+};
+
 
 
 const workMode : mode = {
@@ -59,7 +64,7 @@ const standartMode: mode = {
     text_color: '#E5E8EB',
     secondary_text_color: '#8FADCC',
     bg_color: '#0F1A24',
-    chats:[2 ,3], //chat ID's
+    chats:[], //chat ID's
     awaliable_answ: ['Обійняти', 'Підтримати', 'Як справи?'],
     scheduled_call_mode: false,
     stickers: true, // abled/disabled
@@ -85,12 +90,20 @@ export const modeSlice = createSlice({
     deleteMode:(state, action) => {
       state.mods.filter(item => item.name !== action.payload)
     },
+    addChatIdToMode: (state, action) => {
+      const { modeName, chatId } = action.payload;
+      const targetMode = state.mods.find(item => item.name === modeName);
+      if (targetMode && !targetMode.chats.includes(chatId)) {
+        targetMode.chats.push(chatId);
+      }
+    },
+
 
   }
 
 })
 
 // Action creators are generated for each case reducer function
-export const { setCurrentMode, addNewMode, deleteMode } = modeSlice.actions
+export const { setCurrentMode, addNewMode, deleteMode, addChatIdToMode } = modeSlice.actions
 
 export default modeSlice.reducer

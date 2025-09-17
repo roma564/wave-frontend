@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '@/app/lib/hooks'; 
 import { Avatar } from '@mui/material';
 import Cookies from 'js-cookie'
 
