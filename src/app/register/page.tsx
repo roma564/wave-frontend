@@ -36,13 +36,13 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Sign Up</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#0d1730] px-4">
+      <div className="bg-[#304D69] shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-6 text-center text-white">Sign Up</h2>
 
         <form onSubmit={handleRegister} noValidate>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
               First Name
             </label>
             <input
@@ -50,13 +50,13 @@ export default function SignUpForm() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
+              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="lastname" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="lastname" className="block text-white text-sm font-bold mb-2">
               Last Name
             </label>
             <input
@@ -64,13 +64,13 @@ export default function SignUpForm() {
               type="text"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
+              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
               Email
             </label>
             <input
@@ -78,13 +78,13 @@ export default function SignUpForm() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
+              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
               Password
             </label>
             <input
@@ -92,7 +92,7 @@ export default function SignUpForm() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
+              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
               required
             />
           </div>

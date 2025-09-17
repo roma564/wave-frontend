@@ -7,6 +7,7 @@ import React from 'react'
 import { useGetMessagesQuery, Message } from '../lib/features/api/messageSlice'
 import { useAppSelector } from '../lib/hooks';
 
+
 // import { messageAuthor } from './messageAuthor'
 // import { ReactionButtons } from './ReactionButtons'
 
@@ -57,9 +58,10 @@ export const MessagesList = () => {
   }
 
   return (
-    <section className="messages-list" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
+    <section className="messages-list flex-grow" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
       <h2>messages</h2>
       {content}
+     
     </section>
   )
 }

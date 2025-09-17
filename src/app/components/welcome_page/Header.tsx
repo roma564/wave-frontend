@@ -10,7 +10,8 @@ export default function Header() {
         <div className="flex items-center justify-between h-20 ">
 
             <div className=" flex flex-row logo">
-                <MessageIcon fontSize="large" className="m-3" ></MessageIcon>
+                {/* <MessageIcon fontSize="large" className="m-3" ></MessageIcon> */}
+                <img src="/images/logo.png" alt="Logo" className='w-15 h-10'/>
                 <h1 className="text-2xl m-3 ml-0">Wave</h1>
             </div>
           

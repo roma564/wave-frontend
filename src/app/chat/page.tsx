@@ -173,7 +173,7 @@ export default function page() {
       <Layout>
         <SocketProvider value={socket}>
           <div
-            className="flex flex-row rounded-md  w-full h-screen"
+            className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
             style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}
           >
 

@@ -6,6 +6,7 @@ import { Message, useGetAllLastMessagesQuery, useGetLastMessageQuery } from '../
 import Link from 'next/link'
 import { useAppSelector } from '../lib/hooks'
 import ChatItem from './ChatItem'
+import NewChatModal from './NewChatModal'
 
 export default function ChatsList() {
 
@@ -96,13 +97,16 @@ export default function ChatsList() {
 
 
   return (
-    <div className='flex flex-col border-r place-items-center h-full w-100 overflow-y-auto'>
+    <div className='flex flex-col border-r place-items-center w-100 overflow-y-auto'>
         ChatList
+        <NewChatModal/>
+        
 
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: {bg_color} }}>
           {content}
-          
+           
         </List>
+        
 
         {/* <ChatItem id={2}/> */}
 

@@ -38,7 +38,7 @@ export default function Home() {
           <div className="flex justify-between w-full ">
             
             <div className="items-center">
-                <h1 className="text-6xl w-100">The best chat for you</h1>
+                <h1 className="text-6xl w-100 font-dela font-bold">Найкращий чат для тебе</h1>
                 <p className="mt-20 mb-20">Connect with friends and family in a simple, intuitive space. Enjoy seamless conversations with enhanced features and a dynamic interface.</p>
                 <Link  href={`/chat`}>
                   <Button className='rounded-2xl ml-3 place-content-center' variant="contained" endIcon={<SendIcon />} >
@@ -47,7 +47,7 @@ export default function Home() {
                 </Link>
             </div>
 
-            <img src="/images/welcome_four.png" alt="Welcome" className="w-120" /> 
+            <img src="/images/welcome.png" alt="Welcome" className="w-120" /> 
           </div>
     
           <KeyFeatures/>
