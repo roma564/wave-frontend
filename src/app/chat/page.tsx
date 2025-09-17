@@ -2,8 +2,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import MessageBox from '../components/chat_area/MessageBox' 
 import { Color } from '../components/chat_area/MessageBox' 
-import { useRouter } from 'next/router'
+
 import SendIcon from '@mui/icons-material/Send';
+import { useRouter } from 'next/router';
 
 import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
@@ -35,6 +36,8 @@ export const socket = io(URL);
 
 
 export default function page() {
+
+ 
 
   const currentMode = useAppSelector(state => state.mode.currentMode)
 

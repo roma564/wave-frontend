@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { useAppSelector } from '@/app/lib/hooks';
 import { useGetChatByIdQuery } from '@/app/lib/features/api/chatSlice';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography, Skeleton } from '@mui/material';
@@ -42,8 +43,15 @@ function ChatItem({ id }: { id: number }) {
     <ListItem
       component={Link}
       href={`/chat?chatId=${id}`}
-      className="mt-2 hover:bg-sky-700"
       alignItems="flex-start"
+      className="mt-2 transition-colors"
+      style={{ backgroundColor: 'transparent' }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = currentMode.primary_color;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = 'transparent';
+      }}
     >
       <ListItemAvatar>
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
