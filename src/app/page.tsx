@@ -2,12 +2,10 @@
 
 import Image from "next/image";
 import MessageIcon from '@mui/icons-material/Message';
-import ChatHeader from "./components/chat_header";
 
 import { useAppDispatch, useAppSelector } from "./lib/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./lib/features/counter/counterSlice";
-import { MessagesList } from "./components/MessagesList";
 
 import { Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
