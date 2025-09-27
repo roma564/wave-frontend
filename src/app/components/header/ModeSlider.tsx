@@ -26,7 +26,7 @@ const ModeSlider = () => {
   const handleNext = () =>
     setActiveIndex((prev) => (prev + 1) % modes.length);
 
-  // 🔄 Синхронізація з Redux при зміні індексу
+
   useEffect(() => {
     const modeName = getMode(0);
     const modeKey = modeMap[modeName];
@@ -34,7 +34,7 @@ const ModeSlider = () => {
   }, [activeIndex]);
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between ml-20">
       {/* Ліва стрілка */}
       <div
         className="flex flex-col items-center"
@@ -50,7 +50,7 @@ const ModeSlider = () => {
           style={{ color: currentMode.secondary_text_color }}
           className="text-xs mt-1"
         >
-          {getMode(-1)}
+          {getMode(-1) }
         </span>
       </div>
 

@@ -37,15 +37,20 @@ export default function Home() {
             
             <div className="items-center">
                 <h1 className="text-6xl w-100 font-dela font-bold">Найкращий чат для тебе</h1>
-                <p className="mt-20 mb-20">Connect with friends and family in a simple, intuitive space. Enjoy seamless conversations with enhanced features and a dynamic interface.</p>
-                <Link  href={`/chat`}>
-                  <Button className='rounded-2xl ml-3 place-content-center' variant="contained" endIcon={<SendIcon />} >
-                    To chat
+                <p className="mt-10 mb-10">Спілкуйся з друзями та родиною у простому, інтуїтивному просторі. Насолоджуйся безперервними розмовами з розширеними функціями та динамічним інтерфейсом.</p>
+                <Link href="/login">
+                  <Button
+                    variant="contained"
+                    endIcon={<SendIcon />}
+                    className="ml-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow-md hover:from-indigo-600 hover:to-blue-500 transition-all duration-300 ease-in-out"
+                  >
+                    Перейти до чату
                   </Button>
                 </Link>
+
             </div>
 
-            <img src="/images/welcome.png" alt="Welcome" className="w-120" /> 
+            <img src="/images/welcome.png" alt="Welcome" className="w-120 h-120" /> 
           </div>
     
           <KeyFeatures/>

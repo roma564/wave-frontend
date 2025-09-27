@@ -8,7 +8,7 @@ import axios from 'axios';
 export default function SignInForm() {
 
     const api = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
     withCredentials: true, // cookies
   });
 
@@ -33,7 +33,7 @@ export default function SignInForm() {
   };
 
   const handleGoogleSignIn = async () => {
-    window.location.href = 'http://localhost:5000/auth/login/google';
+    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/login/google`;
     // try {
     //   // const response = await axios.get('/auth/login/google');
     //   // alert(`Google login initiated: ${response.data.message}`);

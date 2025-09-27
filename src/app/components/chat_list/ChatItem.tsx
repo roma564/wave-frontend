@@ -14,60 +14,58 @@ function ChatItem({ id }: { id: number }) {
 
   if (isLoading || isMessageLoading) {
     return (
-      <ListItem className="mt-2" alignItems="flex-start">
-        <ListItemAvatar>
-          <Skeleton
-            variant="circular"
-            width={40}
-            height={40}
-            sx={{ bgcolor: 'rgba(255,255,255,0.2)' }}
-          />
-        </ListItemAvatar>
-        <ListItemText
-          secondary={
-            <div className="flex flex-col gap-1">
-              <Skeleton variant="text" width="60%" height={20} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
-              <Skeleton variant="text" width="40%" height={16} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
-              <Skeleton variant="text" width="80%" height={16} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
-            </div>
-          }
-        />
-      </ListItem>
+    <div className="flex items-start mt-2">
+      {/* Аватар */}
+      <img
+        src="/path/to/avatar.jpg"
+        alt="User avatar"
+        className="w-10 h-10 rounded-full object-cover"
+      />
 
-    );
+      {/* Текстовий блок */}
+      <div className="flex flex-col gap-1 ml-4">
+       <Skeleton variant="text" width="60%" height={20} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} /> 
+       <Skeleton variant="text" width="40%" height={16} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} /> 
+       <Skeleton variant="text" width="80%" height={16} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+      </div>
+    </div>
+);
+
   }
 
-  if (isError) return <div>Error loading chat</div>;
+  if (isError) return <div>Error loading chat </div>;
+
+
 
   return (
-    <ListItem
-      component={Link}
-      href={`/chat?chatId=${id}`}
-      alignItems="flex-start"
-      className="mt-2 transition-colors"
-      style={{ backgroundColor: 'transparent' }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = currentMode.primary_color;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'transparent';
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-      </ListItemAvatar>
-      <ListItemText
-        secondary={
-         <div>
-            <span style={{ color: currentMode.text_color }}>{chat?.subject}</span><br />
-            <span style={{ color: currentMode.text_color }}>{message?.author.name}</span><br />
-            <span style={{ color: currentMode.secondary_text_color }}>
-              {message?.content || 'Немає повідомлення'}
-            </span>
-          </div>
-        }
-      />
-    </ListItem>
+ 
+      <div
+        className="mt-2 transition-colors flex items-start"
+        style={{ backgroundColor: 'transparent' }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = currentMode.primary_color;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = 'transparent';
+        }}
+      >
+        <Link href={`/chat?chatId=${id}`} className="flex w-full no-underline">
+          <ListItemAvatar>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          </ListItemAvatar>
+          
+              <div>
+                <span style={{ color: currentMode.text_color }}>{chat?.subject}</span><br />
+                <span style={{ color: currentMode.text_color }}>{message?.author.name}</span><br />
+                <span style={{ color: currentMode.secondary_text_color }}>
+                  {message?.content || 'Немає повідомлення'}
+                </span>
+              </div>
+            
+          
+        </Link>
+      </div>
+
   );
 }
 

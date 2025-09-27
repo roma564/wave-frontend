@@ -25,7 +25,7 @@ export const messageSlice = createApi({
 
   reducerPath: 'api',
 
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_SERVER_BASE_URL  }),
 
   endpoints: builder => ({
 

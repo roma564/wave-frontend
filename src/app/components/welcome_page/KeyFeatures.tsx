@@ -6,29 +6,30 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 const features = [
   {
     icon: <ChatBubbleOutlineIcon fontSize="large" className="text-white" />,
-    title: 'Real-time Messaging',
-    description: 'Experience instant messaging with real-time updates.',
+    title: 'Обмін повідомленнями в реальному часі',
+    description: 'Насолоджуйтесь миттєвим обміном повідомленнями з оновленнями в реальному часі.',
   },
   {
     icon: <GroupIcon fontSize="large" className="text-white" />,
-    title: 'Group Chats',
-    description: 'Create and manage group chats for easy communication.',
+    title: 'Групові чати',
+    description: 'Створюйте та керуйте груповими чатами для зручного спілкування.',
   },
   {
-    icon: <ShieldOutlinedIcon fontSize="large" className="text-white"  />,
-    title: 'Secure Conversations',
-    description: 'Your privacy matters. Enjoy secure, encrypted conversations.',
+    icon: <ShieldOutlinedIcon fontSize="large" className="text-white" />,
+    title: 'Захищене спілкування',
+    description: 'Ваша конфіденційність — понад усе. Спілкуйтесь безпечно завдяки шифруванню.',
   },
 ];
+
 
 
 const KeyFeatures = () => {
   return (
     <section className=" py-16 px-6 text-center">
         
-      <h2 className="text-4xl font-bold text-white mb-10">Key Features</h2>
+      <h2 className="text-4xl font-bold text-white mb-10">Ключові можливості</h2>
        <p className="text-[#8FADCC] text-lg mb-10">
-            Explore the benefits of our minimalist web chat.
+            Досліджуйте переваги нашого веб-чату.
         </p>
       <div className="flex flex-wrap justify-center gap-8">
         {features.map((feature, index) => (

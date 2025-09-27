@@ -14,7 +14,7 @@ export type { User };
 export const userSlice = createApi({
   reducerPath: 'user',
 
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl:  process.env.NEXT_PUBLIC_SERVER_BASE_URL  }),
 
   endpoints: (builder) => ({
     getUsers: builder.query<User[], void>({

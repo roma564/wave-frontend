@@ -11,13 +11,13 @@ export type { Chat };
 
 export const chatSlice = createApi({
   reducerPath: 'chat',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }),
-  tagTypes: ['Chat'], // ← обов’язково
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_SERVER_BASE_URL, credentials: 'include'}),
+  tagTypes: ['Chat'], 
 
   endpoints: (builder) => ({
     getChats: builder.query<Chat[], void>({
       query: () => 'chat',
-      providesTags: ['Chat'], // ← кешування
+      providesTags: ['Chat'], 
     }),
 
     getChatById: builder.query<Chat, number>({
@@ -31,7 +31,7 @@ export const chatSlice = createApi({
         method: 'POST',
         body: newChat,
       }),
-      invalidatesTags: ['Chat'], // ← оновлення кешу
+      invalidatesTags: ['Chat'], 
     }),
   }),
 });

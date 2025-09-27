@@ -3,7 +3,7 @@ import { useGetUsersQuery } from '../../lib/features/api/UserSlice';
 import { useCreateChatMutation } from '../../lib/features/api/chatSlice';
 import Cookies from 'js-cookie'
 import { addChatIdToMode } from '../../lib/features/chatMode/modeSlice';
-import { useAppDispatch } from '../../lib/hooks';
+import { useAppDispatch, useAppSelector } from '../../lib/hooks';
 
 
 export default function NewChatModal() {
@@ -11,6 +11,7 @@ export default function NewChatModal() {
   const [chatName, setChatName] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const currentMode = useAppSelector(state => state.mode.currentMode);
 
   const { data: users = [], isLoading, isError } = useGetUsersQuery();
   const [createChat, { isLoading: isCreating }] = useCreateChatMutation();
@@ -46,11 +47,12 @@ export default function NewChatModal() {
     };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {/* Floating "+" Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className=" right-6 z-50 bg-blue-600 text-white rounded-full w-14 h-14 text-3xl shadow-lg hover:bg-blue-700 transition"
+        style={{ backgroundColor: currentMode.primary_color }}
+        className=" right-6 z-50  text-white rounded-full w-14 h-14 text-3xl shadow-lg hover:bg-blue-700 transition"
       >
         +
       </button>
@@ -117,7 +119,7 @@ export default function NewChatModal() {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
+                className="px-4 py-2 text-white bg-gray-400 rounded hover:bg-gray-300 transition"
               >
                 Скасувати
               </button>

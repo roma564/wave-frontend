@@ -36,7 +36,7 @@ const workMode : mode = {
     text_color: '#E5E8EB',
     secondary_text_color: '#8FADCC',
     bg_color: '#0F1A24',
-    chats:[2], //chat ID's
+    chats:[14, 15, 16], //chat ID's
     awaliable_answ: ['+', 'Питання', 'Підтримую'],
     scheduled_call_mode: true,
     stickers: false, // abled/disabled
@@ -50,7 +50,7 @@ const familyMode: mode = {
     primary_color: '#FAD938',
     secondary_color:'#F5F2E5',
     bg_color: '#FFFFFF',
-    chats:[3], //chat ID's
+    chats:[17, 18, 19, 20], //chat ID's
     awaliable_answ: ['Обійняти', 'Підтримати', 'Як справи?'],
     scheduled_call_mode: false,
     stickers: true, // abled/disabled

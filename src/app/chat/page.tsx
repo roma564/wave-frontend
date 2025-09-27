@@ -23,7 +23,7 @@ import { SocketProvider } from '../context/SocketContext'
 import { useAppSelector } from '../lib/hooks'
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5000';
+const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
 export const socket = io(URL);
 
@@ -198,7 +198,7 @@ export default function page() {
             ) : (
               
               <div className="flex flex-col items-center  w-full text-gray-500">
-                <img src="/images/chat_nobg_yellow.png" alt="Порожній чат" className="w-130 h-130"/>
+                <img src="/images/choose_chat_blue.png" alt="Порожній чат" className="w-130 h-90 mt-20 mb-10"/>
                 <p style={{ color: currentMode.secondary_text_color }} >Виберіть чат зі списку, щоб побачити повідомлення</p>
               </div>
             )}
