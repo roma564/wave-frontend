@@ -33,12 +33,13 @@ export default function Home() {
           
            
 
-          <div className="flex justify-between w-full ">
+          <div className="flex flex-col justify-center items-center pl-10 pr-10 xl:flex-row xl:justify-between w-full">
+
             
-            <div className="items-center">
-                <h1 className="text-6xl w-100 font-dela font-bold">Найкращий чат для тебе</h1>
+            <div className="flex flex-col items-center xl:items-start">
+                <h1 className="text-6xl w-full font-dela font-bold">Найкращий чат для тебе</h1>
                 <p className="mt-10 mb-10">Спілкуйся з друзями та родиною у простому, інтуїтивному просторі. Насолоджуйся безперервними розмовами з розширеними функціями та динамічним інтерфейсом.</p>
-                <Link href="/login">
+                <Link href="/login" >
                   <Button
                     variant="contained"
                     endIcon={<SendIcon />}
@@ -50,7 +51,7 @@ export default function Home() {
 
             </div>
 
-            <img src="/images/welcome.png" alt="Welcome" className="w-120 h-120" /> 
+            <img src="/images/welcome.png" alt="Welcome" className="w-120" /> 
           </div>
     
           <KeyFeatures/>

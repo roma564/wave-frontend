@@ -57,8 +57,8 @@ export default function Layout({
           {/* <MessageIcon fontSize="large" className="m-3" ></MessageIcon> */}
            {/* <img src="/images/wave.png" alt="Logo" className='h-12 mt-1' /> */}
 
-          <img src="/images/logo.png" alt="Logo" className='h-12 mt-1 ml-20' />
-          <h1 className="text-2xl m-3 ml-0 font-dela font-bold font-200">Wave {process.env.SERVER_BASE_URL}</h1>
+          <img src="/images/logo.png" alt="Logo" className='h-12 mt-1 ml-20 hidden sm:inline' />
+          <h1 className="text-2xl m-3 ml-0 font-dela font-bold font-200 hidden md:inline">Wave</h1>
 
 
           {/* <h1 className="text-2xl m-3 ml-0">{currentMode.name}</h1> */}

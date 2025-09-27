@@ -42,7 +42,7 @@ export default function ChatsList() {
 
 
   return (
-    <div className='flex flex-col border-r place-items-center w-100 overflow-y-auto'>
+    <div className='flex-col border-r place-items-center w-100 overflow-y-auto hidden sm:inline'>
         ChatList
        
         

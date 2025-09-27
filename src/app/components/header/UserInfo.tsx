@@ -22,10 +22,10 @@ export default function UserInfo() {
 
   return (
     <div className='flex flex-row items-center pr-5'>
-      <Avatar alt={username} src={avatar || 'error'} className='ml-2 mr-2' />
+      <img alt={username} src={avatar || 'error'} className='rounded-full hidden sm:inline ml-2 mr-2 w-12 h-12' />
       <div className="flex flex-col">
-        <p>{username}</p>
-        <p>{email}</p>
+        <p className="hidden md:inline">{username}</p>
+        <p className="hidden md:inline">{email}</p>
       </div>
     </div>
   );
