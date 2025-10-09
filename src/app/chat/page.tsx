@@ -21,7 +21,7 @@ import Cookies from 'js-cookie'
 import { io } from 'socket.io-client';
 import { SocketProvider } from '../context/SocketContext'
 import { useAppSelector } from '../lib/hooks'
-import emptyChat from '../components/emptyChat';
+
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
