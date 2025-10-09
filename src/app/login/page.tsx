@@ -84,7 +84,18 @@ export default function SignInForm() {
           >
             Sign In
           </button>
+
+          
         </form>
+
+        <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full transition duration-200 mt-5"
+            onClick={() => {window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/register`}}
+          >
+            Register
+        </button>
+
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500 mb-2">or</p>

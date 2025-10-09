@@ -21,6 +21,7 @@ import Cookies from 'js-cookie'
 import { io } from 'socket.io-client';
 import { SocketProvider } from '../context/SocketContext'
 import { useAppSelector } from '../lib/hooks'
+import emptyChat from '../components/emptyChat';
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -140,6 +141,9 @@ export default function page() {
         ))
         setNewMsgBoxes(boxes)
       }
+      else{
+        setNewMsgBoxes([<div>Empty chat </div>])
+      }
     }, [isSuccess, messages])
     
 
@@ -188,7 +192,7 @@ export default function page() {
                 <ChatHeader current_chat_id={current_chat_id} />
 
                 <div className="messages  p-1 rounded-md overflow-y-auto w-full h-130">
-                  {msgBoxes}
+                 {msgBoxes.length > 0 && msgBoxes}
                   <div ref={messagesEndRef} />
                 </div>
 

@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export default function SignUpForm() {
   const api = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
     withCredentials: true,
   });
 
@@ -24,7 +24,8 @@ export default function SignUpForm() {
         name,
         lastname,
       });
-      alert(`Registered: ${response.data.message}`);
+      alert(`Registered: ${response.data.message, response.data.redirectUrl}`);
+      console.log(response.data.redirectUrl)
       window.location.href = response.data.redirectUrl;
     } catch (error: any) {
       alert(`Registration failed: ${error.response?.data?.message || error.message}`);
@@ -32,7 +33,7 @@ export default function SignUpForm() {
   };
 
   const handleGoogleSignUp = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/google`;
   };
 
   return (

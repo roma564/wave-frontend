@@ -24,6 +24,10 @@ export const chatSlice = createApi({
       query: (id) => `chat/${id}`,
       providesTags: (result, error, id) => [{ type: 'Chat', id }],
     }),
+    getChatsByUserId: builder.query<Chat, number>({
+      query: (id) => `chat/by-userID/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Chat', id }],
+    }),
 
     createChat: builder.mutation<Chat, Partial<Chat>>({
       query: (newChat) => ({
@@ -40,4 +44,5 @@ export const {
   useGetChatsQuery,
   useGetChatByIdQuery,
   useCreateChatMutation,
+  useGetChatsByUserIdQuery
 } = chatSlice;

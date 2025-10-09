@@ -10,3 +10,7 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+// Routes Middleware should not run on
+export const config = {
+  matcher: ['/chat)'],
+}
