@@ -11,7 +11,7 @@ type Message = {
   userId: number;
   createdAt: string;
   updatedAt: string;
-  author: {
+  user: {
     name: string;
     lastname: string;
   };

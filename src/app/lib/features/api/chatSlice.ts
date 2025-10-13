@@ -1,13 +1,6 @@
+import { Chat } from '@/app/types/Chat';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-type Chat = {
-  id: number;
-  subject: string;
-  userAId: number;
-  userBId: number;
-};
-
-export type { Chat };
 
 export const chatSlice = createApi({
   reducerPath: 'chat',
@@ -24,12 +17,22 @@ export const chatSlice = createApi({
       query: (id) => `chat/${id}`,
       providesTags: (result, error, id) => [{ type: 'Chat', id }],
     }),
-    getChatsByUserId: builder.query<Chat, number>({
+    getChatsByIds: builder.query<Chat[], number[]>({
+      query: (ids) => {
+        const queryString = ids.join(',');
+        return `chat/by-ids?ids=${queryString}`;
+      },
+      providesTags: (result, error, ids) =>
+        result
+          ? result.map(chat => ({ type: 'Chat' as const, id: chat.id }))
+          : ids.map(id => ({ type: 'Chat' as const, id })),
+    }),
+    getChatsByUserId: builder.query<Chat[], number>({
       query: (id) => `chat/by-userID/${id}`,
       providesTags: (result, error, id) => [{ type: 'Chat', id }],
     }),
 
-    createChat: builder.mutation<Chat, Partial<Chat>>({
+    createChat: builder.mutation<Chat[], Partial<Chat>>({
       query: (newChat) => ({
         url: 'chat',
         method: 'POST',
@@ -44,5 +47,6 @@ export const {
   useGetChatsQuery,
   useGetChatByIdQuery,
   useCreateChatMutation,
-  useGetChatsByUserIdQuery
+  useGetChatsByUserIdQuery,
+  useGetChatsByIdsQuery
 } = chatSlice;

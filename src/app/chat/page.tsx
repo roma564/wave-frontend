@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
-import ChatsList from '../components/chat_list/ChatsList'
+// import ChatsList from '../components/chat_list/ChatsList'
 import Layout from '../components/header/Layout'
 import ChatHeader from '../components/chat_area/chat_header' 
 import Form from '../components/chat_area/Form' 
@@ -21,6 +21,7 @@ import Cookies from 'js-cookie'
 import { io } from 'socket.io-client';
 import { SocketProvider } from '../context/SocketContext'
 import { useAppSelector } from '../lib/hooks'
+import { red } from '@mui/material/colors';
 
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -77,13 +78,13 @@ export default function page() {
         socket.on(String(current_chat_id), (newMessage: Message)=>{
             console.log('CHAT_ID event recieved')
             console.log(newMessage)
-            console.log(newMessage.author)
+            console.log(newMessage.user)
 
             const box = <MessageBox
             key={newMessage.id}
             color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={newMessage.content}
-            authorName={newMessage.author.name}
+            authorName={newMessage.user.name}
           />
 
             
@@ -136,7 +137,7 @@ export default function page() {
             key={message.id ?? `socket-${index}`}
             color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={message.content}
-            authorName={`${message.author.name}`}
+            authorName={`${message.user.name}`}
           />
         ))
         setNewMsgBoxes(boxes)
@@ -180,11 +181,9 @@ export default function page() {
       <Layout>
         <SocketProvider value={socket}>
           <div
-            className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
-            style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}
-          >
+            className="flex flex-row rounded-md  w-full h-screen overflow-hidden">
 
-            <ChatsList />
+      
 
 
             {current_chat_id ? (
@@ -203,7 +202,7 @@ export default function page() {
               
               <div className="flex flex-col items-center  w-full text-gray-500">
                 <img src="/images/choose_chat_blue.png" alt="Порожній чат" className="w-130 h-90 mt-20 mb-10"/>
-                <p style={{ color: currentMode.secondary_text_color }} >Виберіть чат зі списку, щоб побачити повідомлення</p>
+                <p  >Виберіть чат зі списку, щоб побачити повідомлення</p>
               </div>
             )}
           </div>

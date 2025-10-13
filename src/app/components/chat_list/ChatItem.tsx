@@ -56,7 +56,7 @@ function ChatItem({ id }: { id: number }) {
           
               <div>
                 <span style={{ color: currentMode.text_color }}>{chat?.subject}</span><br />
-                <span style={{ color: currentMode.text_color }}>{message?.author.name}</span><br />
+                <span style={{ color: currentMode.text_color }}>{message?.user.name}</span><br />
                 <span style={{ color: currentMode.secondary_text_color }}>
                   {message?.content || 'Немає повідомлення'}
                 </span>

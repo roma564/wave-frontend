@@ -1,56 +1,59 @@
-import { useState, useEffect } from 'react';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useAppDispatch, useAppSelector } from '@/app/lib/hooks';
-import { setCurrentMode } from '@/app/lib/features/chatMode/modeSlice';
+import { useState, useEffect } from 'react'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import Cookies from 'js-cookie'
 
-const modes = ['Стандартний', 'Робота', 'Сім’я'];
-const modeMap: Record<string, string> = {
-  'Стандартний': 'standartMode',
-  'Робота': 'workMode',
-  'Сім’я': 'familyMode',
-};
+import { useAppDispatch, useAppSelector } from '@/app/lib/hooks'
+import { setCurrentMode } from '@/app/lib/features/chatMode/modeSlice'
+import { useGetUserModesQuery } from '@/app/lib/features/chatMode/modeApi'
+import { Mode } from '@/app/types/Mode'
 
 const ModeSlider = () => {
-  const currentMode = useAppSelector(state => state.mode.currentMode);
+  const rawId = Cookies.get('id')
+  const userId = rawId ? Number(rawId) : null
 
-  const [activeIndex, setActiveIndex] = useState(1); // Початково "Робота"
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
+  const currentMode = useAppSelector(state => state.mode.currentMode)
 
-  const getMode = (offset: number) =>
-    modes[(activeIndex + offset + modes.length) % modes.length];
+  const { data: modes = [], isLoading } = useGetUserModesQuery(userId ?? 0)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const getMode = (offset: number): Mode | null => {
+    if (!modes.length) return null
+    const index = (activeIndex + offset + modes.length) % modes.length
+    return modes[index]
+  }
 
   const handlePrev = () =>
-    setActiveIndex((prev) => (prev - 1 + modes.length) % modes.length);
+    setActiveIndex(prev => (prev - 1 + modes.length) % modes.length)
 
   const handleNext = () =>
-    setActiveIndex((prev) => (prev + 1) % modes.length);
-
+    setActiveIndex(prev => (prev + 1) % modes.length)
 
   useEffect(() => {
-    const modeName = getMode(0);
-    const modeKey = modeMap[modeName];
-    dispatch(setCurrentMode(modeKey));
-  }, [activeIndex]);
+    const mode = getMode(0)
+    if (mode) {
+      dispatch(setCurrentMode(mode))
+    }
+  }, [activeIndex, modes.length])
+
+  if (isLoading || !currentMode) return null
+
+  const prevMode = getMode(-1)
+  const nextMode = getMode(1)
 
   return (
     <div className="flex items-center justify-between ml-20">
       {/* Ліва стрілка */}
-      <div
-        className="flex flex-col items-center"
-        style={{ width: '80px', minWidth: '80px', textAlign: 'center' }}
-      >
+      <div className="flex flex-col items-center" style={{ width: '80px', minWidth: '80px', textAlign: 'center' }}>
         <button onClick={handlePrev}>
           <ArrowBackIosNewIcon
             fontSize="large"
             style={{ color: currentMode.text_color, width: '24px', height: '24px' }}
           />
         </button>
-        <span
-          style={{ color: currentMode.secondary_text_color }}
-          className="text-xs mt-1"
-        >
-          {getMode(-1) }
+        <span style={{ color: currentMode.secondary_text_color }} className="text-xs mt-1">
+          {prevMode?.name}
         </span>
       </div>
 
@@ -67,30 +70,23 @@ const ModeSlider = () => {
           textOverflow: 'ellipsis',
         }}
       >
-        {getMode(0)}
+        {currentMode.name}
       </div>
 
       {/* Права стрілка */}
-      <div
-        className="flex flex-col items-center"
-        style={{ width: '80px', minWidth: '80px', textAlign: 'center' }}
-      >
+      <div className="flex flex-col items-center" style={{ width: '80px', minWidth: '80px', textAlign: 'center' }}>
         <button onClick={handleNext}>
           <ArrowForwardIosIcon
             fontSize="large"
             style={{ color: currentMode.text_color, width: '24px', height: '24px' }}
           />
         </button>
-        <span
-          style={{ color: currentMode.secondary_text_color }}
-          className="text-xs mt-1"
-        >
-          {getMode(1)}
+        <span style={{ color: currentMode.secondary_text_color }} className="text-xs mt-1">
+          {nextMode?.name}
         </span>
       </div>
     </div>
+  )
+}
 
-  );
-};
-
-export default ModeSlider;
+export default ModeSlider
