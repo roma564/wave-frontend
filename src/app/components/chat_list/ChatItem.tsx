@@ -12,6 +12,14 @@ function ChatItem({ id }: { id: number }) {
   const { data: chat, isLoading, isError } = useGetChatByIdQuery(id);
   const { data: message, isLoading: isMessageLoading } = useGetLastMessageQuery(id);
 
+  const {
+    textColor = '#333',
+    secondaryTextColor = '#888',
+    primaryColor = '#e0e0e0',
+  } = currentMode ?? {}
+
+
+
   if (isLoading || isMessageLoading) {
     return (
     <div className="flex items-start mt-2">
@@ -36,37 +44,36 @@ function ChatItem({ id }: { id: number }) {
   if (isError) return <div>Error loading chat </div>;
 
 
-
-  return (
- 
+return (
+    <Link href={`/chat?chatId=${id}`} className="no-underline w-full">
       <div
-        className="mt-2 transition-colors flex items-start"
-        style={{ backgroundColor: 'transparent' }}
+        className="mt-2 flex items-start transition-colors px-2 py-1 rounded-md"
+        style={{
+          backgroundColor: 'transparent',
+          color: textColor,
+        }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = currentMode.primary_color;
+          e.currentTarget.style.backgroundColor = primaryColor
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'transparent';
+          e.currentTarget.style.backgroundColor = 'transparent'
         }}
       >
-        <Link href={`/chat?chatId=${id}`} className="flex w-full no-underline">
-          <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </ListItemAvatar>
-          
-              <div>
-                <span style={{ color: currentMode.text_color }}>{chat?.subject}</span><br />
-                <span style={{ color: currentMode.text_color }}>{message?.user.name}</span><br />
-                <span style={{ color: currentMode.secondary_text_color }}>
-                  {message?.content || 'Немає повідомлення'}
-                </span>
-              </div>
-            
-          
-        </Link>
-      </div>
+        <ListItemAvatar>
+          <Avatar alt={message?.user.name ?? 'Користувач'} src="/static/images/avatar/1.jpg" />
+        </ListItemAvatar>
 
-  );
+        <div className="ml-3 flex flex-col">
+          <span style={{ color: textColor }}>{chat?.subject}</span>
+          <span style={{ color: textColor }}>{message?.user.name}</span>
+          <span style={{ color: secondaryTextColor }}>
+            {message?.content ?? 'Немає повідомлення'}
+          </span>
+        </div>
+      </div>
+    </Link>
+  )
+
 }
 
 export default ChatItem;

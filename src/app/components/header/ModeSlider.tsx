@@ -19,7 +19,7 @@ const ModeSlider = () => {
   const [activeIndex, setActiveIndex] = useState(0)
 
   const getMode = (offset: number): Mode | null => {
-    if (!modes.length) return null
+    if (!modes.length) return null 
     const index = (activeIndex + offset + modes.length) % modes.length
     return modes[index]
   }
@@ -49,10 +49,10 @@ const ModeSlider = () => {
         <button onClick={handlePrev}>
           <ArrowBackIosNewIcon
             fontSize="large"
-            style={{ color: currentMode.text_color, width: '24px', height: '24px' }}
+            style={{ color: currentMode.textColor, width: '24px', height: '24px' }}
           />
         </button>
-        <span style={{ color: currentMode.secondary_text_color }} className="text-xs mt-1">
+        <span style={{ color: currentMode.secondaryTextColor }} className="text-xs mt-1">
           {prevMode?.name}
         </span>
       </div>
@@ -61,7 +61,7 @@ const ModeSlider = () => {
       <div
         className="text-xl font-bold underline text-center"
         style={{
-          color: currentMode.primary_color,
+          color: currentMode.primaryColor,
           width: '140px',
           minWidth: '140px',
           maxWidth: '140px',
@@ -78,10 +78,10 @@ const ModeSlider = () => {
         <button onClick={handleNext}>
           <ArrowForwardIosIcon
             fontSize="large"
-            style={{ color: currentMode.text_color, width: '24px', height: '24px' }}
+            style={{ color: currentMode.textColor, width: '24px', height: '24px' }}
           />
         </button>
-        <span style={{ color: currentMode.secondary_text_color }} className="text-xs mt-1">
+        <span style={{ color: currentMode.secondaryTextColor }} className="text-xs mt-1">
           {nextMode?.name}
         </span>
       </div>

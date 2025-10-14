@@ -22,6 +22,7 @@ import { io } from 'socket.io-client';
 import { SocketProvider } from '../context/SocketContext'
 import { useAppSelector } from '../lib/hooks'
 import { red } from '@mui/material/colors';
+import  ChatList  from '../components/chat_list/ChatsList';
 
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -29,10 +30,6 @@ const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT
 
 export const socket = io(URL);
 
-//  type MessagePayload = {
-//     content: string,
-//     msg: string
-//  }
 
 
 
@@ -154,25 +151,11 @@ export default function page() {
     contentMessage = 'loading'
   } else if (isSuccess) {
     
-    // contentMessage = messages.map((message : Message) => 
-    // <MessageBox key={message.id} color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red } content={message.content}/>)
-    // console.log(messages)
-    // setNewMsgBoxes((prev) => [...prev, contentMessage])
 
   } else if (isError) {
     contentMessage = <div>{error.toString()}</div>
   }
 
-
-//   if (!current_chat_id || isNaN(current_chat_id)) {
-//   return (
-//     <Layout>
-//       <div className="flex items-center justify-center h-screen text-gray-500">
-//         <p>Виберіть чат зі списку, щоб почати розмову</p>
-//       </div>
-//     </Layout>
-//   );
-// }
 
   
 
@@ -183,7 +166,7 @@ export default function page() {
           <div
             className="flex flex-row rounded-md  w-full h-screen overflow-hidden">
 
-      
+          <ChatList/>
 
 
             {current_chat_id ? (
