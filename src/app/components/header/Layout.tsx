@@ -22,29 +22,22 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
 
-    const dispatch = useAppDispatch()
-
-
-
     const currentMode = useAppSelector(state => state.mode.currentMode)
+    const {
+      textColor = '#333',
+      secondaryTextColor = '#888',
+      primaryColor = '#e0e0e0',
+      bgColor = '#F5F5F5'
+    } = currentMode ?? {}
 
-    const handleChange = (event: SelectChangeEvent) => {
 
-      dispatch(setCurrentMode(event.target.value))
-    };
 
-    useEffect(() => {
-      console.log('-----------------------------------')
-      console.log('current mode - ' + currentMode.name)
-      console.log('current chats - ' + currentMode.chats)
-      console.log('current awaliable_answ - ' + currentMode.awaliable_answ)
-      console.log('bg color - ' + currentMode.bg_color)
-    }, [handleChange]);
-    
 
-    const [age, setAge] = useState('');
 
-    
+
+
+
+
 
     
 
@@ -52,17 +45,12 @@ export default function Layout({
   return (
     <>
       {/* <ChatsList /> */}
-      <div className="flex flex-row border-b place-content-between h-20 items-center" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
+      <div className="flex flex-row border-b place-content-between h-20 items-center" style={{ backgroundColor: bgColor, color: textColor }}>
         <header className={`flex flex-row w-screen`}  >
-          {/* <MessageIcon fontSize="large" className="m-3" ></MessageIcon> */}
-           {/* <img src="/images/wave.png" alt="Logo" className='h-12 mt-1' /> */}
+
 
           <img src="/images/logo.png" alt="Logo" className='h-12 mt-1 ml-20 hidden sm:inline' />
           <h1 className="text-2xl m-3 ml-0 font-dela font-bold font-200 hidden md:inline">Wave</h1>
-
-
-          {/* <h1 className="text-2xl m-3 ml-0">{currentMode.name}</h1> */}
-          {/* <NotificationsIcon/> */}
 
           <ModeSlider/>
           
@@ -77,7 +65,7 @@ export default function Layout({
 
 
         <div className={`sidebar  max-h-full order border-white bg-[] `}>
-        {/* <MessageList></MessageList> */}
+
         </div>
 
          

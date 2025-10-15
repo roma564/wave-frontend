@@ -22,7 +22,7 @@ function ChatItem({ id }: { id: number }) {
 
   if (isLoading || isMessageLoading) {
     return (
-    <div className="flex items-start mt-2">
+    <div className="flex items-start mt-2 py: 0, mb: 0">
       {/* Аватар */}
       <img
         src="/path/to/avatar.jpg"

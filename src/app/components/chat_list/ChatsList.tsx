@@ -2,28 +2,31 @@ import React, { useMemo } from 'react'
 import { List } from '@mui/material'
 import { useAppSelector } from '../../lib/hooks'
 import ChatItem from './ChatItem'
-// import {NewChatModal} from './NewChatModal'
 import { useGetChatsQuery } from '../../lib/features/api/chatSlice'
+import NewChatModal from './NewChatModal'
+import AddChatToModeModal from './AddChatToModeModal'
 
 export default function ChatsList() {
   const currentMode = useAppSelector(state => state.mode.currentMode)
   const { data: allChats = [], isLoading } = useGetChatsQuery()
 
-  // const isStandardMode = currentMode?.name === 'standartMode'
   const bgColor = currentMode?.bgColor ?? '#F5F5F5'
-  // const modeChats = currentMode?.chats ?? []
+  const isStandardMode = currentMode?.name === 'standartMode'
 
-  //TODO typisation
-  const chatIds = (currentMode?.chats ?? []).map(chat => (chat as any).id ?? chat)
+  const chatIds = useMemo(() => {
+    if (isStandardMode) {
+      return allChats.map(chat => chat.id)
+    }
+    
 
-
-
-
-  console.log('chatIds:', chatIds)
-
+    return (currentMode?.chats ?? []).map(chat =>
+      //TODO
+      typeof chat === 'number' ? chat : chat.id
+    )
+  }, [isStandardMode, allChats, currentMode])
 
   return (
-    <div className="flex flex-col border-r items-center w-full overflow-y-auto sm:block">
+    <div className="flex flex-col items-center border-r min-w-80 overflow-y-auto sm:block py: 0, mb: 0" style={{color: currentMode?.textColor}}>
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: bgColor }}>
         {isLoading ? (
           <div className="p-4 text-center text-gray-500">Завантаження чатів...</div>
@@ -31,11 +34,24 @@ export default function ChatsList() {
           <div className="p-4 text-center text-gray-500">Немає доступних чатів</div>
         ) : (
           chatIds.map(id => <ChatItem key={id} id={id} />)
-          
         )}
+
+       
+         
+
+      
+
+         
       </List>
 
-      {/* <NewChatModal /> */}
+       {currentMode?.name === 'standartMode'
+        ? <NewChatModal />
+        : <AddChatToModeModal />}
+
+       
+
+     
+
     </div>
   )
 }

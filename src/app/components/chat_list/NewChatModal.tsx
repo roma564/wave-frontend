@@ -1,161 +1,150 @@
-// import { useState } from 'react';
-// import { useGetUsersQuery } from '../../lib/features/api/UserSlice';
-// import { useCreateChatMutation, useGetChatsQuery } from '../../lib/features/api/chatSlice';
-// import Cookies from 'js-cookie';
-// import { addChatIdToMode } from '../../lib/features/chatMode/modeSlice';
-// import { useAppDispatch, useAppSelector } from '../../lib/hooks';
+'use client'
 
-// export default function NewChatModal() {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [chatName, setChatName] = useState('');
-//   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-//   const [dropdownOpen, setDropdownOpen] = useState(false);
-//   const [selectedExistingChatId, setSelectedExistingChatId] = useState<number | null>(null);
+import { useState } from 'react'
+import Cookies from 'js-cookie'
+import { useAppSelector } from '@/app/lib/hooks'
+import { useGetUsersQuery } from '@/app/lib/features/api/userSlice'
+import { useCreateChatMutation } from '@/app/lib/features/api/chatSlice'
 
-//   const currentMode = useAppSelector(state => state.mode.currentMode);
-//   const { data: users = [], isLoading, isError } = useGetUsersQuery();
-//   const { data: chats = [] } = useGetChatsQuery(); // ⬅️ отримання існуючих чатів
-//   const [createChat] = useCreateChatMutation();
-//   const dispatch = useAppDispatch();
+export default function NewChatModal() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [chatName, setChatName] = useState('')
+  const [chatDescription, setChatDescription] = useState('')
+  const [selectedUserIds, setSelectedUserIds] = useState<number[]>([])
 
-//   const userIdFromCookie = Cookies.get('id');
-//   const CURRENT_USER_ID = Number(userIdFromCookie);
+  const currentMode = useAppSelector(state => state.mode.currentMode)
+  const { data: users = [], isLoading, isError } = useGetUsersQuery()
+  const [createChat] = useCreateChatMutation()
 
-//   const handleCreate = async () => {
-//     if (!chatName || !selectedUserId) return;
+  const CURRENT_USER_ID = Number(Cookies.get('id'))
 
-//     try {
-//       const newChat = await createChat({
-//         subject: chatName,
-//         userIds: [CURRENT_USER_ID, selectedUserId],
-//       }).unwrap();
+  const handleCreate = async () => {
+    if (!chatName || selectedUserIds.length === 0 || !CURRENT_USER_ID) return
 
-//       dispatch(addChatIdToMode({ modeName: currentMode.name, chatId: newChat.chatId }));
+    try {
+      await createChat({
+        subject: chatName,
+        userIds: [CURRENT_USER_ID, ...selectedUserIds],
+      }).unwrap()
 
-//       setIsOpen(false);
-//       setChatName('');
-//       setSelectedUserId(null);
-//     } catch (err) {
-//       console.error('Помилка створення чату:', err);
-//     }
-//   };
+      setIsOpen(false)
+      setChatName('')
+      setChatDescription('')
+      setSelectedUserIds([])
+    } catch (err) {
+      console.error('Помилка створення чату:', err)
+    }
+  }
 
-//   const handleAddExistingChat = () => {
-//     if (selectedExistingChatId) {
-//       dispatch(addChatIdToMode({ modeName: currentMode.name, chatId: selectedExistingChatId }));
-//       setSelectedExistingChatId(null);
-//     }
-//   };
+  const {
+    primaryColor = '#3B82F6',
+    textColor = '#fff',
+    bgColor = '#F5F5F5',
+  } = currentMode ?? {}
 
-//   return (
-//     <div className="relative">
-//       {/* Floating "+" Button */}
-//       <button
-//         onClick={() => setIsOpen(true)}
-//         style={{ backgroundColor: currentMode.primary_color }}
-//         className="right-6 z-50 text-white rounded-full w-14 h-14 text-3xl shadow-lg hover:bg-blue-700 transition"
-//       >
-//         +
-//       </button>
+  const handleAddUser = (id: number) => {
+    if (!selectedUserIds.includes(id)) {
+      setSelectedUserIds([...selectedUserIds, id])
+    }
+  }
 
-//       {/* Modal Overlay */}
-//       {isOpen && (
-//         <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
-//           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-//             <h2 className="text-black text-xl font-semibold mb-4">Створити новий чат</h2>
+  const handleRemoveUser = (id: number) => {
+    setSelectedUserIds(selectedUserIds.filter(uid => uid !== id))
+  }
 
-//             {/* Назва чату */}
-//             <label className="block mb-2 text-sm font-medium text-gray-700">Назва чату</label>
-//             <input
-//               type="text"
-//               value={chatName}
-//               onChange={(e) => setChatName(e.target.value)}
-//               className="w-full px-3 py-2 border rounded-md mb-4 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               placeholder="Наприклад: Розмова з мамою"
-//             />
+  const availableUsers = users.filter(u => u.id !== CURRENT_USER_ID && !selectedUserIds.includes(u.id))
 
-//             {/* Dropdown користувачів */}
-//             <div className="mb-6 relative">
-//               <button
-//                 onClick={() => setDropdownOpen(!dropdownOpen)}
-//                 className={`w-full px-3 py-2 border rounded-md text-left ${
-//                   selectedUserId ? 'text-blue-700' : 'text-gray-500'
-//                 }`}
-//               >
-//                 <span>
-//                   {selectedUserId
-//                     ? users.find((u) => u.id === selectedUserId)?.name
-//                     : 'Оберіть користувача'}
-//                 </span>
-//               </button>
+  return (
+    <div className="relative">
+      {/* Floating "+" Button */}
+      <div className='flex flex-row justify-center'>
+          <button
+            onClick={() => setIsOpen(true)}
+            style={{ backgroundColor: primaryColor }}
+            className="z-50 text-white rounded-full w-14 h-14 text-3xl shadow-lg hover:scale-105 transition"
+          >
+            +
+        </button>
+      </div>
+      
 
-//               {dropdownOpen && (
-//                 <ul className="absolute z-10 mt-1 w-full bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto">
-//                   {isLoading && <li className="px-4 py-2 text-gray-500">Завантаження...</li>}
-//                   {isError && <li className="px-4 py-2 text-red-500">Помилка завантаження</li>}
-//                   {users.map((user) => (
-//                     <li
-//                       key={user.id}
-//                       onClick={() => {
-//                         setSelectedUserId(user.id);
-//                         setDropdownOpen(false);
-//                       }}
-//                       className={`px-4 py-2 cursor-pointer hover:bg-blue-100 ${
-//                         selectedUserId === user.id
-//                           ? 'bg-blue-200 text-blue-800 font-semibold'
-//                           : 'text-gray-700'
-//                       }`}
-//                     >
-//                       {user.name}
-//                     </li>
-//                   ))}
-//                 </ul>
-//               )}
-//             </div>
+      {/* Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div
+            className="rounded-lg shadow-xl p-6 w-full max-w-md"
+            style={{ backgroundColor: bgColor, color: textColor }}
+          >
+            <h2 className="text-xl font-semibold mb-4">Створити новий чат</h2>
 
-//             {/* Випадаючий список існуючих чатів */}
-//             <div className="mb-6">
-//               <label className="block mb-2 text-sm font-medium text-gray-700">
-//                 Додати існуючий чат до режиму
-//               </label>
-//               <select
-//                 value={selectedExistingChatId ?? ''}
-//                 onChange={(e) => setSelectedExistingChatId(Number(e.target.value))}
-//                 className="w-full px-3 py-2 border rounded-md text-black"
-//               >
-//                 <option value="">Оберіть чат</option>
-//                 {chats.map((chat) => (
-//                   <option key={chat.id} value={chat.id}>
-//                     {chat.subject}
-//                   </option>
-//                 ))}
-//               </select>
-//               <button
-//                 onClick={handleAddExistingChat}
-//                 className="mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-//               >
-//                 Додати чат
-//               </button>
-//             </div>
+            {/* Назва чату */}
+            <input
+              type="text"
+              value={chatName}
+              onChange={(e) => setChatName(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md mb-4 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Назва чату"
+            />
 
-//             {/* Кнопки */}
-//             <div className="flex justify-end space-x-3">
-//               <button
-//                 onClick={() => setIsOpen(false)}
-//                 className="px-4 py-2 text-white bg-gray-400 rounded hover:bg-gray-300 transition"
-//               >
-//                 Скасувати
-//               </button>
-//               <button
-//                 onClick={handleCreate}
-//                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-//               >
-//                 Створити
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
+
+            {/* Вибір користувачів */}
+            <label className="block mb-2 text-sm font-medium">Оберіть користувачів</label>
+            <div className="mb-4 max-h-40 overflow-y-auto border rounded-md p-2 bg-white text-black">
+              {isLoading && <div>Завантаження...</div>}
+              {isError && <div>Помилка завантаження</div>}
+              {availableUsers.length === 0 && <div>Усі користувачі вже обрані</div>}
+              {availableUsers.map((user) => (
+                <button
+                  key={user.id}
+                  onClick={() => handleAddUser(user.id)}
+                  className="block w-full text-left px-2 py-1 hover:bg-blue-100 rounded"
+                >
+                  {user.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Відображення обраних */}
+            {selectedUserIds.length > 0 && (
+              <div className="mb-4 text-sm">
+                <strong>Обрані:</strong>
+                <ul className="mt-2 space-y-1">
+                  {selectedUserIds.map((id) => {
+                    const user = users.find((u) => u.id === id)
+                    return user ? (
+                      <li key={id} className="flex justify-between items-center bg-gray-100 px-2 py-1 rounded text-black">
+                        {user.name}
+                        <button
+                          onClick={() => handleRemoveUser(id)}
+                          className="text-red-500 hover:text-red-700 text-xs"
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    ) : null
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {/* Кнопки */}
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition"
+              >
+                Скасувати
+              </button>
+              <button
+                onClick={handleCreate}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Створити
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

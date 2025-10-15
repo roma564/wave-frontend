@@ -36,9 +36,17 @@ export const socket = io(URL);
 
 export default function page() {
 
+    const currentMode = useAppSelector(state => state.mode.currentMode)
+  
+  const {
+    bgColor = '#F5F5F5',
+    textColor = '#333',
+    secondaryTextColor = '#888',
+    primaryColor = '#e0e0e0',
+  } = currentMode ?? {}
  
 
-  const currentMode = useAppSelector(state => state.mode.currentMode)
+
 
   const searchParams = useSearchParams()
   let current_chat_id : number = Number(searchParams.get('chatId')) 
@@ -52,6 +60,8 @@ export default function page() {
   // const CURRENT_USER_ID = 1
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+
 
 
   
@@ -164,9 +174,11 @@ export default function page() {
       <Layout>
         <SocketProvider value={socket}>
           <div
-            className="flex flex-row rounded-md  w-full h-screen overflow-hidden">
+            className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
+             style={{ backgroundColor: bgColor }}>
 
           <ChatList/>
+          
 
 
             {current_chat_id ? (

@@ -1,43 +1,22 @@
 import React from 'react'
-// import { Link } from 'react-router-dom'
+import { useGetMessagesQuery, Message } from '@/app/lib/features/api/messageSlice'
+import { useAppSelector } from '@/app/lib/hooks'
 
-// import { Spinner } from '@/components/Spinner'
-// import { TimeAgo } from '@/components/TimeAgo'
-
-import { useGetMessagesQuery, Message } from '../lib/features/api/messageSlice'
-import { useAppSelector } from '../lib/hooks';
-
-
-// import { messageAuthor } from './messageAuthor'
-// import { ReactionButtons } from './ReactionButtons'
-
-// Go back to passing a `message` object as a prop
 interface MessageExcerptProps {
   message: Message
 }
 
-const currentMode = useAppSelector(state => state.mode.currentMode)
-
 function MessageExcerpt({ message }: MessageExcerptProps) {
   return (
-    <article className="message-excerpt" key={message.id}>
-      <h3>
-        <p>{message.content}</p>
-      </h3>
-      <div>
-        {/* <p>{message.user}</p>
-        <p>{message.date}</p> */}
-      </div>
-      {/* <p className="message-content">{message.content.substring(0, 100)}</p> */}
-      {/* <ReactionButtons message={message} /> */}
+    <article className="message-excerpt">
+      <h3>{message.content}</h3>
     </article>
-  );
+  )
 }
 
-
-
 export const MessagesList = () => {
-  // Calling the `useGetmessagesQuery()` hook automatically fetches data!
+  const currentMode = useAppSelector(state => state.mode.currentMode)
+
   const {
     data: messages = [],
     isLoading,
@@ -46,22 +25,32 @@ export const MessagesList = () => {
     error
   } = useGetMessagesQuery()
 
+  const {
+    bgColor = '#F5F5F5',
+    textColor = '#333',
+    primaryColor
+  } = currentMode ?? {}
+
   let content: React.ReactNode
 
-  // Show loading states based on the hook status flags
   if (isLoading) {
-    content = 'loading'
+    content = <div className="p-4 text-gray-500">Завантаження повідомлень...</div>
   } else if (isSuccess) {
-    content = messages.map((message) => <MessageExcerpt key={message.id} message={message} />)
+    content = messages.map((message: Message) => (
+      <MessageExcerpt key={message.id} message={message} />
+    ))
+
   } else if (isError) {
-    content = <div>{error.toString()}</div>
+    content = <div className="p-4 text-red-500">{error.toString()}</div>
   }
 
   return (
-    <section className="messages-list flex-grow" style={{ backgroundColor: currentMode.bg_color, color: currentMode.text_color }}>
-      <h2>messages</h2>
+    <section
+      className="messages-list flex-grow p-4"
+      style={{ backgroundColor:  primaryColor, color: textColor }}
+    >
+      <h2 className="text-lg font-semibold mb-4">Повідомлення</h2>
       {content}
-     
     </section>
   )
 }

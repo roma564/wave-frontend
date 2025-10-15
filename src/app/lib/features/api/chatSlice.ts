@@ -1,4 +1,4 @@
-import { Chat } from '@/app/types/Chat';
+import { Chat, CreateChatRequest, CreateChatResponse } from '@/app/types/Chat';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
@@ -32,14 +32,15 @@ export const chatSlice = createApi({
       providesTags: (result, error, id) => [{ type: 'Chat', id }],
     }),
 
-    createChat: builder.mutation<Chat[], Partial<Chat>>({
+    createChat: builder.mutation<CreateChatResponse, CreateChatRequest>({
       query: (newChat) => ({
         url: 'chat',
         method: 'POST',
         body: newChat,
       }),
-      invalidatesTags: ['Chat'], 
+      invalidatesTags: ['Chat'],
     }),
+
   }),
 });
 
