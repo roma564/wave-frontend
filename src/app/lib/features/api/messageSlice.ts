@@ -1,24 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
+import { Message } from '@/app/types/Message'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-// Use the `Post` type we've already defined in `postsSlice`,
-// and then re-export it for ease of use
-// import type { Post } from '@/features/posts/postsSlice'
-type Message = {  
-  id:number,
-  content: string;
-  chatId: number;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-  user: {
-    name: string;
-    lastname: string;
-  };
-}
-
-
-export type { Message }
 
 // Define our single API slice object
 export const messageSlice = createApi({

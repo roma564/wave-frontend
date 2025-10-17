@@ -6,7 +6,9 @@ import { Color } from '../components/chat_area/MessageBox'
 import SendIcon from '@mui/icons-material/Send';
 import { useRouter } from 'next/router';
 
-import { useGetMessageByChatIdQuery, Message, useCreateMessageMutation } from '../lib/features/api/messageSlice'
+import { Message } from '@/app/types/Message';
+
+import { useGetMessageByChatIdQuery, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 // import ChatsList from '../components/chat_list/ChatsList'
@@ -24,6 +26,7 @@ import { useAppSelector } from '../lib/hooks'
 import { red } from '@mui/material/colors';
 import  ChatList  from '../components/chat_list/ChatsList';
 import QuickMessageBar from '../components/chat_area/QuickMessages';
+import DragDropUpload from '../components/chat_area/DrugDropUpload';
 
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -88,12 +91,16 @@ export default function page() {
             console.log(newMessage)
             console.log(newMessage.user)
 
-            const box = <MessageBox
-            key={newMessage.id}
-            color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
-            content={newMessage.content}
-            authorName={newMessage.user.name}
-          />
+            const box = (
+              <MessageBox
+                key={newMessage.id}
+                color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+                content={newMessage.content}
+                imageUrl={newMessage.imageUrl}   // 👈 додано
+                authorName={newMessage.user.name}
+              />
+            )
+
 
             
             // setSocketMessages(prev => [...prev, newMessage])
@@ -140,14 +147,16 @@ export default function page() {
 
     useEffect(() => {
       if (isSuccess && messages.length > 0) {
-        const boxes = messages.map((message: Message, index:number) => (
+        const boxes = messages.map((message: Message, index: number) => (
           <MessageBox
             key={message.id ?? `socket-${index}`}
             color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={message.content}
+            imageUrl={message.imageUrl}   // 👈 додано
             authorName={`${message.user.name}`}
           />
         ))
+
         setNewMsgBoxes(boxes)
       }
       else{
@@ -191,8 +200,12 @@ export default function page() {
                  {msgBoxes.length > 0 && msgBoxes}
                   <div ref={messagesEndRef} />
                 </div>
+                                                                              //TODO
+                <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
+
 
                 <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID  || 0} socket={socket}/>
+                
 
                 <Form current_chat_id={current_chat_id} />
                 
