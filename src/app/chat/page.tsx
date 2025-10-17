@@ -23,6 +23,7 @@ import { SocketProvider } from '../context/SocketContext'
 import { useAppSelector } from '../lib/hooks'
 import { red } from '@mui/material/colors';
 import  ChatList  from '../components/chat_list/ChatsList';
+import QuickMessageBar from '../components/chat_area/QuickMessages';
 
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -173,6 +174,7 @@ export default function page() {
     return (
       <Layout>
         <SocketProvider value={socket}>
+          
           <div
             className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
              style={{ backgroundColor: bgColor }}>
@@ -185,10 +187,12 @@ export default function page() {
               <div className="messages-wrapper flex flex-col w-full">
                 <ChatHeader current_chat_id={current_chat_id} />
 
-                <div className="messages  p-1 rounded-md overflow-y-auto w-full h-130">
+                <div className="messages  p-1 rounded-md overflow-y-auto w-full h-full">
                  {msgBoxes.length > 0 && msgBoxes}
                   <div ref={messagesEndRef} />
                 </div>
+
+                <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID  || 0} socket={socket}/>
 
                 <Form current_chat_id={current_chat_id} />
                 

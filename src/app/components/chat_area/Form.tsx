@@ -5,18 +5,19 @@ import SendIcon from '@mui/icons-material/Send';
 import { SocketContext } from '@/app/context/SocketContext'; 
 import Link from 'next/link';
 import Cookies from 'js-cookie'
+import { useAppSelector } from '@/app/lib/hooks';
 
 export default function Form( {current_chat_id}: {current_chat_id : number }) {
     
    
 
     const [createMessage] = useCreateMessageMutation();
+    const currentMode = useAppSelector(state => state.mode.currentMode)
 
     
 
     const [messageText, setMessageText] = useState('');
-    const [authorId, setAuthorId] = useState('');
-    const [chatId, setChatId] = useState('');
+
 
     const socket = useContext(SocketContext)
     const userIdFromCookie = Cookies.get('id')
@@ -44,21 +45,9 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
 
   return (
     <div className="flex flex-row h-auto ">
-              {/* <TextField className='bg-white w-30  rounded-2xl no-underline active:no-underline '
-              id="filled-search"
-              label="Author ID"
-              type="search"
-              variant="filled"
-              value={authorId}
-              onChange={(e) => setAuthorId(e.target.value)}/> */}
 
-               {/* <TextField className='bg-white w-30 rounded-2xl no-underline active:no-underline '
-              id="filled-search"
-              label="Chat ID"
-              type="search"
-              variant="filled"
-              value={chatId}
-              onChange={(e) => setChatId(e.target.value)}/> */}
+      
+              
 
                 <TextField className='bg-white w-full rounded-2xl no-underline active:no-underline '
               id="filled-search"
@@ -70,7 +59,7 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
 
              
               
-              <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend} >
+              <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend}  style={{ backgroundColor: currentMode?.primaryColor}} >
                 Send
               </Button>
                 
