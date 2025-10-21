@@ -26,8 +26,7 @@ import { useAppSelector } from '../lib/hooks'
 import { red } from '@mui/material/colors';
 import  ChatList  from '../components/chat_list/ChatsList';
 import QuickMessageBar from '../components/chat_area/QuickMessages';
-import DragDropUpload from '../components/chat_area/DrugDropUpload';
-
+import DragDropUpload from '../components/chat_area/upload/DrugDropUpload';
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -86,26 +85,29 @@ export default function page() {
         socket.on('connect', ()=> {
             console.log('Connected')
         })
-        socket.on(String(current_chat_id), (newMessage: Message)=>{
-            console.log('CHAT_ID event recieved')
-            console.log(newMessage)
-            console.log(newMessage.user)
+        socket.on(String(current_chat_id), (newMessage: Message) => {
+          console.log('CHAT_ID event received')
+          console.log(newMessage)
 
-            const box = (
-              <MessageBox
-                key={newMessage.id}
-                color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
-                content={newMessage.content}
-                imageUrl={newMessage.imageUrl}   // 👈 додано
-                authorName={newMessage.user.name}
-              />
-            )
+          const isImage = newMessage.mimeType?.startsWith('image/')
+          const hasFile = !!newMessage.fileUrl
 
+          const box = (
+            <MessageBox
+              key={newMessage.id}
+              color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+              content={newMessage.content}
+              authorName={newMessage.user.name}
+              fileUrl={newMessage.fileUrl}
+              fileName={newMessage.fileName}
+              fileSize={newMessage.fileSize}
+              mimeType={newMessage.mimeType}
+            />
+          )
 
-            
-            // setSocketMessages(prev => [...prev, newMessage])
-            setNewMsgBoxes(prev => [...prev, box])
-        })
+  setNewMsgBoxes(prev => [...prev, box])
+})
+
 
         return () => {
             console.log('Unregistering events...')
@@ -152,10 +154,14 @@ export default function page() {
             key={message.id ?? `socket-${index}`}
             color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
             content={message.content}
-            imageUrl={message.imageUrl}   // 👈 додано
-            authorName={`${message.user.name}`}
+            authorName={message.user.name}
+            fileUrl={message.fileUrl}
+            fileName={message.fileName}
+            fileSize={message.fileSize}
+            mimeType={message.mimeType}
           />
         ))
+
 
         setNewMsgBoxes(boxes)
       }
@@ -200,7 +206,7 @@ export default function page() {
                  {msgBoxes.length > 0 && msgBoxes}
                   <div ref={messagesEndRef} />
                 </div>
-                                                                              //TODO
+                                                                              {/* //TODO */}
                 <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
 
 
