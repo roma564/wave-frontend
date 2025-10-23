@@ -30,6 +30,13 @@ export default function MessageBox({
   authorName,
 }: MessageBoxProps) {
   const [hovered, setHovered] = useState(false)
+  // const downloadUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/download/${fileName}`
+
+  const downloadUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/download?fileUrl=${encodeURIComponent(fileUrl ?? '')}&fileName=${encodeURIComponent(fileName ?? 'file')}`
+
+
+
+
 
   const isImage = mimeType?.startsWith('image/')
 
@@ -70,15 +77,23 @@ export default function MessageBox({
     )}
 
     {hovered && (
-      <a
-        href={`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${fileUrl}`}
-        download={fileName ?? 'file'}
+      <button
+        onClick={() => {
+          const link = document.createElement('a')
+          link.href = downloadUrl
+          link.download = fileName ?? 'file'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        }}
         className="flex items-center gap-1 text-blue-600 text-sm hover:underline"
       >
         <DownloadRoundedIcon fontSize="small" />
         Завантажити
-      </a>
+      </button>
     )}
+
+
   </div>
 )}
     </div>
