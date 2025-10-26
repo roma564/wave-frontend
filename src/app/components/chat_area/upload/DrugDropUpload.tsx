@@ -1,7 +1,8 @@
-import { socket } from '@/app/context/SocketContext'
 import { useState, useRef } from 'react'
 import axios from 'axios'
+import { socket } from '@/app/context/SocketContext'
 import UploadProgressCircle from './UploadProgressCircle'
+import { detectMessageType } from '@/app/utils/checkImage'
 
 type Props = {
   chatId: number
@@ -10,19 +11,15 @@ type Props = {
 
 export default function DragDropUpload({ chatId, userId }: Props) {
   const [isDragging, setIsDragging] = useState(false)
-  const [progress, setProgress] = useState<number>(0)
-  const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [progress, setProgress] = useState(0)
+  const [isUploading, setIsUploading] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDragState = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setIsDragging(true)
-    } else if (e.type === 'dragleave') {
-      setIsDragging(false)
-    }
+    setIsDragging(e.type === 'dragenter' || e.type === 'dragover')
   }
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
@@ -30,7 +27,7 @@ export default function DragDropUpload({ chatId, userId }: Props) {
     e.stopPropagation()
     setIsDragging(false)
 
-    const file = e.dataTransfer.files[0]
+    const file = e.dataTransfer.files?.[0]
     if (file) await uploadFile(file)
   }
 
@@ -46,27 +43,31 @@ export default function DragDropUpload({ chatId, userId }: Props) {
     setIsUploading(true)
 
     try {
-      const res = await axios.post(
+      const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/file`,
         formData,
         {
-          onUploadProgress: (event) => {
-            const percent = Math.round((event.loaded * 100) / (event.total || 1))
+          onUploadProgress: ({ loaded, total }) => {
+            const percent = Math.round((loaded * 100) / (total || 1))
             setProgress(percent)
           },
         }
       )
 
-      const { path, fileName, fileSize, mimeType } = res.data
+      const { path, fileName, fileSize, mimeType } = data
+      const type = detectMessageType(mimeType)
 
       socket.emit('createMessage', {
         chatId,
         userId,
+        type,
         fileUrl: path,
         mimeType,
         fileName: fileName ?? file.name,
         fileSize,
       })
+    } catch (err) {
+      console.error('Upload failed:', err)
     } finally {
       setIsUploading(false)
       setProgress(0)
@@ -94,7 +95,7 @@ export default function DragDropUpload({ chatId, userId }: Props) {
         type="file"
         ref={fileInputRef}
         onChange={handleFileSelect}
-        style={{ display: 'none' }}
+        hidden
       />
     </div>
   )

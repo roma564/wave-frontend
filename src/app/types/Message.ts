@@ -1,5 +1,8 @@
+import { MessageType } from "./MessageType"
+
 export type Message = {
   id: number
+  type:MessageType
   content: string | null
   fileUrl: string | null
   fileName: string | null

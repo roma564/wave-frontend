@@ -7,12 +7,27 @@ import Link from 'next/link';
 import Cookies from 'js-cookie'
 import { useAppSelector } from '@/app/lib/hooks';
 
+import EmojiPicker from 'emoji-picker-react';
+import { MessageType } from '@/app/types/MessageType';
+import StickerPicker from './sickers/StickerPicker';
+
+
+
+
+
+
+
 export default function Form( {current_chat_id}: {current_chat_id : number }) {
     
    
 
     const [createMessage] = useCreateMessageMutation();
     const currentMode = useAppSelector(state => state.mode.currentMode)
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [showStickerPicker, setShowStickerPicker] = useState(false);
+
+    
+
 
     
 
@@ -26,22 +41,35 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
  
 
     const handleSend = async () => {
-      if (!messageText.trim() || !CURRENT_USER_ID || !current_chat_id) return;
+    if (!messageText.trim() || !CURRENT_USER_ID || !current_chat_id) return;
 
-      try {
+    try {
+      socket.emit('createMessage', {
+        type: MessageType.TEXT, // ← додано
+        content: messageText,
+        chatId: current_chat_id,
+        userId: CURRENT_USER_ID,
+      });
 
-        socket.emit('createMessage', {
-          content: messageText,
-          chatId: current_chat_id,
-          userId: CURRENT_USER_ID,
-        });
+      setMessageText('');
+    } catch (err) {
+      console.error('Failed to create message:', err);
+    }
+  };
 
-        setMessageText('');
-       
-      } catch (err) {
-        console.error('Failed to create message:', err);
-      }
-    };
+  const handleStickerSend = (url: string) => {
+    if (!CURRENT_USER_ID || !current_chat_id) return;
+
+    socket.emit('createMessage', {
+      type: MessageType.STICKER,
+      chatId: current_chat_id,
+      userId: CURRENT_USER_ID,
+      fileUrl: url,
+    });
+
+    setShowStickerPicker(false);
+  };
+
 
   return (
     <div className="flex flex-row h-auto ">
@@ -57,11 +85,35 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}/>
 
-             
+            <Button onClick={() => setShowEmojiPicker(prev => !prev)} className="ml-2">
+                😊
+            </Button>
+
+            
+
+
               
               <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend}  style={{ backgroundColor: currentMode?.primaryColor}} >
                 Send
               </Button>
+
+
+
+
+              {showEmojiPicker && (
+                <EmojiPicker 
+                  onEmojiClick={(emoji) => setMessageText(prev => prev + emoji.emoji)} 
+                />
+              )}
+
+              <Button onClick={() => setShowStickerPicker(prev => !prev)} className="ml-2">
+              🧸
+            </Button>
+
+            {showStickerPicker && (
+              <StickerPicker onSelect={handleStickerSend} />
+            )}
+
                 
 
               

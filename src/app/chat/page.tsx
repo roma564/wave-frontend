@@ -96,6 +96,7 @@ export default function page() {
             <MessageBox
               key={newMessage.id}
               color={newMessage.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+              type={newMessage.type} 
               content={newMessage.content}
               authorName={newMessage.user.name}
               fileUrl={newMessage.fileUrl}
@@ -153,6 +154,7 @@ export default function page() {
           <MessageBox
             key={message.id ?? `socket-${index}`}
             color={message.userId === CURRENT_USER_ID ? Color.Blue : Color.Red}
+            type={message.type} 
             content={message.content}
             authorName={message.user.name}
             fileUrl={message.fileUrl}

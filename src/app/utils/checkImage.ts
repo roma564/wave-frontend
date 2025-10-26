@@ -1,14 +1,13 @@
-export const IMAGE_EXTS = [
-  'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'svg'
-];
+import { MessageType } from "../types/MessageType"; 
 
+export function detectMessageType(mimeType: string | null | undefined): MessageType {
+  if (!mimeType) return MessageType.FILE;
 
-export function getExtension(fileName: string): string {
-  const parts = fileName.toLowerCase().split('.');
-  return parts.length > 1 ? parts.pop()! : '';
-}
+  const mime = mimeType.toLowerCase();
 
-export function isImageFile(file: File): boolean {
-  const ext = getExtension(file.name);
-  return IMAGE_EXTS.includes(ext);
+  if (mime.startsWith('image/')) return MessageType.IMAGE;
+  if (mime.startsWith('video/')) return MessageType.VIDEO;
+  if (mime === 'text/plain') return MessageType.TEXT;
+
+  return MessageType.FILE;
 }
