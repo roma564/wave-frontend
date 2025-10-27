@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { CreateModeDto, Mode } from '@/app/types/Mode'
+import { ThemeName } from '@/app/types/ThemeName';
 
 export const modeApi = createApi({
   reducerPath: 'modeApi',
@@ -32,6 +33,17 @@ export const modeApi = createApi({
       query: (modeId) => `mode/${modeId}/chats`,
       providesTags: (_res, _err, modeId) => [{ type: 'Mode', id: modeId }],
     }),
+
+    setModeTheme: builder.mutation<Mode, { modeId: number; theme: ThemeName }>({
+      query: ({ modeId, theme }) => ({
+        url: `mode/${modeId}/set-theme`,
+        method: 'PATCH',
+        body: { theme },
+      }),
+      invalidatesTags: (_res, _err, { modeId }) => [{ type: 'Mode', id: modeId }],
+    }),
+    
+
   }),
 })
 
@@ -40,4 +52,5 @@ export const {
   useCreateModeForUserMutation,
   useAddChatToModeMutation,
   useGetChatsByModeQuery,
+  useSetModeThemeMutation
 } = modeApi

@@ -7,13 +7,18 @@ import { useAppDispatch, useAppSelector } from '@/app/lib/hooks'
 import { setCurrentMode } from '@/app/lib/features/chatMode/modeSlice'
 import { useGetUserModesQuery } from '@/app/lib/features/chatMode/modeApi'
 import { Mode } from '@/app/types/Mode'
+import { themeConfig } from '@/app/config/theme.config'
 
 const ModeSlider = () => {
   const rawId = Cookies.get('id')
   const userId = rawId ? Number(rawId) : null
 
   const dispatch = useAppDispatch()
-  const currentMode = useAppSelector(state => state.mode.currentMode)
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
+
+  const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
+
 
   const { data: modes = [], isLoading } = useGetUserModesQuery(userId ?? 0)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -49,10 +54,10 @@ const ModeSlider = () => {
         <button onClick={handlePrev}>
           <ArrowBackIosNewIcon
             fontSize="large"
-            style={{ color: currentMode.textColor, width: '24px', height: '24px' }}
+            style={{ color: textColor, width: '24px', height: '24px' }}
           />
         </button>
-        <span style={{ color: currentMode.secondaryTextColor }} className="text-xs mt-1">
+        <span style={{ color: secondaryTextColor }} className="text-xs mt-1">
           {prevMode?.name}
         </span>
       </div>
@@ -61,7 +66,7 @@ const ModeSlider = () => {
       <div
         className="text-xl font-bold underline text-center"
         style={{
-          color: currentMode.primaryColor,
+          color: primaryColor,
           width: '140px',
           minWidth: '140px',
           maxWidth: '140px',
@@ -78,10 +83,10 @@ const ModeSlider = () => {
         <button onClick={handleNext}>
           <ArrowForwardIosIcon
             fontSize="large"
-            style={{ color: currentMode.textColor, width: '24px', height: '24px' }}
+            style={{ color: textColor, width: '24px', height: '24px' }}
           />
         </button>
-        <span style={{ color: currentMode.secondaryTextColor }} className="text-xs mt-1">
+        <span style={{ color: secondaryTextColor }} className="text-xs mt-1">
           {nextMode?.name}
         </span>
       </div>

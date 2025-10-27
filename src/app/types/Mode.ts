@@ -1,33 +1,33 @@
+import { ThemeName } from "./ThemeName"
+
 export enum SmileMode {
   limited,
   extended
 }
 
+
+
 export type Mode = {
   id: number
-  name: string
-  primaryColor: string
-  secondaryColor: string
-  textColor: string
-  secondaryTextColor: string
-  bgColor: string
-  chats: number[]
-  availableAnswers: string[]
+  name: string               
+  theme: ThemeName           
+  chats: number[]           
+  availableAnswers: string[] 
+
   scheduledCallMode: boolean
   stickers: boolean
   restrictedSmileMode: boolean
 }
+
 
 
 export type CreateModeDto = {
   name: string
-  primaryColor: string
-  secondaryColor: string
-  textColor: string
-  secondaryTextColor: string
-  bgColor: string
+  theme: ThemeName
+
   scheduledCallMode: boolean
   stickers: boolean
   restrictedSmileMode: boolean
 }
+
 

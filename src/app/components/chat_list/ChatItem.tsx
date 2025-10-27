@@ -5,18 +5,19 @@ import { useGetChatByIdQuery } from '@/app/lib/features/api/chatSlice';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography, Skeleton } from '@mui/material';
 import { useGetLastMessageQuery } from '@/app/lib/features/api/messageSlice';
 import Link from 'next/link';
+import { Mode } from '@/app/types/Mode';
+import { themeConfig } from '@/app/config/theme.config';
 
 function ChatItem({ id }: { id: number }) {
-  const currentMode = useAppSelector(state => state.mode.currentMode);
 
   const { data: chat, isLoading, isError } = useGetChatByIdQuery(id);
   const { data: message, isLoading: isMessageLoading } = useGetLastMessageQuery(id);
 
-  const {
-    textColor = '#333',
-    secondaryTextColor = '#888',
-    primaryColor = '#e0e0e0',
-  } = currentMode ?? {}
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE 
+
+  const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
+  
 
 
 

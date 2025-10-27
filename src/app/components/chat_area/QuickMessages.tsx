@@ -3,6 +3,8 @@
 import React from 'react'
 import { useAppSelector } from '@/app/lib/hooks'
 import type { Socket } from 'socket.io-client'
+import { Mode } from '@/app/types/Mode'
+import { themeConfig } from '@/app/config/theme.config'
 
 const QUICK_MESSAGES = [
   { label: 'OK', content: 'OK' },
@@ -20,7 +22,10 @@ type QuickMessageBarProps = {
 }
 
 export default function QuickMessageBar({ chatId, userId, socket }: QuickMessageBarProps) {
-  const currentMode = useAppSelector(state => state.mode.currentMode)
+   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+      const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE 
+      
+      const { textColor, primaryColor } = theme
 
   const handleClick = (content: string) => {
     if (!content.trim() || !chatId || !userId) return
@@ -45,8 +50,8 @@ export default function QuickMessageBar({ chatId, userId, socket }: QuickMessage
           onClick={() => handleClick(msg.content)}
           className="px-3 py-1 rounded-full text-sm font-medium shadow transition hover:scale-105"
           style={{
-            backgroundColor: currentMode?.primaryColor ?? '#3B82F6',
-            color: currentMode?.textColor ?? '#fff',
+            backgroundColor: primaryColor ?? '#3B82F6',
+            color: textColor ?? '#fff',
           }}
         >
           {msg.label}

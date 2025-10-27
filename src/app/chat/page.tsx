@@ -13,7 +13,7 @@ import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 // import ChatsList from '../components/chat_list/ChatsList'
 import Layout from '../components/header/Layout'
-import ChatHeader from '../components/chat_area/chat_header' 
+import ChatHeader from '../components/chat_area/ChatHeader' 
 import Form from '../components/chat_area/Form' 
 import Cookies from 'js-cookie'
 
@@ -27,6 +27,9 @@ import { red } from '@mui/material/colors';
 import  ChatList  from '../components/chat_list/ChatsList';
 import QuickMessageBar from '../components/chat_area/QuickMessages';
 import DragDropUpload from '../components/chat_area/upload/DrugDropUpload';
+import { themeConfig } from '../config/theme.config';
+import { ThemeName } from '../types/ThemeName';
+import { Mode } from '../types/Mode';
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -36,20 +39,15 @@ export const socket = io(URL);
 
 
 
-
 export default function page() {
 
-    const currentMode = useAppSelector(state => state.mode.currentMode)
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
+
+  const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
+
+
   
-  const {
-    bgColor = '#F5F5F5',
-    textColor = '#333',
-    secondaryTextColor = '#888',
-    primaryColor = '#e0e0e0',
-  } = currentMode ?? {}
- 
-
-
 
   const searchParams = useSearchParams()
   let current_chat_id : number = Number(searchParams.get('chatId')) 
@@ -190,43 +188,45 @@ export default function page() {
  
     return (
       <Layout>
-        <SocketProvider value={socket}>
-          
-          <div
-            className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
-             style={{ backgroundColor: bgColor }}>
 
-          <ChatList/>
-          
+          <SocketProvider value={socket}>
+            
+            <div
+              className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
+              style={{ backgroundColor: bgColor }}>
+
+            <ChatList/>
+            
 
 
-            {current_chat_id ? (
-              <div className="messages-wrapper flex flex-col w-full">
-                <ChatHeader current_chat_id={current_chat_id} />
+              {current_chat_id ? (
+                <div className="messages-wrapper flex flex-col w-full">
+                  <ChatHeader current_chat_id={current_chat_id} />
 
-                <div className="messages  p-1 rounded-md overflow-y-auto w-full h-full">
-                 {msgBoxes.length > 0 && msgBoxes}
-                  <div ref={messagesEndRef} />
+                  <div className="messages  p-1 rounded-md overflow-y-auto w-full h-full">
+                  {msgBoxes.length > 0 && msgBoxes}
+                    <div ref={messagesEndRef} />
+                  </div>
+                                                                                {/* //TODO */}
+                  <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
+                  
+                 
+
+                  <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID  || 0} socket={socket}/>
+                  
+
+                  <Form current_chat_id={current_chat_id} />
+                  
                 </div>
-                                                                              {/* //TODO */}
-                <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
-
-
-                <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID  || 0} socket={socket}/>
+              ) : (
                 
-
-                <Form current_chat_id={current_chat_id} />
-                
-              </div>
-            ) : (
-              
-              <div className="flex flex-col items-center  w-full text-gray-500">
-                <img src="/images/choose_chat_blue.png" alt="Порожній чат" className="w-130 h-90 mt-20 mb-10"/>
-                <p  >Виберіть чат зі списку, щоб побачити повідомлення</p>
-              </div>
-            )}
-          </div>
-        </SocketProvider>
+                <div className="flex flex-col items-center  w-full text-gray-500">
+                  <img src="/images/choose_chat_blue.png" alt="Порожній чат" className="w-130 h-90 mt-20 mb-10"/>
+                  <p  >Виберіть чат зі списку, щоб побачити повідомлення</p>
+                </div>
+              )}
+            </div>
+          </SocketProvider>
       </Layout>
     );
 

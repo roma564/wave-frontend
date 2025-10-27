@@ -28,7 +28,6 @@ const STICKERS = {
     'images/stickers/party/party-6.png',
     'images/stickers/party/party-7.png',
   ],
-  // можеш додати інші категорії тут
 };
 
 

@@ -24,6 +24,7 @@ export default function Home() {
   return (
     
     // <Layout>
+
       <div className="flex flex-col bg-[#0d1730] ">
           
         <Header/>
@@ -63,7 +64,10 @@ export default function Home() {
         
                 
     </div>
-  // </Layout>
+
+
+
+ 
     
 );
 }

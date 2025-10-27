@@ -10,6 +10,8 @@ import { useAppSelector } from '@/app/lib/hooks';
 import EmojiPicker from 'emoji-picker-react';
 import { MessageType } from '@/app/types/MessageType';
 import StickerPicker from './sickers/StickerPicker';
+import { themeConfig } from '@/app/config/theme.config';
+import { Mode } from '@/app/types/Mode';
 
 
 
@@ -21,8 +23,12 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
     
    
 
-    const [createMessage] = useCreateMessageMutation();
-    const currentMode = useAppSelector(state => state.mode.currentMode)
+
+    const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+    const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE 
+    
+    const { primaryColor } = theme
+    
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [showStickerPicker, setShowStickerPicker] = useState(false);
 
@@ -93,7 +99,7 @@ export default function Form( {current_chat_id}: {current_chat_id : number }) {
 
 
               
-              <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend}  style={{ backgroundColor: currentMode?.primaryColor}} >
+              <Button className='rounded-2xl ml-3 ' variant="contained" endIcon={<SendIcon />} onClick={handleSend}  style={{ backgroundColor: primaryColor}} >
                 Send
               </Button>
 

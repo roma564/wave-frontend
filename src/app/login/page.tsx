@@ -22,7 +22,9 @@ export default function SignInForm() {
       console.log(password)
       const response = await api.post('/auth/login', { username: email, password });
       alert(`Logged in: ${response.data.message}`);
+
       window.location.href = response.data.redirectUrl;
+      console.log('logged in - ' + response.data.redirectUrl)
 
     
       
@@ -45,6 +47,8 @@ export default function SignInForm() {
   };
 
   return (
+
+   
     <div className="min-h-screen flex items-center justify-center bg-[#0d1730] px-4">
       <div className="bg-[#304D69] border border-[#8FADCC] shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-6 text-center text-white">Sign In</h2>

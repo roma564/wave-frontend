@@ -4,20 +4,22 @@ import { useState } from 'react'
 import { useAppSelector } from '@/app/lib/hooks'
 import {useGetChatsQuery} from '@/app/lib/features/api/chatSlice'
 import { useAddChatToModeMutation } from '@/app/lib/features/chatMode/modeApi'
+import { themeConfig } from '@/app/config/theme.config'
+import { Mode } from '@/app/types/Mode'
 
 export default function AddChatToModeModal() {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedChatId, setSelectedChatId] = useState<number | null>(null)
 
-  const currentMode = useAppSelector(state => state.mode.currentMode)
+ 
   const { data: chats = [], isLoading, isError } = useGetChatsQuery()
   const [addChatToMode] = useAddChatToModeMutation()
 
-  const {
-    primaryColor = '#3B82F6',
-    textColor = '#fff',
-    bgColor = '#F5F5F5',
-  } = currentMode ?? {}
+   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+   const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
+ 
+   const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
+ 
 
   const alreadyAdded = new Set(currentMode?.chats ?? [])
   const availableChats = chats.filter(chat => !alreadyAdded.has(chat.id))

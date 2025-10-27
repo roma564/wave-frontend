@@ -1,6 +1,6 @@
 
 import { useAppDispatch, useAppSelector } from '../../lib/hooks';
-import ChatHeader from '../chat_area/chat_header'; 
+import ChatHeader from '../chat_area/ChatHeader'; 
 import ChatsList from '../chat_list/ChatsList'
 import MessageIcon from '@mui/icons-material/Message';
 
@@ -13,6 +13,8 @@ import { Color } from '../chat_area/MessageBox';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import UserInfo from './UserInfo';
 import ModeSlider from './ModeSlider';
+import { Mode } from '@/app/types/Mode';
+import { themeConfig } from '@/app/config/theme.config';
 
 
  
@@ -22,13 +24,10 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
 
-    const currentMode = useAppSelector(state => state.mode.currentMode)
-    const {
-      textColor = '#333',
-      secondaryTextColor = '#888',
-      primaryColor = '#e0e0e0',
-      bgColor = '#F5F5F5'
-    } = currentMode ?? {}
+    const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+    const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
+     
+    const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
 
 
 
