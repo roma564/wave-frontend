@@ -30,6 +30,7 @@ import DragDropUpload from '../components/chat_area/upload/DrugDropUpload';
 import { themeConfig } from '../config/theme.config';
 import { ThemeName } from '../types/ThemeName';
 import { Mode } from '../types/Mode';
+import JoinCallForm from '../components/header/JoinCallFrom';
 
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -207,8 +208,11 @@ export default function page() {
                   {msgBoxes.length > 0 && msgBoxes}
                     <div ref={messagesEndRef} />
                   </div>
+                  <JoinCallForm/>
                                                                                 {/* //TODO */}
                   <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
+
+                  
                   
                  
 
