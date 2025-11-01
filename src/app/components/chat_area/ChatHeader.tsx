@@ -20,6 +20,8 @@ import CallUI from './upload/LocalParcipiantTitle';
 export default function ChatHeader({ current_chat_id }: { current_chat_id: number }) {
   const [showModal, setShowModal] = useState(false);
   const [activeCall, setActiveCall] = useState<Call | null>(null);
+  const [activeCallId, setActiveCallId] = useState<string | null>(null);
+
 
   const dispatch = useAppDispatch();
   const [setModeTheme] = useSetModeThemeMutation();
@@ -49,6 +51,7 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
     await call.getOrCreate();
     await call.join();
     setActiveCall(call);
+    setActiveCallId(callId);
   };
 
   return (
@@ -57,6 +60,11 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
         <h1 className="text-lg flex flex-col center pl-4" style={{ color: textColor }}>
           {content}
         </h1>
+        {activeCallId && (
+          <div className="text-sm text-gray-500 pl-4 pb-2">
+            📞 Call ID: <span className="font-mono">{activeCallId}</span>
+          </div>
+        )}
         <div className="mock_icons w-35 flex place-content-between gap-2 pr-4">
           <LocalPhoneIcon
             style={{ color: primaryColor, cursor: 'pointer' }}

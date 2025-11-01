@@ -1,3 +1,4 @@
+'use client'
 import { useState, useRef } from 'react'
 import axios from 'axios'
 import { socket } from '@/app/context/SocketContext'
@@ -55,6 +56,7 @@ export default function DragDropUpload({ chatId, userId }: Props) {
       )
 
       const { path, fileName, fileSize, mimeType } = data
+      console.log('data - ' + fileName, path)
       const type = detectMessageType(mimeType)
 
       socket.emit('createMessage', {

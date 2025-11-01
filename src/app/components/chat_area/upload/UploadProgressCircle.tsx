@@ -1,3 +1,4 @@
+'use client'
 import { CircularProgress, Box, Typography } from '@mui/material';
 
 type Props = {
