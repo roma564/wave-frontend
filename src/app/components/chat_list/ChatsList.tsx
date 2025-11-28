@@ -2,14 +2,21 @@ import React, { useMemo } from 'react'
 import { List } from '@mui/material'
 import { useAppSelector } from '../../lib/hooks'
 import ChatItem from './ChatItem'
-import { useGetChatsQuery } from '../../lib/features/api/chatSlice'
+import { useGetChatsByUserIdQuery, useGetChatsQuery } from '../../lib/features/api/chatSlice'
 import NewChatModal from './NewChatModal'
 import AddChatToModeModal from './AddChatToModeModal'
 import { Mode } from '@/app/types/Mode'
 import { themeConfig } from '@/app/config/theme.config'
+import Cookies from 'js-cookie'
 
 export default function ChatsList() {
-  const { data: allChats = [], isLoading } = useGetChatsQuery()
+  const userIdFromCookie = Cookies.get('id');
+  const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null;
+
+  const { data: allChats = [], isLoading } = CURRENT_USER_ID !== null
+    ? useGetChatsByUserIdQuery(CURRENT_USER_ID)
+    : { data: [], isLoading: false };
+
 
   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
   const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
