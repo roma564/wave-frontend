@@ -13,7 +13,7 @@ import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 // import ChatsList from '../components/chat_list/ChatsList'
 import Layout from '../components/header/Layout'
-import ChatHeader from '../components/chat_area/ChatHeader' 
+import ChatHeader from '../components/chat_area/call/ChatHeader' 
 import Form from '../components/chat_area/Form' 
 import Cookies from 'js-cookie'
 
@@ -182,6 +182,7 @@ export default function page() {
   } else if (isError) {
     contentMessage = <div>{error.toString()}</div>
   }
+  
 
 
   

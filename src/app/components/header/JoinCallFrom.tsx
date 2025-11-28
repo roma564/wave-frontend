@@ -1,65 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
-import {
-  StreamVideo,
-  StreamCall,
-  StreamTheme,
-  SpeakerLayout,
-  CallControls,
-} from '@stream-io/video-react-sdk';
-import '@stream-io/video-react-sdk/dist/css/styles.css';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function JoinCallForm() {
   const [callId, setCallId] = useState('');
-  const [activeCallId, setActiveCallId] = useState<string | null>(null);
-  const streamClient = useStreamClient();
+  const router = useRouter();
 
-  const handleJoin = async () => {
-    if (!callId.trim() || !streamClient) return;
+  const handleSubmit = () => {
+    if (!callId.trim()) return;
 
-    try {
-      const call = streamClient.call('default', callId.trim());
-      await call.getOrCreate();
-      await call.join();
-      setActiveCallId(callId.trim()); // 👈 зберігаємо активний дзвінок
-      console.log(`Joined call with ID: ${callId}`);
-    } catch (error) {
-      console.error('Failed to join call:', error);
-    }
+    
+    router.push(`/call/${callId.trim()}`);
   };
 
-  if (activeCallId && streamClient) {
-    const call = streamClient.call('default', activeCallId);
-    return (
-      <StreamVideo client={streamClient}>
-        <StreamTheme>
-          <StreamCall call={call}>
-            <div className="h-screen flex flex-col">
-              <div className="flex-1">
-                <SpeakerLayout /> {/* показує учасників */}
-              </div>
-              <CallControls /> {/* кнопки: мікрофон, камера, leave */}
-            </div>
-          </StreamCall>
-        </StreamTheme>
-      </StreamVideo>
-    );
-  }
-
   return (
-    <div className="flex gap-2 items-center p-4">
+    <div className="p-4 flex items-center gap-2">
       <input
         type="text"
-        placeholder="Enter Call ID"
         value={callId}
         onChange={(e) => setCallId(e.target.value)}
-        className="border px-2 py-1 rounded w-64"
+        placeholder="Enter Call ID"
+        className="border p-2 flex-1 rounded"
       />
       <button
-        onClick={handleJoin}
-        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+        onClick={handleSubmit}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
         Join Call
       </button>
