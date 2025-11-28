@@ -8,38 +8,29 @@ import {
   CallControls,
 } from '@stream-io/video-react-sdk';
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
-import { MyParticipantList } from '../components/chat_area/call/ParticipantsList';
+import { MyParticipantList } from '@/app/components/chat_area/call/ParticipantsList';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-type CallPageProps = {
-  callId?: string; 
-};
-
-export default function CallPage({ callId: initialCallId }: CallPageProps) {
+export default function CallPage() {
   const client = useStreamClient();
-  const [callId, setCallId] = useState<string | null>(initialCallId ?? null);
+  const searchParams = useSearchParams();
+  const callId = searchParams.get('callId');
+
   const [call, setCall] = useState<any>(null);
 
   useEffect(() => {
-    if (!client) return;
+    if (!client || !callId) return;
 
-    // якщо callId не передали — генеруємо новий
-    const effectiveCallId =
-      callId ?? `call-${Math.random().toString(36).substring(2, 10)}`;
+    const existingCall = client.call('default', callId);
 
-    const newCall = client.call('default', effectiveCallId);
-
-    newCall.getOrCreate().then(() => {
-      newCall.join();
-    });
-
-    setCallId(effectiveCallId);
-    setCall(newCall);
+    existingCall.join();
+    setCall(existingCall);
 
     return () => {
-      newCall.leave();
+      existingCall.leave();
     };
-  }, [client]);
+  }, [client, callId]);
 
   if (!client || !call || !callId) {
     return <div className="p-4 text-red-500">❌ Call not initialized</div>;

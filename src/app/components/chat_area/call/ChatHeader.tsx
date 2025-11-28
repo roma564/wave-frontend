@@ -38,11 +38,20 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
   else if (isSuccess) content = chat.subject;
   else if (isError) content = <div>{error.toString()}</div>;
 
-  const handleStartCall = () => {
-    if (!streamClient) return;
+  const handleStartCall = async () => {
+  if (!streamClient) return;
 
-    router.push(`/call`);
-  };
+  // генеруємо новий callId
+  const newCallId = `call-${Math.random().toString(36).substring(2, 10)}`;
+  const call = streamClient.call('default', newCallId);
+
+  // створюємо дзвінок
+  await call.getOrCreate();
+
+  // редіректимо у форматі query string
+  router.push(`/call?callId=${encodeURIComponent(newCallId)}`);
+};
+
 
 
   return (

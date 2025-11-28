@@ -8,11 +8,12 @@ export default function JoinCallForm() {
   const router = useRouter();
 
   const handleSubmit = () => {
-    if (!callId.trim()) return;
+  if (!callId.trim()) return;
 
-    
-    router.push(`/call/${callId.trim()}`);
-  };
+  // редірект у форматі query string
+  router.push(`/call?callId=${encodeURIComponent(callId.trim())}`);
+};
+
 
   return (
     <div className="p-4 flex items-center gap-2">
