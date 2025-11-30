@@ -1,3 +1,4 @@
+'use client'
 import React, { useMemo } from 'react'
 import { List } from '@mui/material'
 import { useAppSelector } from '../../lib/hooks'
@@ -59,6 +60,12 @@ export default function ChatsList() {
        {currentMode?.name === 'standartMode'
         ? <NewChatModal />
         : <AddChatToModeModal />}
+
+
+         <button
+          className="inline-flex items-center gap-2 rounded-xl bg-[#0B2E5D] px-4 py-2 text-white 
+                    hover:bg-[#0A2852] active:bg-[#092348] transition-colors"
+        >View all meetings</button>
 
        
 
