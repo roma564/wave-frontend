@@ -6,9 +6,11 @@ import ChatsList from '../components/chat_list/ChatsList'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { Meetings } from '../components/meetings/Meetings'; 
 
 import dayjs, { Dayjs } from 'dayjs';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+
 
 function Page() {
   const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
@@ -20,6 +22,9 @@ function Page() {
   return (
     <Layout>
       <div className="flex flex-row">
+        <div className='flex flex-col'>
+
+        </div>
         <ChatsList />
         <div>page</div>
 
@@ -50,6 +55,8 @@ function Page() {
             </DemoItem>
           </DemoContainer>
         </LocalizationProvider>
+
+        <Meetings/>
       </div>
     </Layout>
   );

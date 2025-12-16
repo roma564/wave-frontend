@@ -7,6 +7,7 @@ import { modeSlice } from './features/chatMode/modeSlice'
 import modeReducer from '../lib/features/chatMode/modeSlice'
 import { userSlice } from './features/api/userSlice'
 import { modeApi } from './features/chatMode/modeApi'
+import { meetingSlice } from './features/api/meetingSlice'
 
 
 
@@ -20,10 +21,16 @@ export const makeStore = () => {
        [chatSlice.reducerPath]: chatSlice.reducer,
        [userSlice.reducerPath]: userSlice.reducer,
        [modeApi.reducerPath]: modeApi.reducer,
+      [meetingSlice.reducerPath]: meetingSlice.reducer,
 
     },
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(messageSlice.middleware, chatSlice.middleware, userSlice.middleware, modeApi.middleware),
+    getDefaultMiddleware().concat(
+      messageSlice.middleware, 
+      chatSlice.middleware, 
+      userSlice.middleware, 
+      modeApi.middleware,
+      meetingSlice.middleware),
   })
 }
 
