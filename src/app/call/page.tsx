@@ -28,7 +28,7 @@ export default function CallPage() {
 
   
   call.getOrCreate({
-    // опціонально: можна задати налаштування дзвінка
+   
     ring: false,
   }).then(() => {
     call.join();

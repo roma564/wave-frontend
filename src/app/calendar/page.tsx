@@ -12,10 +12,11 @@ import dayjs, { Dayjs } from 'dayjs'
 import { useGetMeetingsQuery } from '../lib/features/api/meetingSlice'
 import { Meeting } from '@/app/types/Meeting'
 import Link from 'next/link'
+import NewMeetingModal from '../components/calendar/NewMeetingModal'
 
 function Page() {
   const [value, setValue] = React.useState<Dayjs | null>(dayjs())
-  const { data: meetings, isLoading } = useGetMeetingsQuery()
+  const { data: meetings = [], isLoading, isError, refetch } = useGetMeetingsQuery()
 
   const handleDateSelect = (newValue: Dayjs | null) => {
     setValue(newValue)
@@ -69,6 +70,9 @@ function Page() {
               </DemoItem>
             </DemoContainer>
           </LocalizationProvider>
+
+          <NewMeetingModal onMeetingCreated={refetch} />
+
 
           {/* список зустрічей для вибраного дня */}
           <div className="mt-4">
