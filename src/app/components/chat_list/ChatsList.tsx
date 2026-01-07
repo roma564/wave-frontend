@@ -11,11 +11,21 @@ import { themeConfig } from '@/app/config/theme.config'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import MeetingListForDay from '../calendar/MeetingListForDay'
+import { useGetMeetingsQuery } from '@/app/lib/features/api/meetingSlice'
+import dayjs from 'dayjs'
+
 
 export default function ChatsList() {
 
   const userIdFromCookie = Cookies.get('id');
   const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null;
+
+  const value = dayjs() 
+  const { data: meetings = [], isLoading: isMeetingsLoading } = useGetMeetingsQuery()
+
+
+
 
   const { data: allChats = [], isLoading } = CURRENT_USER_ID !== null
     ? useGetChatsByUserIdQuery(CURRENT_USER_ID)
@@ -65,16 +75,24 @@ export default function ChatsList() {
         
         : <AddChatToModeModal />}
 
-        {currentMode?.name === 'standartMode'&&
-        <div className='flex flex-row items-center justify-center m-5'>
-            <Link
-            href="/calendar"
-            className="inline-flex items-center gap-2 p-5 rounded-2xl rounded-xltransition-colors" style={{background: primaryColor, color: textColor}}
-          >
-            View all meetings
-          </Link> 
-        </div>
-         }
+        {currentMode?.name === 'standartMode'  && (
+          <>
+            <div className="w-full max-h-64 overflow-y-auto px-2">
+              <MeetingListForDay meetings={meetings} selectedDate={value} isLoading={isMeetingsLoading} />
+            </div>
+
+            <div className="flex flex-row items-center justify-center m-5">
+              <Link
+                href="/calendar"
+                className="inline-flex items-center gap-2 p-5 rounded-2xl transition-colors"
+                style={{ background: primaryColor, color: textColor }}
+              >
+                View all meetings
+              </Link>
+            </div>
+          </>
+        )}
+
 
 
          

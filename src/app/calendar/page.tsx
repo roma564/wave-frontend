@@ -13,6 +13,7 @@ import { useGetMeetingsQuery } from '../lib/features/api/meetingSlice'
 import { Meeting } from '@/app/types/Meeting'
 import Link from 'next/link'
 import NewMeetingModal from '../components/calendar/NewMeetingModal'
+import MeetingListForDay from '../components/calendar/MeetingListForDay'
 
 function Page() {
   const [value, setValue] = React.useState<Dayjs | null>(dayjs())
@@ -75,29 +76,7 @@ function Page() {
 
 
           {/* список зустрічей для вибраного дня */}
-          <div className="mt-4">
-            <h3 className="font-bold">
-              Зустрічі на {value?.format('DD.MM.YYYY')}
-            </h3>
-            {isLoading && <p>Завантаження...</p>}
-           {meetings
-            ?.filter((m) => dayjs(m.startDate).isSame(value, 'day'))
-            .map((m) => (
-              <Link
-                key={m.id}
-                href={`/call?callId=${m.id}`}
-                className="block border p-2 rounded mb-2 hover:bg-gray-100"
-              >
-                <p className="font-semibold">{m.title}</p>
-                <p className="text-sm text-gray-600">
-                  {dayjs(m.startDate).format('HH:mm')}
-                </p>
-                <p className="text-sm">
-                  Owner: {m.owner.name} {m.owner.lastname}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <MeetingListForDay meetings={meetings} selectedDate={value} isLoading={isLoading} />
         </div>
       </div>
     </Layout>
