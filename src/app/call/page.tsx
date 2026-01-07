@@ -7,8 +7,10 @@ import {
   SpeakerLayout,
   CallControls,
 } from '@stream-io/video-react-sdk';
+import '@stream-io/video-react-sdk/dist/css/styles.css';
+
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
-import { MyParticipantList } from '@/app/components/chat_area/call/ParticipantsList';
+import {ParticipantList } from '@/app/components/chat_area/call/ParticipantsList';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
@@ -20,17 +22,24 @@ export default function CallPage() {
   const [call, setCall] = useState<any>(null);
 
   useEffect(() => {
-    if (!client || !callId) return;
+  if (!client || !callId) return;
 
-    const existingCall = client.call('default', callId);
+  const call = client.call('default', callId);
 
-    existingCall.join();
-    setCall(existingCall);
+  
+  call.getOrCreate({
+    // опціонально: можна задати налаштування дзвінка
+    ring: false,
+  }).then(() => {
+    call.join();
+    setCall(call);
+  });
 
-    return () => {
-      existingCall.leave();
-    };
-  }, [client, callId]);
+  return () => {
+    call.leave();
+  };
+}, [client, callId]);
+
 
   if (!client || !call || !callId) {
     return <div className="p-4 text-red-500">❌ Call not initialized</div>;
@@ -45,12 +54,13 @@ export default function CallPage() {
               📞 Call ID: <span className="font-mono">{callId}</span>
             </div>
 
-            <MyParticipantList call={call} />
+             
 
             <div className="flex-1">
               <SpeakerLayout />
+              <CallControls />
             </div>
-            <CallControls />
+           
           </div>
         </StreamCall>
       </StreamTheme>

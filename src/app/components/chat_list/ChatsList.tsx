@@ -9,8 +9,11 @@ import AddChatToModeModal from './AddChatToModeModal'
 import { Mode } from '@/app/types/Mode'
 import { themeConfig } from '@/app/config/theme.config'
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export default function ChatsList() {
+
   const userIdFromCookie = Cookies.get('id');
   const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null;
 
@@ -59,13 +62,22 @@ export default function ChatsList() {
 
        {currentMode?.name === 'standartMode'
         ? <NewChatModal />
+        
         : <AddChatToModeModal />}
 
+        {currentMode?.name === 'standartMode'&&
+        <div className='flex flex-row items-center justify-center m-5'>
+            <Link
+            href="/calendar"
+            className="inline-flex items-center gap-2 p-5 rounded-2xl rounded-xltransition-colors" style={{background: primaryColor, color: textColor}}
+          >
+            View all meetings
+          </Link> 
+        </div>
+         }
 
-         <button
-          className="inline-flex items-center gap-2 rounded-xl bg-[#0B2E5D] px-4 py-2 text-white 
-                    hover:bg-[#0A2852] active:bg-[#092348] transition-colors"
-        >View all meetings</button>
+
+         
 
        
 

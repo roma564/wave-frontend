@@ -8,7 +8,7 @@ type Props = {
   call: Call;
 };
 
-export const MyParticipantList = ({ call }: Props) => {
+export const ParticipantList = ({ call }: Props) => {
   return (
     <StreamCall call={call}>
       <CallParticipantsList onClose={() => {}} />

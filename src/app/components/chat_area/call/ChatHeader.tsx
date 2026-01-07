@@ -13,6 +13,7 @@ import ColorPickerModal from '../color_picker/ColorPicker';
 import { useSetModeThemeMutation } from '@/app/lib/features/chatMode/modeApi';
 import { setModeThemeLocal } from '@/app/lib/features/chatMode/modeSlice';
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
+import ThemeButton from '../color_picker/ThemeButton';
 
 export default function ChatHeader({ current_chat_id }: { current_chat_id: number }) {
   const [showModal, setShowModal] = useState(false);
@@ -41,14 +42,14 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
   const handleStartCall = async () => {
   if (!streamClient) return;
 
-  // генеруємо новий callId
+  
   const newCallId = `call-${Math.random().toString(36).substring(2, 10)}`;
   const call = streamClient.call('default', newCallId);
 
-  // створюємо дзвінок
+ 
   await call.getOrCreate();
 
-  // редіректимо у форматі query string
+  
   router.push(`/call?callId=${encodeURIComponent(newCallId)}`);
 };
 
@@ -81,6 +82,8 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
           }}
         />
       )}
+
+      <ThemeButton/>
     </div>
   );
 }
