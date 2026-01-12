@@ -83,7 +83,7 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
         />
       )}
 
-      <ThemeButton/>
+      
     </div>
   );
 }

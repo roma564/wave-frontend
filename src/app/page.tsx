@@ -40,7 +40,7 @@ export default function Home() {
             <div className="flex flex-col items-center xl:items-start">
                 <h1 className="text-6xl w-full font-dela font-bold">Найкращий чат для тебе</h1>
                 <p className="mt-10 mb-10">Спілкуйся з друзями та родиною у простому, інтуїтивному просторі. Насолоджуйся безперервними розмовами з розширеними функціями та динамічним інтерфейсом.</p>
-                <Link href="/login" >
+                <Link href="/chat" >
                   <Button
                     variant="contained"
                     endIcon={<SendIcon />}

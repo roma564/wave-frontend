@@ -15,6 +15,7 @@ import UserInfo from './UserInfo';
 import ModeSlider from './ModeSlider';
 import { Mode } from '@/app/types/Mode';
 import { themeConfig } from '@/app/config/theme.config';
+import ThemeButton from '../chat_area/color_picker/ThemeButton';
 
 
  
@@ -52,6 +53,7 @@ export default function Layout({
           <h1 className="text-2xl m-3 ml-0 font-dela font-bold font-200 hidden md:inline">Wave</h1>
 
           <ModeSlider/>
+          <ThemeButton/>
           
           
         </header>
