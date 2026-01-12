@@ -1,6 +1,6 @@
 
 import { useAppDispatch, useAppSelector } from '../../lib/hooks';
-import ChatHeader from '../chat_area/call/ChatHeader'; 
+import ChatHeader from '../chat_area/ChatHeader'; 
 import ChatsList from '../chat_list/ChatsList'
 import MessageIcon from '@mui/icons-material/Message';
 

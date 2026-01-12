@@ -9,11 +9,12 @@ import { useGetChatByIdQuery } from '@/app/lib/features/api/chatSlice';
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks';
 import { Mode } from '@/app/types/Mode';
 import { themeConfig } from '@/app/config/theme.config';
-import ColorPickerModal from '../color_picker/ColorPicker'; 
+import ColorPickerModal from './color_picker/ColorPicker'; 
 import { useSetModeThemeMutation } from '@/app/lib/features/chatMode/modeApi';
 import { setModeThemeLocal } from '@/app/lib/features/chatMode/modeSlice';
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
-import ThemeButton from '../color_picker/ThemeButton';
+import ThemeButton from './color_picker/ThemeButton';
+import { io } from 'socket.io-client';
 
 export default function ChatHeader({ current_chat_id }: { current_chat_id: number }) {
   const [showModal, setShowModal] = useState(false);
@@ -39,15 +40,23 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
   else if (isSuccess) content = chat.subject;
   else if (isError) content = <div>{error.toString()}</div>;
 
+
+
   const handleStartCall = async () => {
+    const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+
+    const socket = io(URL);
+    
   if (!streamClient) return;
 
   
   const newCallId = `call-${Math.random().toString(36).substring(2, 10)}`;
   const call = streamClient.call('default', newCallId);
 
- 
+  
   await call.getOrCreate();
+
+  socket.emit('startCall', { chatId: current_chat_id, userId: currentMode?.id, callId: newCallId, });
 
   
   router.push(`/call?callId=${encodeURIComponent(newCallId)}`);

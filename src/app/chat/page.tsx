@@ -4,7 +4,6 @@ import MessageBox from '../components/chat_area/MessageBox'
 import { Color } from '../components/chat_area/MessageBox' 
 
 import SendIcon from '@mui/icons-material/Send';
-import { useRouter } from 'next/router';
 
 import { Message } from '@/app/types/Message';
 
@@ -13,9 +12,10 @@ import { useSearchParams } from 'next/navigation'
 import { Button, TextField } from '@mui/material'
 // import ChatsList from '../components/chat_list/ChatsList'
 import Layout from '../components/header/Layout'
-import ChatHeader from '../components/chat_area/call/ChatHeader' 
+import ChatHeader from '../components/chat_area/ChatHeader' 
 import Form from '../components/chat_area/Form' 
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation';
 
 
 
@@ -82,13 +82,34 @@ export default function page() {
   const [socketMessages, setSocketMessages] = useState<Message[]>([])
 
 
+   
+
+      //call
+      const [incomingCall, setIncomingCall] = useState<any>(null);
+      const [isCallActive, setIsCallActive] = useState(false); 
+      const [callerId, setCallerId] = useState<number | null>(null);
+      const [incomingCallId, setIncomingCallId] = useState<string | null>(null);
+
     
+
+
+    useEffect(() => { if (isCallActive) { console.log('Call UI should now be visible'); } }, [isCallActive]);
+    useEffect(() => { if (incomingCallId) { console.log('incomingCallId should now be visible:', incomingCallId); } }, [incomingCallId]);
 
 
     useEffect(()=>{
         socket.on('connect', ()=> {
             console.log('Connected')
         })
+         // слухаємо подію дзвінка
+        socket.on(`call-${current_chat_id}`, (data) => {
+          console.log('Incoming call event:', data);
+          setIncomingCall(data);
+          setIsCallActive(true);
+          setIncomingCallId(data.callId);
+          // setCallerId()
+        });
+
         socket.on(String(current_chat_id), (newMessage: Message) => {
           console.log('CHAT_ID event received')
           console.log(newMessage)
@@ -176,8 +197,23 @@ export default function page() {
       }
     }, [isSuccess, messages])
     
+      //acceptCall  
+  const router = useRouter();
+  const acceptCall = () => {
+    if (!incomingCallId) return;
+      //TODO
+    socket.emit('answerCall', {
+      chatId: current_chat_id,
+      userId: currentMode?.id,
+      callId: incomingCallId,
+      accepted: true,
+    });
 
-  
+    setIsCallActive(false);
+
+    router.push(`/call?callId=${encodeURIComponent(incomingCallId)}`);
+  };
+
 
   if (isLoading) {
     contentMessage = 'loading'
@@ -215,12 +251,39 @@ export default function page() {
                     <div ref={messagesEndRef} />
                   </div>
                   <JoinCallForm/>
+
+                 
+
+
+                   
+
+                    
+
                                                                                 {/* //TODO */}
                   <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
 
+                   {isCallActive  && (
+                    <div className="call-modal">
+                      <p>📞 Вхідний дзвінок від користувача {callerId}</p>
+                      <button onClick={acceptCall}>✅ Прийняти</button>
+                      <button onClick={() => {
+                        socket.emit('answerCall', {
+                          chatId: current_chat_id,
+                          userId: currentMode?.id,
+                          callId: incomingCallId,
+                          accepted: false,
+                        });
+                        setIsCallActive(false);
+                      }}>
+                        ❌ Відхилити
+                      </button>
+                    </div>
+                  )}
+
                   
                   
-                 
+                
+
 
                   <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID  || 0} socket={socket}/>
                   
