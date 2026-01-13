@@ -28,6 +28,11 @@ export const userSlice = createApi({
         body: newUser,
       }),
     }),
+    getUsersByChat: builder.query<User[], number>({
+      query: (chatId) => `user/chat/${chatId}`,
+    }),
+
+
   }),
 });
 
@@ -35,4 +40,5 @@ export const {
   useGetUsersQuery,
   useGetUserByIdQuery,
   useCreateUserMutation,
+  useGetUsersByChatQuery,
 } = userSlice;

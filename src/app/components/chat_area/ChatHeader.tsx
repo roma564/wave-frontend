@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
-import { useGetChatByIdQuery } from '@/app/lib/features/api/chatSlice';
+import { useGetChatByIdQuery, useGetUsersByChatIdQuery } from '@/app/lib/features/api/chatSlice';
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks';
 import { Mode } from '@/app/types/Mode';
 import { themeConfig } from '@/app/config/theme.config';
@@ -15,6 +15,9 @@ import { setModeThemeLocal } from '@/app/lib/features/chatMode/modeSlice';
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
 import ThemeButton from './color_picker/ThemeButton';
 import { io } from 'socket.io-client';
+import Cookies from 'js-cookie'
+import { useGetUsersByChatQuery } from '@/app/lib/features/api/userSlice';
+
 
 export default function ChatHeader({ current_chat_id }: { current_chat_id: number }) {
   const [showModal, setShowModal] = useState(false);
@@ -22,6 +25,15 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
   const [setModeTheme] = useSetModeThemeMutation();
   const streamClient = useStreamClient();
   const router = useRouter();
+
+  const userIdFromCookie = Cookies.get('id')
+  const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
+
+
+
+ 
+
+  
 
   const {
     data: chat,
@@ -42,25 +54,29 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
 
 
 
-  const handleStartCall = async () => {
-    const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+const handleStartCall = async () => {
+  const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+  const socket = io(URL);
 
-    const socket = io(URL);
-    
   if (!streamClient) return;
 
-  
   const newCallId = `call-${Math.random().toString(36).substring(2, 10)}`;
   const call = streamClient.call('default', newCallId);
-
-  
   await call.getOrCreate();
 
-  socket.emit('startCall', { chatId: current_chat_id, userId: currentMode?.id, callId: newCallId, });
 
-  
+
+  socket.emit('startCall', {
+    callerId: CURRENT_USER_ID,
+    callId: newCallId,
+    chatId: current_chat_id,
+  });
+
+
+
   router.push(`/call?callId=${encodeURIComponent(newCallId)}`);
 };
+
 
 
 

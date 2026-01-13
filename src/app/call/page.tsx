@@ -10,8 +10,7 @@ import {
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
-import {ParticipantList } from '@/app/components/chat_area/call/ParticipantsList';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 export default function CallPage() {
@@ -21,25 +20,26 @@ export default function CallPage() {
 
   const [call, setCall] = useState<any>(null);
 
-  useEffect(() => {
-  if (!client || !callId) return;
+  const callRef = useRef<any>(null);
 
-  const call = client.call('default', callId);
+useEffect(() => {
+  if (!client || !callId || callRef.current) return;
 
-  
-  call.getOrCreate({
-   
-    ring: false,
-  }).then(() => {
-    call.join();
-    setCall(call);
+  const newCall = client.call('default', callId);
+  callRef.current = newCall;
+
+  newCall.getOrCreate({ ring: false }).then(() => {
+    if (!newCall.state.joined) {
+      newCall.join();
+    }
+    setCall(newCall);
   });
 
   return () => {
-    call.leave();
+    newCall.leave();
+    callRef.current = null;
   };
 }, [client, callId]);
-
 
   if (!client || !call || !callId) {
     return <div className="p-4 text-red-500">❌ Call not initialized</div>;
@@ -54,13 +54,10 @@ export default function CallPage() {
               📞 Call ID: <span className="font-mono">{callId}</span>
             </div>
 
-             
-
             <div className="flex-1">
               <SpeakerLayout />
               <CallControls />
             </div>
-           
           </div>
         </StreamCall>
       </StreamTheme>

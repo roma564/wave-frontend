@@ -1,4 +1,5 @@
 import { Chat, CreateChatRequest, CreateChatResponse } from '@/app/types/Chat';
+import { User } from '@/app/types/User';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
@@ -31,6 +32,7 @@ export const chatSlice = createApi({
       query: (id) => `chat/by-userID/${id}`,
       providesTags: (result, error, id) => [{ type: 'Chat', id }],
     }),
+    getUsersByChatId: builder.query<User[], number>({ query: (chatId) => `chats/${chatId}/users`, }),
 
     createChat: builder.mutation<CreateChatResponse, CreateChatRequest>({
       query: (newChat) => ({
@@ -49,5 +51,6 @@ export const {
   useGetChatByIdQuery,
   useCreateChatMutation,
   useGetChatsByUserIdQuery,
-  useGetChatsByIdsQuery
+  useGetChatsByIdsQuery,
+  useGetUsersByChatIdQuery
 } = chatSlice;

@@ -102,13 +102,16 @@ export default function page() {
             console.log('Connected')
         })
          // слухаємо подію дзвінка
-        socket.on(`call-${current_chat_id}`, (data) => {
-          console.log('Incoming call event:', data);
-          setIncomingCall(data);
-          setIsCallActive(true);
-          setIncomingCallId(data.callId);
-          // setCallerId()
+        socket.on(`call-user-${CURRENT_USER_ID}`, (data) => {
+        console.log('Incoming call event:', data);
+
+          if (data.type === 'CALL_REQUEST') {
+            setIsCallActive(true);
+            setCallerId(data.callerId);
+            setIncomingCallId(data.callId);
+          }
         });
+
 
         socket.on(String(current_chat_id), (newMessage: Message) => {
           console.log('CHAT_ID event received')
@@ -239,6 +242,45 @@ export default function page() {
               style={{ backgroundColor: bgColor }}>
 
             <ChatList/>
+
+             {isCallActive && incomingCallId && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                      
+                      {/* <div className="absolute inset-0 bg-black bg-opacity-50"></div> */}
+
+                      {/* сама модалка */}
+                      <div className="relative bg-white rounded-lg shadow-lg p-8 w-[400px] text-center z-10">
+                        <p className="text-xl font-semibold mb-6">
+                           Вхідний дзвінок від користувача {callerId}
+                        </p>
+                         <audio autoPlay loop>
+                          <source src="/audio/ringthone.mp3" type="audio/mpeg" />
+                        </audio>
+                        <div className="flex justify-center gap-4">
+                          <button
+                            onClick={acceptCall}
+                            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
+                          >
+                            Прийняти
+                          </button>
+                          <button
+                            onClick={() => {
+                              socket.emit('answerCall', {
+                                chatId: current_chat_id,
+                                userId: currentMode?.id,
+                                callId: incomingCallId,
+                                accepted: false,
+                              });
+                              setIsCallActive(false);
+                            }}
+                            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition"
+                          >
+                            Відхилити
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
             
 
 
@@ -250,7 +292,7 @@ export default function page() {
                   {msgBoxes.length > 0 && msgBoxes}
                     <div ref={messagesEndRef} />
                   </div>
-                  <JoinCallForm/>
+                  {/* <JoinCallForm/> */}
 
                  
 
@@ -262,23 +304,8 @@ export default function page() {
                                                                                 {/* //TODO */}
                   <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
 
-                   {isCallActive  && (
-                    <div className="call-modal">
-                      <p>📞 Вхідний дзвінок від користувача {callerId}</p>
-                      <button onClick={acceptCall}>✅ Прийняти</button>
-                      <button onClick={() => {
-                        socket.emit('answerCall', {
-                          chatId: current_chat_id,
-                          userId: currentMode?.id,
-                          callId: incomingCallId,
-                          accepted: false,
-                        });
-                        setIsCallActive(false);
-                      }}>
-                        ❌ Відхилити
-                      </button>
-                    </div>
-                  )}
+                  
+
 
                   
                   
