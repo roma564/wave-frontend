@@ -14,22 +14,57 @@ export default function UserInfo() {
   }, []);
 
   const handleLogout = () => {
-  Cookies.remove('__next_hmr_refresh_hash__');
-  Cookies.remove('access_token');
-  Cookies.remove('stream_token');
-  Cookies.remove('id');
-  Cookies.remove('lastname');
-  Cookies.remove('username');
-  Cookies.remove('email');
-  Cookies.remove('avatar');
-  setUsername('Guest');
-  setEmail('unknown@email.com');
-  setAvatar('/static/images/avatar/2.jpg');
-  setShowDetails(false);
+    Cookies.remove('__next_hmr_refresh_hash__');
+    Cookies.remove('access_token');
+    Cookies.remove('stream_token');
+    Cookies.remove('id');
+    Cookies.remove('lastname');
+    Cookies.remove('username');
+    Cookies.remove('email');
+    Cookies.remove('avatar');
+    setUsername('Guest');
+    setEmail('unknown@email.com');
+    setAvatar('/static/images/avatar/2.jpg');
+    setShowDetails(false);
+
+    window.location.href = '/';
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/avatar`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${Cookies.get('access_token')}`,
+        },
+      });
+
+      const { avatarUrl } = await res.json();
+
+      if (!res.ok || !avatarUrl) {
+        throw new Error(`Upload failed: ${avatarUrl || 'No URL returned'}`);
+      }
 
 
-  window.location.href = '/';
-};
+      const fullAvatarUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${avatarUrl}`;
+      setAvatar(fullAvatarUrl);
+      Cookies.set('avatar', fullAvatarUrl);
+    } catch (err) {
+      console.error('Avatar upload error:', err);
+      alert(`Помилка завантаження: ${(err as Error).message}`);
+    }
+  };
+
+
+
+
 
 
   return (
@@ -41,8 +76,9 @@ export default function UserInfo() {
         <img
           alt={username}
           src={avatar}
-          className="rounded-full hidden sm:inline ml-2 mr-2 w-12 h-12"
+          className="rounded-full object-cover object-center hidden sm:inline ml-2 mr-2 w-12 h-12 min-w-[3rem] min-h-[3rem]"
         />
+
         <div className="flex flex-col">
           <p className="hidden md:inline">{username}</p>
           <p className="hidden md:inline">{email}</p>
@@ -55,12 +91,22 @@ export default function UserInfo() {
             <img
               src={avatar}
               alt="avatar"
-              className="w-20 h-20 rounded-full mb-2"
+              className="w-20 h-20 rounded-full mb-2 object-cover object-center"
             />
+
             <h2 className="text-lg font-semibold">{username}</h2>
             <p className="text-sm text-gray-600">{email}</p>
             <p className="text-sm text-gray-500 mt-2">Status: Active</p>
             <p className="text-sm text-gray-500">Role: User</p>
+
+            {/* Upload avatar */}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpload}
+              className="mt-2 text-sm"
+            />
+
             <button
               onClick={handleLogout}
               className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
