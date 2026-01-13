@@ -31,36 +31,38 @@ export default function UserInfo() {
   };
 
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const file = event.target.files?.[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append('avatar', file);
+  const formData = new FormData();
+  formData.append('avatar', file);
+  // додай userId у форму, якщо він у тебе є в cookies або в стейті
+  formData.append('userId', Cookies.get('id') || '');
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/avatar`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${Cookies.get('access_token')}`,
-        },
-      });
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/avatar`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${Cookies.get('access_token')}`,
+      },
+    });
 
-      const { avatarUrl } = await res.json();
+    const { avatarUrl } = await res.json();
 
-      if (!res.ok || !avatarUrl) {
-        throw new Error(`Upload failed: ${avatarUrl || 'No URL returned'}`);
-      }
-
-
-      const fullAvatarUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${avatarUrl}`;
-      setAvatar(fullAvatarUrl);
-      Cookies.set('avatar', fullAvatarUrl);
-    } catch (err) {
-      console.error('Avatar upload error:', err);
-      alert(`Помилка завантаження: ${(err as Error).message}`);
+    if (!res.ok || !avatarUrl) {
+      throw new Error(`Upload failed: ${avatarUrl || 'No URL returned'}`);
     }
-  };
+
+    const fullAvatarUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${avatarUrl}`;
+    setAvatar(fullAvatarUrl);
+    Cookies.set('avatar', fullAvatarUrl);
+  } catch (err) {
+    console.error('Avatar upload error:', err);
+    alert(`Помилка завантаження: ${(err as Error).message}`);
+  }
+};
+
 
 
 
