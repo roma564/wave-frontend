@@ -45,7 +45,9 @@ export const modeApi = createApi({
 
     getQuickMessages: builder.query<string[], number>({
       query: (modeId) => `mode/${modeId}/quick-messages`,
-      transformResponse: (response: { quickMessages: string[] }) => response.quickMessages,
+      transformResponse: (response: { quickMessages?: string[] } | null) =>
+        response?.quickMessages ?? [],
+
     }),
     
 

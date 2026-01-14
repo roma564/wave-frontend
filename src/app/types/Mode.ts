@@ -24,10 +24,11 @@ export type Mode = {
 export type CreateModeDto = {
   name: string
   theme: ThemeName
-
+  userId: number
   scheduledCallMode: boolean
   stickers: boolean
   restrictedSmileMode: boolean
+  quickMessages?: string[]
 }
 
 

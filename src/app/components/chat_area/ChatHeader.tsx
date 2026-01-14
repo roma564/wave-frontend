@@ -13,7 +13,7 @@ import ColorPickerModal from './color_picker/ColorPicker';
 import { useSetModeThemeMutation } from '@/app/lib/features/chatMode/modeApi';
 import { setModeThemeLocal } from '@/app/lib/features/chatMode/modeSlice';
 import { useStreamClient } from '@/app/lib/features/api/stream/streamClient';
-import ThemeButton from './color_picker/ThemeButton';
+import ThemeButton from '../header/ThemeButton';
 import { io } from 'socket.io-client';
 import Cookies from 'js-cookie'
 import { useGetUsersByChatQuery } from '@/app/lib/features/api/userSlice';
