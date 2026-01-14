@@ -43,37 +43,26 @@ export default function Layout({
 
 
   return (
-    <>
-      {/* <ChatsList /> */}
-      <div className="flex flex-row border-b place-content-between h-20 items-center" style={{ backgroundColor: bgColor, color: textColor }}>
+    <div className='flex flex-col h-screen '>
+
+      {/* Header */}  
+      <div className="flex flex-row border-b place-content-between min-h-20 items-center" style={{ backgroundColor: bgColor, color: textColor }}>
         <header className={`flex flex-row w-screen`}  >
-
-
           <img src="/images/logo.png" alt="Logo" className='h-12 mt-1 ml-20 hidden sm:inline' />
           <h1 className="text-2xl m-3 ml-0 font-dela font-bold font-200 hidden md:inline">Wave</h1>
-
           <ModeSlider/>
-          <ThemeButton/>
-          
-          
+          <ThemeButton/>  
         </header>
-
-        
-
         <UserInfo/>
+      </div>
 
-        
-
-
-        <div className={`sidebar  max-h-full order border-white bg-[] `}>
-
-        </div>
-
-         
+      {/* Main content */}
+      <div
+              className="flex flex-row flex-1 overflow-hidden"
+              style={{ backgroundColor: bgColor }}>
+                {children}
+      </div>
 
     </div>
-      <main>{children}</main>
-
-    </>
   )
 }

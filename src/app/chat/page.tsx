@@ -233,16 +233,15 @@ export default function page() {
 
  
     return (
-      <Layout>
+     
+          
+          <Layout>
 
           <SocketProvider value={socket}>
-            
-            <div
-              className="flex flex-row rounded-md  w-full max-h-screen overflow-hidden"
-              style={{ backgroundColor: bgColor }}>
+            {/* Main content */}
 
             <ChatList/>
-
+             {/* Incomming call */}
              {isCallActive && incomingCallId && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                       
@@ -283,49 +282,38 @@ export default function page() {
                   )}
             
 
-                        {/* MAX H */}
+              {/* Message content */}
               {current_chat_id ? (
-                <div className="messages-wrapper flex flex-col w-full">
+                <div className="messages-wrapper flex flex-col w-full flex-1 overflow-hidden">
                   <ChatHeader current_chat_id={current_chat_id} />
-                        
-                  <div className="messages  p-1 rounded-md overflow-y-auto w-full h-101">
-                  {msgBoxes.length > 0 && msgBoxes}
-                    <div ref={messagesEndRef} />
+
+                  {/* Messages Container*/}
+                  <div className="flex flex-col flex-1 overflow-hidden">
+                    {/* Messages */}
+                    <div className="flex-1 overflow-y-auto p-1 rounded-md w-full">
+                      {msgBoxes.length > 0 && msgBoxes}
+                      <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Input Fields */}
+                    <div className="flex flex-col gap-2">
+                      <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
+                      <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID || 0} socket={socket} />
+                      <Form current_chat_id={current_chat_id} />
+                    </div>
                   </div>
-                  {/* <JoinCallForm/> */}
-
-                 
-
-
-                   
-
-                    
-
-                                                                                {/* //TODO */}
-                  <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
-
-                  
-
-
-                  
-                  
-                
-
-
-                  <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID  || 0} socket={socket}/>
-                  
-
-                  <Form current_chat_id={current_chat_id} />
-                  
                 </div>
+
+
+
               ) : (
-                
+               
                 <div className="flex flex-col items-center  w-full text-gray-500">
                   <img src="/images/choose_chat_blue.png" alt="Порожній чат" className="w-130 h-90 mt-20 mb-10"/>
                   <p  >Виберіть чат зі списку, щоб побачити повідомлення</p>
                 </div>
               )}
-            </div>
+            
           </SocketProvider>
       </Layout>
     );
