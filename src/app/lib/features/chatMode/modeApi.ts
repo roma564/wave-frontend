@@ -42,6 +42,11 @@ export const modeApi = createApi({
       }),
       invalidatesTags: (_res, _err, { modeId }) => [{ type: 'Mode', id: modeId }],
     }),
+
+    getQuickMessages: builder.query<string[], number>({
+      query: (modeId) => `mode/${modeId}/quick-messages`,
+      transformResponse: (response: { quickMessages: string[] }) => response.quickMessages,
+    }),
     
 
   }),
@@ -52,5 +57,6 @@ export const {
   useCreateModeForUserMutation,
   useAddChatToModeMutation,
   useGetChatsByModeQuery,
-  useSetModeThemeMutation
+  useSetModeThemeMutation,
+  useGetQuickMessagesQuery
 } = modeApi

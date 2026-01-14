@@ -238,7 +238,7 @@ export default function page() {
           <SocketProvider value={socket}>
             
             <div
-              className="flex flex-row rounded-md  w-full h-screen overflow-hidden"
+              className="flex flex-row rounded-md  w-full max-h-screen overflow-hidden"
               style={{ backgroundColor: bgColor }}>
 
             <ChatList/>
@@ -283,12 +283,12 @@ export default function page() {
                   )}
             
 
-
+                        {/* MAX H */}
               {current_chat_id ? (
                 <div className="messages-wrapper flex flex-col w-full">
                   <ChatHeader current_chat_id={current_chat_id} />
-
-                  <div className="messages  p-1 rounded-md overflow-y-auto w-full h-full">
+                        
+                  <div className="messages  p-1 rounded-md overflow-y-auto w-full h-101">
                   {msgBoxes.length > 0 && msgBoxes}
                     <div ref={messagesEndRef} />
                   </div>
