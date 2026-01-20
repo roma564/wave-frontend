@@ -36,7 +36,7 @@ import { Mode } from '../types/Mode';
 // "undefined" means the URL will be computed from the `window.location` object
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
-export const socket = io(URL);
+const socket = io(URL);
 
 
 
