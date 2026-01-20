@@ -1,5 +1,6 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+
+@import "tailwindcss";
 
 .font-dela {
   font-family: 'Dela Gothic One', sans-serif;
