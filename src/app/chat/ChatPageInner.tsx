@@ -38,7 +38,7 @@ import { Mode } from '../types/Mode';
 const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
 const socket = io(URL);
-
+// test
 
 
 
