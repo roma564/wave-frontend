@@ -45,7 +45,7 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
 
   const currentMode: Mode | null = useAppSelector((state) => state.mode.currentMode);
   const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE;
-  const { textColor, primaryColor } = theme;
+  const { textColor, primaryColor, borderColor, chatBgColorSecondary, iconsColor } = theme;
 
   let content: React.ReactNode;
   if (isLoading) content = 'loading';
@@ -81,7 +81,7 @@ const handleStartCall = async () => {
 
 
   return (
-    <div className="flex flex-col border" style={{ color: textColor }}>
+    <div className="flex flex-col border-b min-h-10 justify-center" style={{backgroundColor:chatBgColorSecondary , color: textColor, border: borderColor}}>
       <div className="flex place-content-between items-center flex-row">
         <h1 className="text-lg flex flex-col center pl-4" style={{ color: textColor }}>
           {content}

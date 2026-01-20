@@ -15,6 +15,9 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-exo2: 'Exo 2', sans-serif;
+  --font-ubuntu: 'Ubuntu', sans-serif;
+  --font-unbounded: 'Unbounded', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,3 +39,21 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@keyframes slowGlow {
+  0% {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(108, 34, 183, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.shadow-glow-slow {
+  animation: slowGlow 2.5s ease-in-out infinite;
+}
+

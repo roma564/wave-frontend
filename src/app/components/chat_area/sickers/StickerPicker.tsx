@@ -35,9 +35,14 @@ type Props = {
   onSelect: (url: string) => void;
 };
 
+import { createPortal } from 'react-dom';
+
 export default function StickerPicker({ onSelect }: Props) {
-  return (
-    <div className="space-y-4">
+  const root = document.getElementById('sticker-root');
+  if (!root) return null;
+
+  return createPortal(
+    <div className=" bg-white p-4 rounded-xl shadow-xl">
       {Object.entries(STICKERS).map(([category, stickers]) => (
         <div key={category}>
           <h2 className="text-sm font-semibold text-gray-600 mb-2 capitalize">{category}</h2>
@@ -54,6 +59,7 @@ export default function StickerPicker({ onSelect }: Props) {
           </div>
         </div>
       ))}
-    </div>
+    </div>,
+    root
   );
 }

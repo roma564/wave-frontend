@@ -1,5 +1,8 @@
 import { useRef, useState, useLayoutEffect } from 'react';
 import ColorLensIcon from '@mui/icons-material/ColorLens'; // Or your own icon
+import { useAppSelector } from '@/app/lib/hooks';
+import { themeConfig } from '@/app/config/theme.config';
+import { Mode } from '@/app/types/Mode';
 
 export default function CustomPopover() {
   const btnRef = useRef<HTMLButtonElement | null>(null);
@@ -16,6 +19,11 @@ export default function CustomPopover() {
     }
   }, [show]);
 
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE 
+    
+  const { primaryColor } = theme
+
   return (
     <>
       <button
@@ -25,7 +33,7 @@ export default function CustomPopover() {
         aria-haspopup="true"
         aria-expanded={show}
       >
-        <ColorLensIcon style={{ color: '#7B61FF' }} />
+        <ColorLensIcon style={{ color: primaryColor }} />
       </button>
 
       {show && (

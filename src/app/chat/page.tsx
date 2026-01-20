@@ -30,7 +30,6 @@ import DragDropUpload from '../components/chat_area/upload/DrugDropUpload';
 import { themeConfig } from '../config/theme.config';
 import { ThemeName } from '../types/ThemeName';
 import { Mode } from '../types/Mode';
-import JoinCallForm from '../components/header/JoinCallFrom';
 
 
 
@@ -50,7 +49,7 @@ export default function page() {
   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
   const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
 
-  const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
+  const { iconsColor, chatBgColor, chatBgColorSecondary } = theme
 
 
   
@@ -241,6 +240,8 @@ export default function page() {
             {/* Main content */}
 
             <ChatList/>
+           
+
              {/* Incomming call */}
              {isCallActive && incomingCallId && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -284,7 +285,7 @@ export default function page() {
 
               {/* Message content */}
               {current_chat_id ? (
-                <div className="messages-wrapper flex flex-col w-full flex-1 overflow-hidden">
+                <div className="messages-wrapper flex flex-col w-full flex-1 m-2 overflow-hidden rounded-2xl" style={{backgroundColor:chatBgColor}}>
                   <ChatHeader current_chat_id={current_chat_id} />
 
                   {/* Messages Container*/}
@@ -295,14 +296,18 @@ export default function page() {
                       <div ref={messagesEndRef} />
                     </div>
 
+                    <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID || 0} socket={socket} />
+
                     {/* Input Fields */}
-                    <div className="flex flex-col gap-2">
-                      <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} />
-                      <QuickMessageBar chatId={current_chat_id} userId={CURRENT_USER_ID || 0} socket={socket} />
+                    <div className="flex flex-col gap-2 h-20 items-center justify-center" style={{backgroundColor: chatBgColorSecondary}}>
+                      {/* <DragDropUpload chatId={current_chat_id} userId={CURRENT_USER_ID || 0} /> */}
+                     
                       <Form current_chat_id={current_chat_id} />
                     </div>
                   </div>
                 </div>
+
+                
 
 
 
@@ -313,6 +318,13 @@ export default function page() {
                   <p  >Виберіть чат зі списку, щоб побачити повідомлення</p>
                 </div>
               )}
+
+               {/* Emodji Portals */}
+            <div id="sticker-root" className='mt-2'></div>
+            <div id="emoji-root" className='mt-2'></div>
+
+              
+
             
           </SocketProvider>
       </Layout>

@@ -35,7 +35,7 @@ export default function ChatsList() {
   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
   const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
 
-  const { bgColor, textColor, secondaryTextColor, primaryColor } = theme
+  const { bgColor, textColor, secondaryTextColor, primaryColor, chatListBgColor } = theme
 
   const isStandardMode = currentMode?.name === 'standartMode'
 
@@ -52,8 +52,8 @@ export default function ChatsList() {
   }, [isStandardMode, allChats, currentMode])
 
   return (
-    <div className="flex flex-col items-center border-r min-w-80 overflow-y-auto sm:block py: 0, mb: 0" style={{color: textColor}}>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: bgColor }}>
+    <div className="flex flex-col items-center border-r rounded-2xl m-1 min-w-80 overflow-y-auto sm:block py: 0, mb: 0" style={{ backgroundColor:chatListBgColor, border:secondaryTextColor}}>
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: chatListBgColor }}>
         {isLoading ? (
           <div className="p-4 text-center text-gray-500">Завантаження чатів...</div>
         ) : chatIds.length === 0 ? (
