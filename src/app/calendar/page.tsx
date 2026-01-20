@@ -76,7 +76,7 @@ function Page() {
 
 
           {/* список зустрічей для вибраного дня */}
-          <MeetingListForDay meetings={meetings} selectedDate={value} isLoading={isLoading} />
+          <MeetingListForDay meetings={meetings} selectedDate={value as Dayjs} isLoading={isLoading} />
         </div>
       </div>
     </Layout>

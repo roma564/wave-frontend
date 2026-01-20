@@ -7,6 +7,8 @@ import { useCreateMeetingMutation } from '@/app/lib/features/api/meetingSlice'
 import { useGetUsersQuery } from '@/app/lib/features/api/userSlice'
 import dayjs from 'dayjs'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import { Mode } from '@/app/types/Mode'
+import { themeConfig } from '@/app/config/theme.config'
 
 
 type Props = { onMeetingCreated?: () => void}
@@ -23,9 +25,10 @@ export default function NewMeetingModal({ onMeetingCreated }: Props) {
   const [createMeeting] = useCreateMeetingMutation()
 
   const CURRENT_USER_ID = Number(Cookies.get('id'))
-  const currentMode = useAppSelector(state => state.mode.currentMode)
-  const { primaryColor = '#3B82F6', textColor = '#fff', bgColor = '#F5F5F5' } = currentMode ?? {}
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
 
+  const { bgColor, textColor, primaryColor } = theme
   const handleCreate = async () => {
   if (!title || selectedUserIds.length === 0 || !CURRENT_USER_ID) return
 

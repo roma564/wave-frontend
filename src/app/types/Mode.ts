@@ -11,7 +11,7 @@ export type Mode = {
   id: number
   name: string               
   theme: ThemeName           
-  chats: number[]           
+  chats: (number | { id: number })[]           
   availableAnswers: string[] 
 
   scheduledCallMode: boolean

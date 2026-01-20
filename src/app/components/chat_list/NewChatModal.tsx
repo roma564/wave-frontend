@@ -5,6 +5,8 @@ import Cookies from 'js-cookie'
 import { useAppSelector } from '@/app/lib/hooks'
 import { useGetUsersQuery } from '@/app/lib/features/api/userSlice'
 import { useCreateChatMutation } from '@/app/lib/features/api/chatSlice'
+import { Mode } from '@/app/types/Mode'
+import { themeConfig } from '@/app/config/theme.config'
 
 export default function NewChatModal() {
   const [isOpen, setIsOpen] = useState(false)
@@ -12,7 +14,6 @@ export default function NewChatModal() {
   const [chatDescription, setChatDescription] = useState('')
   const [selectedUserIds, setSelectedUserIds] = useState<number[]>([])
 
-  const currentMode = useAppSelector(state => state.mode.currentMode)
   const { data: users = [], isLoading, isError } = useGetUsersQuery()
   const [createChat] = useCreateChatMutation()
 
@@ -36,11 +37,10 @@ export default function NewChatModal() {
     }
   }
 
-  const {
-    primaryColor = '#3B82F6',
-    textColor = '#fff',
-    bgColor = '#F5F5F5',
-  } = currentMode ?? {}
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
+
+  const { bgColor, textColor, primaryColor } = theme
 
   const handleAddUser = (id: number) => {
     if (!selectedUserIds.includes(id)) {
