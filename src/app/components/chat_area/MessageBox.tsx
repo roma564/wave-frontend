@@ -33,7 +33,7 @@ export default function MessageBox({
 }: MessageBoxProps) {
   const [hovered, setHovered] = useState(false)
 
-  const downloadUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/download?fileUrl=${encodeURIComponent(
+  const downloadUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/files/download?fileUrl=${encodeURIComponent(
     fileUrl ?? ''
   )}&fileName=${encodeURIComponent(fileName ?? 'file')}`
 

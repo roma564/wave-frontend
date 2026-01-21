@@ -36,11 +36,11 @@ export default function UserInfo() {
 
   const formData = new FormData();
   formData.append('avatar', file);
-  // додай userId у форму, якщо він у тебе є в cookies або в стейті
+
   formData.append('userId', Cookies.get('id') || '');
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/avatar`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/files/avatar`, {
       method: 'POST',
       body: formData,
       headers: {
@@ -78,7 +78,7 @@ export default function UserInfo() {
         <img
           alt={username}
           src={avatar}
-          className="rounded-full object-cover object-center hidden sm:inline ml-2 mr-2 w-12 h-12 min-w-[3rem] min-h-[3rem]"
+          className="rounded-full object-cover object-center hidden sm:inline ml-2 mr-2 w-12 h-12  min-h-[3rem]"
         />
 
         <div className="flex flex-col">
