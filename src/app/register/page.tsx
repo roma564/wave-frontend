@@ -24,7 +24,8 @@ export default function SignUpForm() {
         name,
         lastname,
       });
-      alert(`Registered: ${response.data.message, response.data.redirectUrl}`);
+      alert(`Registered: ${response.data.message} → ${response.data.redirectUrl}`);
+
       console.log(response.data.redirectUrl)
       window.location.href = response.data.redirectUrl;
     } catch (error: any) {
@@ -33,7 +34,7 @@ export default function SignUpForm() {
   };
 
   const handleGoogleSignUp = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/google`;
   };
 
   return (
