@@ -55,7 +55,7 @@ export default function ChatHeader({ current_chat_id }: { current_chat_id: numbe
 
 
 const handleStartCall = async () => {
-  const URL = process.env.NODE_ENV === 'production' ? undefined : process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+  const URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
   const socket = io(URL, {
     withCredentials: true,
     transports: ["websocket"], 
