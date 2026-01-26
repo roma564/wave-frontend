@@ -2,15 +2,19 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google'
+import Cookies from 'js-cookie';
 // import axios from 'axios';
 import axios from 'axios';
 
+
 export default function SignInForm() {
 
-    const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
-    withCredentials: true, // cookies
-  });
+
+
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
+  withCredentials: false, // тепер кукі формуємо самі
+});
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,17 +22,22 @@ export default function SignInForm() {
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(email)
-      console.log(password)
       const response = await api.post('/auth/login', { username: email, password });
-      alert(`Logged in: ${response.data.message}`);
+      const { message, redirectUrl, tokens, user } = response.data;
 
-      window.location.href = response.data.redirectUrl;
-      console.log('logged in - ' + response.data.redirectUrl)
+      alert(`Logged in: ${message}`);
 
-    
-      
-      window.location.href = response.data.redirectUrl;
+      // Формуємо кукі на фронті
+      Cookies.set('access_token', tokens.access_token, { secure: true, sameSite: 'Strict' });
+      Cookies.set('stream_token', tokens.stream_token, { secure: true, sameSite: 'Strict' });
+      Cookies.set('id', String(user.id), { secure: true, sameSite: 'Strict' });
+      Cookies.set('username', user.username, { secure: true, sameSite: 'Strict' });
+      Cookies.set('lastname', user.lastname, { secure: true, sameSite: 'Strict' });
+      Cookies.set('email', user.email, { secure: true, sameSite: 'Strict' });
+      Cookies.set('avatar', user.avatar || '', { secure: true, sameSite: 'Strict' });
+
+      // редірект
+      window.location.href = redirectUrl;
     } catch (error: any) {
       alert(`Login failed: ${error.response?.data?.message || error.message}`);
     }
@@ -36,15 +45,12 @@ export default function SignInForm() {
 
   const handleGoogleSignIn = async () => {
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/login/google`;
-    // try {
-    //   // const response = await axios.get('/auth/login/google');
-    //   // alert(`Google login initiated: ${response.data.message}`);
-    //   // window.location.href = 'http://localhost:5000/auth/login/google';
-
-    // } catch (error: any) {
-    //   alert(`Google login failed: ${error.response?.data?.message || error.message}`);
-    // }
   };
+
+ 
+
+
+  
 
   return (
 
