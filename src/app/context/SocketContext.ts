@@ -5,7 +5,7 @@ import { io, Socket } from 'socket.io-client';
 
 const URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
-const socket = io(URL, {
+export const socket = io(URL, {
   transports: ['websocket'], 
   withCredentials: true,
 });
