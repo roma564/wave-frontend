@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import GroupIcon from '@mui/icons-material/Group';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
@@ -31,6 +35,31 @@ const features = [
 ];
 
 const KeyFeatures = () => {
+  const panelsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+  if (panelsRef.current) {
+    gsap.fromTo(
+      panelsRef.current.children,
+      {
+        opacity: 0,
+        y: 50, 
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: { each: 0.6 },
+        scrollTrigger: {
+          trigger: panelsRef.current,
+          start: 'top 80%',
+        },
+      }
+    );
+  }
+}, []);
+
+
   return (
     <section className="py-16 px-6 text-center min-h-120">
       <p className="text-[#3B35B1] text-sm mb-2 font-exo2 tracking-widest">
@@ -41,13 +70,13 @@ const KeyFeatures = () => {
         Ключові можливості
       </h2>
 
-      <div className="flex flex-wrap justify-center gap-8">
+      <div className="flex flex-wrap justify-center gap-8" ref={panelsRef}>
         {features.map((feature, index) => {
           const IconComponent = feature.icon;
           return (
             <div
               key={index}
-              className="bg-[#0F172A] rounded-xl shadow-sm p-6 w-72 hover:shadow-md transition duration-300 text-left flex flex-col justify-between h-80"
+              className="bg-[#0F172A] rounded-xl shadow-sm p-6 w-72 hover:shadow-md transition duration-300 text-left flex flex-col justify-between h-80 opacity-0"
             >
               <div>
                 {/* Іконка */}
