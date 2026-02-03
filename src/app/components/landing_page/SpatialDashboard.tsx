@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import LayersIcon from '@mui/icons-material/Layers';
 import VibrationIcon from '@mui/icons-material/Vibration';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const SpatialDashboard = () => {
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current.children,
+        {
+          opacity: 0,
+          x: -60,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          stagger: { each: 0.4 },
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+    }
+  }, []);
+
   return (
     <div className="py-16 px-6 min-h-120">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto" ref={contentRef}>
         <h2 className="text-4xl font-bold text-white mb-6 font-ubuntu">
           The Spatial Dashboard
         </h2>
