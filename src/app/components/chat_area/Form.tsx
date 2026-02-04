@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import { useAppSelector } from '@/app/lib/hooks';
 import ToysIcon from '@mui/icons-material/Toys';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import AttachmentUploadButton from './upload/DrugDropUpload';
 
 import { MessageType } from '@/app/types/MessageType';
 import { themeConfig } from '@/app/config/theme.config';
@@ -89,6 +90,7 @@ export default function Form({ current_chat_id }: { current_chat_id: number }) {
         >
           <ToysIcon style={{color:iconsColor}}/>
         </Button>
+        
       </div>
 
       {/* Send button */}
@@ -101,6 +103,13 @@ export default function Form({ current_chat_id }: { current_chat_id: number }) {
       >
         Надіслати
       </Button>
+
+      {CURRENT_USER_ID && (
+        <AttachmentUploadButton
+          chatId={current_chat_id}
+          userId={CURRENT_USER_ID!}
+        />
+      )}
       
       {/* Pickers */}
       <div className="relative flex flex-row h-auto items-center">

@@ -61,7 +61,7 @@ const KeyFeatures = () => {
 
 
   return (
-    <section className="py-16 px-6 text-center min-h-120">
+    <section id="key-features" className="py-16 px-6 text-center min-h-120">
       <p className="text-[#3B35B1] text-sm mb-2 font-exo2 tracking-widest">
         ОСНОВНІ ПЕРЕВАГИ
       </p>

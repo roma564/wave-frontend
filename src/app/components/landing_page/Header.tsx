@@ -1,11 +1,17 @@
 'use client';
 
-import Link from 'next/link';
 import MessageIcon from '@mui/icons-material/Message';
 
 
 
 export default function Header() {
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <header className="bg-[#030613] text-white border-b-1 border-[#090D1A] ">
       
@@ -31,10 +37,26 @@ export default function Header() {
 
           {/* Меню */}
           <nav className={`hidden md:flex space-x-10 font-medium text-sm font-exo2 tracking-widest`}>
-            <Link href="/" className="hover:text-[#A3B8FA] transition ">Головна</Link>
-            <Link href="/about" className="hover:text-[#A3B8FA] transition">Переваги</Link>
-            <Link href="/service" className="hover:text-[#A3B8FA] transition">Можливості</Link>
-            <Link href="/projects" className="hover:text-[#A3B8FA] transition">Автор</Link>
+            <button type="button" className="hover:text-[#A3B8FA] transition ">
+              Головна
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection('key-features')}
+              className="hover:text-[#A3B8FA] transition"
+            >
+              Переваги
+            </button>
+            <button
+              type="button"
+              className="hover:text-[#A3B8FA] transition"
+              onClick={() => scrollToSection('spatial-dashboard')}
+            >
+              Можливості
+            </button>
+            <button type="button" className="hover:text-[#A3B8FA] transition">
+              Автор
+            </button>
             
           </nav>
 

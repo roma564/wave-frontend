@@ -33,9 +33,16 @@ export default function MessageBox({
 }: MessageBoxProps) {
   const [hovered, setHovered] = useState(false)
 
-  const downloadUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/files/download?fileUrl=${encodeURIComponent(
-    fileUrl ?? ''
-  )}&fileName=${encodeURIComponent(fileName ?? 'file')}`
+  const base = process.env.NEXT_PUBLIC_SERVER_BASE_URL ?? ''
+  const encodedFileUrl = encodeURIComponent(fileUrl ?? '')
+  const downloadUrl = `${base}/files/download?fileUrl=${encodedFileUrl}&fileName=${encodeURIComponent(fileName ?? 'file')}`
+
+
+  const isPublicSupabaseUrl =
+    typeof fileUrl === 'string' &&
+    fileUrl.startsWith('https://') &&
+    fileUrl.includes('supabase.co/storage/v1/object/public/')
+  const displaySrc = isPublicSupabaseUrl ? fileUrl : downloadUrl
 
   const isImage = mimeType?.startsWith('image/')
   const isVideo = mimeType?.startsWith('video/')
@@ -75,7 +82,7 @@ export default function MessageBox({
             />
           ) : isImage ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${fileUrl}`}
+              src={displaySrc}
               alt={fileName ?? 'image'}
               className="rounded"
               onError={(e) => {
@@ -84,7 +91,7 @@ export default function MessageBox({
             />
           ) : isVideo ? (
             <video
-              src={`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${fileUrl}`}
+              src={displaySrc}
               controls
               className="rounded max-h-64"
               onError={(e) => {

@@ -13,7 +13,7 @@ export default function SignInForm() {
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
-  withCredentials: false, // тепер кукі формуємо самі
+  withCredentials: false,
 });
 
   const [email, setEmail] = useState('');

@@ -1,6 +1,8 @@
 'use client'
 import { useState, useRef } from 'react'
 import axios from 'axios'
+import IconButton from '@mui/material/IconButton'
+import AttachFileIcon from '@mui/icons-material/AttachFile'
 import { socket } from '@/app/context/SocketContext'
 import UploadProgressCircle from './UploadProgressCircle'
 import { detectMessageType } from '@/app/utils/checkImage'
@@ -10,27 +12,11 @@ type Props = {
   userId: number
 }
 
-export default function DragDropUpload({ chatId, userId }: Props) {
-  const [isDragging, setIsDragging] = useState(false)
+export default function AttachmentUploadButton({ chatId, userId }: Props) {
   const [progress, setProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handleDragState = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(e.type === 'dragenter' || e.type === 'dragover')
-  }
-
-  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
-
-    const file = e.dataTransfer.files?.[0]
-    if (file) await uploadFile(file)
-  }
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -45,7 +31,7 @@ export default function DragDropUpload({ chatId, userId }: Props) {
 
     try {
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/upload/file`,
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/files/upload`,
         formData,
         {
           onUploadProgress: ({ loaded, total }) => {
@@ -55,18 +41,18 @@ export default function DragDropUpload({ chatId, userId }: Props) {
         }
       )
 
-      const { path, fileName, fileSize, mimeType } = data
-      console.log('data - ' + fileName, path)
-      const type = detectMessageType(mimeType)
+      const { url, mimeType, size, key } = data
+      console.log('uploaded file - ' + key, url)
+      const type = detectMessageType(mimeType as string)
 
       socket.emit('createMessage', {
         chatId,
         userId,
         type,
-        fileUrl: path,
+        fileUrl: url,
         mimeType,
-        fileName: fileName ?? file.name,
-        fileSize,
+        fileName: file.name ?? key,
+        fileSize: size,
       })
     } catch (err) {
       console.error('Upload failed:', err)
@@ -77,19 +63,14 @@ export default function DragDropUpload({ chatId, userId }: Props) {
   }
 
   return (
-    <div
-      onClick={() => fileInputRef.current?.click()}
-      onDragEnter={handleDragState}
-      onDragLeave={handleDragState}
-      onDragOver={handleDragState}
-      onDrop={handleDrop}
-      className={`cursor-pointer w-full max-w-md mx-auto p-10 border-2 border-dashed rounded-lg text-center transition-colors duration-200 ${
-        isDragging ? 'bg-gray-100 border-blue-400' : 'bg-white border-gray-300'
-      }`}
-    >
-      <p className="text-gray-600 mb-2">
-        Перетягни файл сюди або <span className="text-blue-600 underline">натисни</span>, щоб вибрати
-      </p>
+    <div className="flex items-center gap-2">
+      <IconButton
+        color="primary"
+        onClick={() => fileInputRef.current?.click()}
+        aria-label="Прикріпити файл"
+      >
+        <AttachFileIcon />
+      </IconButton>
 
       {isUploading && <UploadProgressCircle progress={progress} />}
 

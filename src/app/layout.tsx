@@ -18,8 +18,8 @@ const unbounded = Unbounded({
 })
 
 const ubuntu = Ubuntu({
-  subsets: ['latin', 'cyrillic'], // щоб була кирилиця
-  weight: ['400', '500', '700'],  // вибери ваги, які потрібні
+  subsets: ['latin', 'cyrillic'], 
+  weight: ['400', '500', '700'], 
   variable: '--font-ubuntu',
 })
 
