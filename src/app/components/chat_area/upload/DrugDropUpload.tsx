@@ -55,7 +55,21 @@ export default function AttachmentUploadButton({ chatId, userId }: Props) {
         fileSize: size,
       })
     } catch (err) {
-      console.error('Upload failed:', err)
+      if (axios.isAxiosError(err)) {
+        const msg = err.response?.data?.message ?? err.response?.data ?? err.message
+        const status = err.response?.status
+        console.error('Upload failed:', status, msg)
+        if (typeof msg === 'string') {
+          alert(`Помилка завантаження: ${msg}`)
+        } else if (Array.isArray(msg)) {
+          alert(`Помилка завантаження: ${msg.join(', ')}`)
+        } else {
+          alert(`Помилка завантаження: ${JSON.stringify(msg)}`)
+        }
+      } else {
+        console.error('Upload failed:', err)
+        alert(`Помилка завантаження: ${err instanceof Error ? err.message : String(err)}`)
+      }
     } finally {
       setIsUploading(false)
       setProgress(0)

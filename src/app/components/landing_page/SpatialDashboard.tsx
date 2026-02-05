@@ -1,3 +1,5 @@
+
+import dynamic from 'next/dynamic';
 import React, { useEffect, useRef } from 'react';
 import LayersIcon from '@mui/icons-material/Layers';
 import VibrationIcon from '@mui/icons-material/Vibration';
@@ -61,7 +63,7 @@ const SpatialDashboard = () => {
             </div>
           </div>
 
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full ">
             <SpatialCanvas />
           </div>
         </div>

@@ -124,7 +124,7 @@ export default function Home() {
 
         <KeyFeatures/>
 
-        <SpatialDashboard/>
+        <SpatialDashboard />
 
         <Footer/>
         
