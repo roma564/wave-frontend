@@ -18,6 +18,7 @@ import dayjs from 'dayjs'
 
 export default function ChatsList() {
 
+
   const userIdFromCookie = Cookies.get('id');
   const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null;
 
@@ -37,7 +38,8 @@ export default function ChatsList() {
 
   const { bgColor, textColor, secondaryTextColor, primaryColor, chatListBgColor } = theme
 
-  const isStandardMode = currentMode?.name === 'standartMode'
+  const isStandardMode = currentMode?.name === 'Усі чати'
+  const isMode = currentMode?.name === 'Усі чати'
 
   const chatIds = useMemo(() => {
     if (isStandardMode) {
@@ -70,12 +72,12 @@ export default function ChatsList() {
          
       </List>
 
-       {currentMode?.name === 'standartMode'
+       {isStandardMode
         ? <NewChatModal />
         
         : <AddChatToModeModal />}
 
-        {currentMode?.name === 'standartMode'  && (
+        {isStandardMode  && (
           <>
             <div className="w-full max-h-64 overflow-y-auto px-2">
               <MeetingListForDay meetings={meetings} selectedDate={value} isLoading={isMeetingsLoading} />

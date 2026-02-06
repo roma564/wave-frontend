@@ -1,7 +1,7 @@
 // types/theme.ts
 export enum ThemeName {
   BLUE = 'BLUE',
-  GREEN = 'GREEN',
+  PASTEL = 'PASTEL',
   YELLOW = 'YELLOW',
   PURPLE = 'PURPLE',
 }

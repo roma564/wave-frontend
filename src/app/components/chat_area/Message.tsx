@@ -10,7 +10,7 @@ export enum Color {
   Red,
 }
 
-type MessageBoxProps = {
+type MessageProps = {
   color: Color
   type?: MessageType
   content?: string | null
@@ -21,7 +21,7 @@ type MessageBoxProps = {
   mimeType?: string | null
 }
 
-export default function MessageBox({
+export default function Message({
   color,
   content,
   fileUrl,
@@ -30,7 +30,7 @@ export default function MessageBox({
   mimeType,
   authorName,
   type,
-}: MessageBoxProps) {
+}: MessageProps) {
   const [hovered, setHovered] = useState(false)
 
   const base = process.env.NEXT_PUBLIC_SERVER_BASE_URL ?? ''

@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import MessageBox from '../components/chat_area/MessageBox' 
-import { Color } from '../components/chat_area/MessageBox' 
+import MessageBox from '../components/chat_area/Message' 
+import { Color } from '../components/chat_area/Message' 
 import { Suspense } from 'react'
 
 import SendIcon from '@mui/icons-material/Send';
@@ -54,7 +54,7 @@ export default function ChatPageInner() {
   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
   const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
 
-  const { iconsColor, chatBgColor, chatBgColorSecondary } = theme
+  const { chatBgColor, chatBgColorSecondary } = theme
 
 
   

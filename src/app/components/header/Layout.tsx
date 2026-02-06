@@ -8,7 +8,7 @@ import { decrement, increment } from '../../lib/features/counter/counterSlice';
 import { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { setCurrentMode } from '../../lib/features/chatMode/modeSlice';
-import { Color } from '../chat_area/MessageBox'; 
+import { Color } from '../chat_area/Message'; 
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import UserInfo from './UserInfo';

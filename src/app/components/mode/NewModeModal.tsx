@@ -98,7 +98,7 @@ export default function NewModeModal() {
 <div className="grid grid-cols-2 gap-4 mb-4">
   {[
     ThemeName.BLUE,
-    ThemeName.GREEN,
+    ThemeName.PASTEL,
     ThemeName.YELLOW,
     ThemeName.PURPLE,
   ].map((theme) => (

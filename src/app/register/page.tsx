@@ -1,4 +1,6 @@
 'use client';
+import Cookies from 'js-cookie';
+
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -24,14 +26,27 @@ export default function SignUpForm() {
         name,
         lastname,
       });
-      alert(`Registered: ${response.data.message} → ${response.data.redirectUrl}`);
-
-      console.log(response.data.redirectUrl)
-      window.location.href = response.data.redirectUrl;
+  
+      const { message, redirectUrl, tokens, user } = response.data;
+  
+      alert(`Registered: ${message}`);
+  
+      // --- SET COOKIES (same as SignInForm) ---
+      Cookies.set('access_token', tokens.access_token, { secure: true, sameSite: 'Strict' });
+      Cookies.set('stream_token', tokens.stream_token, { secure: true, sameSite: 'Strict' });
+      Cookies.set('id', String(user.id), { secure: true, sameSite: 'Strict' });
+      Cookies.set('username', user.username, { secure: true, sameSite: 'Strict' });
+      Cookies.set('lastname', user.lastname, { secure: true, sameSite: 'Strict' });
+      Cookies.set('email', user.email, { secure: true, sameSite: 'Strict' });
+      Cookies.set('avatar', user.avatar || '', { secure: true, sameSite: 'Strict' });
+  
+      // redirect
+      window.location.href = redirectUrl;
     } catch (error: any) {
       alert(`Registration failed: ${error.response?.data?.message || error.message}`);
     }
   };
+  
 
   const handleGoogleSignUp = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/google`;

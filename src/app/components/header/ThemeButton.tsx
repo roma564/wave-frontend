@@ -15,7 +15,7 @@ export default function ThemeButton() {
 
   const themes: ThemeName[] = [
   ThemeName.BLUE,
-  ThemeName.GREEN,
+  ThemeName.PASTEL,
   ThemeName.YELLOW,
   ThemeName.PURPLE,
 ];
@@ -64,7 +64,7 @@ export default function ThemeButton() {
     <div className="grid grid-cols-2 gap-4">
       {[
         ThemeName.BLUE,
-        ThemeName.GREEN,
+        ThemeName.PASTEL,
         ThemeName.YELLOW,
         ThemeName.PURPLE,
       ].map((theme) => (
