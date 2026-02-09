@@ -48,7 +48,7 @@ const ModeSlider = () => {
   const nextMode = getMode(1)
 
   return (
-    <div className="flex items-center justify-between ml-20">
+    <div className="flex items-center justify-between ml-30">
       {/* Ліва стрілка */}
       <div className="flex flex-col items-center" style={{ width: '80px', minWidth: '80px', textAlign: 'center' }}>
         <button onClick={handlePrev}>

@@ -47,16 +47,20 @@ export default function Layout({
     <div className='flex flex-col h-screen '>
 
       {/* Header */}  
-      <div className="flex flex-row border-b place-content-between min-h-20 items-center" style={{ backgroundColor: bgColor, color: textColor }}>
-        <header className={`flex flex-row w-screen`}  >
-          <img src="/images/logo.png" alt="Logo" className='h-12 mt-1 ml-20 hidden sm:inline' />
-          <h1 className="text-2xl m-3 ml-0 font-dela font-bold font-200 hidden md:inline">Wave</h1>
-          <ModeSlider/>
-          <NewModeModal/>
-          <ThemeButton/>  
+      <div className="flex flex-row border-b items-center justify-between min-h-20" style={{ backgroundColor: bgColor, color: textColor }}>
+        <header className="flex flex-row flex-grow items-center">
+          <img src="/images/logo.png" alt="Logo" className="h-12 mt-1 ml-4 hidden sm:inline" />
+          <h1 className="text-2xl ml-3 font-dela font-bold hidden md:inline">Wave</h1>
+          <ModeSlider />
+          <NewModeModal />
+          <ThemeButton />
         </header>
-        <UserInfo/>
+
+        <UserInfo />
       </div>
+
+
+
 
       {/* Main content */}
       <div
