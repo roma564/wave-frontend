@@ -17,33 +17,7 @@ export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  //  якщо користувач повернувся з Google
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('google') === 'true') {
-      (async () => {
-        try {
-          const res = await api.get('/auth/login/google/callback');
-          const { message, redirectUrl, tokens, user } = res.data;
 
-          alert(`Logged in: ${message}`);
-
-          // ставимо кукі
-          Cookies.set('access_token', tokens.access_token, { secure: true, sameSite: 'Strict' });
-          Cookies.set('stream_token', tokens.stream_token, { secure: true, sameSite: 'Strict' });
-          Cookies.set('id', String(user.id), { secure: true, sameSite: 'Strict' });
-          Cookies.set('username', user.username, { secure: true, sameSite: 'Strict' });
-          Cookies.set('lastname', user.lastname, { secure: true, sameSite: 'Strict' });
-          Cookies.set('email', user.email, { secure: true, sameSite: 'Strict' });
-          Cookies.set('avatar', user.avatar || '', { secure: true, sameSite: 'Strict' });
-
-          router.push('/chat');
-        } catch (err) {
-          alert('Google login failed');
-        }
-      })();
-    }
-  }, [api, router]);
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +42,7 @@ export default function SignInForm() {
   };
 
   const handleGoogleSignIn = () => {
-    // редірект на бекенд, який відправить користувача на Google
+
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/login/google`;
   };
 
