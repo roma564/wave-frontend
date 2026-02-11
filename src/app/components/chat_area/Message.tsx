@@ -21,6 +21,11 @@ type MessageProps = {
   mimeType?: string | null
 }
 
+import Avatar from '@mui/material/Avatar'
+import Cookies from 'js-cookie'
+
+// ...
+
 export default function Message({
   color,
   content,
@@ -37,7 +42,6 @@ export default function Message({
   const encodedFileUrl = encodeURIComponent(fileUrl ?? '')
   const downloadUrl = `${base}/files/download?fileUrl=${encodedFileUrl}&fileName=${encodeURIComponent(fileName ?? 'file')}`
 
-
   const isPublicSupabaseUrl =
     typeof fileUrl === 'string' &&
     fileUrl.startsWith('https://') &&
@@ -48,6 +52,12 @@ export default function Message({
   const isVideo = mimeType?.startsWith('video/')
   const isSticker = type === MessageType.STICKER
 
+  // наше ім’я з куків
+  const currentUserName = Cookies.get('name') ?? 'Me'
+
+  // визначаємо чи це наше повідомлення
+  const isOwnMessage = authorName === currentUserName
+
   return (
     <div
       className={`wrapper flex flex-col m-2 ${
@@ -56,7 +66,19 @@ export default function Message({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-sm mb-1 text-gray-500">{authorName}</div>
+      <div className="flex items-center gap-2 mb-1">
+        <Avatar
+          sx={{
+            bgcolor: isOwnMessage ? 'primary.main' : 'grey.400',
+            width: 32,
+            height: 32,
+            fontSize: 14,
+          }}
+        >
+          {authorName.charAt(0).toUpperCase()}
+        </Avatar>
+        <span className="text-sm text-gray-500">{authorName}</span>
+      </div>
 
       {/* Текст */}
       {content && (
@@ -65,6 +87,7 @@ export default function Message({
         </div>
       )}
 
+      {/* Файл / медіа */}
       {fileUrl && (
         <div
           className={`rounded p-3 flex flex-col gap-2 max-w-xs ${
@@ -110,7 +133,6 @@ export default function Message({
             </div>
           )}
 
-
           {!isSticker && hovered && (
             <button
               onClick={() => {
@@ -132,3 +154,4 @@ export default function Message({
     </div>
   )
 }
+

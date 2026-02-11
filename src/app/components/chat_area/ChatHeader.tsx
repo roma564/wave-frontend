@@ -20,9 +20,7 @@ import { useGetUsersByChatQuery } from '@/app/lib/features/api/userSlice';
 
 
 export default function ChatHeader({ current_chat_id }: { current_chat_id: number }) {
-  const [showModal, setShowModal] = useState(false);
-  const dispatch = useAppDispatch();
-  const [setModeTheme] = useSetModeThemeMutation();
+  
   const streamClient = useStreamClient();
   const router = useRouter();
 
@@ -94,22 +92,13 @@ const handleStartCall = async () => {
             style={{ color: primaryColor, cursor: 'pointer' }}
             onClick={handleStartCall}
           />
-          <PushPinIcon style={{ color: primaryColor }} />
-          <ColorLensIcon style={{ color: primaryColor }} onClick={() => setShowModal(true)} />
+          <PushPinIcon className="text-gray-500" />
+          <ColorLensIcon className="text-gray-500" />
+
         </div>
       </div>
 
-      {showModal && (
-        <ColorPickerModal
-          onClose={() => setShowModal(false)}
-          onSelectTheme={(theme) => {
-            if (currentMode?.id) {
-              setModeTheme({ modeId: currentMode.id, theme });
-              dispatch(setModeThemeLocal(theme));
-            }
-          }}
-        />
-      )}
+      
 
       
     </div>

@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { useAppSelector } from '@/app/lib/hooks';
+import { themeConfig } from '@/app/config/theme.config';
+import { Mode } from '@/app/types/Mode';
+import { Avatar, IconButton } from '@mui/material';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 export default function UserInfo() {
   const [username, setUsername] = useState('Guest');
   const [email, setEmail] = useState('unknown@email.com');
   const [avatar, setAvatar] = useState('/static/images/avatar/2.jpg');
   const [showDetails, setShowDetails] = useState(false);
+
+
+  const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode);
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE;
 
   useEffect(() => {
     setUsername(Cookies.get('username') || 'Guest');
@@ -31,55 +40,55 @@ export default function UserInfo() {
   };
 
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-  const formData = new FormData();
-  formData.append('avatar', file);
+    const formData = new FormData();
+    formData.append('avatar', file);
+    formData.append('userId', Cookies.get('id') || '');
 
-  formData.append('userId', Cookies.get('id') || '');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/files/avatar`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${Cookies.get('access_token')}`,
+        },
+      });
 
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/files/avatar`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${Cookies.get('access_token')}`,
-      },
-    });
+      const { avatarUrl } = await res.json();
 
-    const { avatarUrl } = await res.json();
+      if (!res.ok || !avatarUrl) {
+        throw new Error(`Upload failed: ${avatarUrl || 'No URL returned'}`);
+      }
 
-    if (!res.ok || !avatarUrl) {
-      throw new Error(`Upload failed: ${avatarUrl || 'No URL returned'}`);
+      const fullAvatarUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${avatarUrl}`;
+      setAvatar(fullAvatarUrl);
+      Cookies.set('avatar', fullAvatarUrl);
+    } catch (err) {
+      console.error('Avatar upload error:', err);
+      alert(`Помилка завантаження: ${(err as Error).message}`);
     }
-
-    const fullAvatarUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${avatarUrl}`;
-    setAvatar(fullAvatarUrl);
-    Cookies.set('avatar', fullAvatarUrl);
-  } catch (err) {
-    console.error('Avatar upload error:', err);
-    alert(`Помилка завантаження: ${(err as Error).message}`);
-  }
-};
-
-
-
-
-
-
+  };
 
   return (
     <div className="relative">
       <div
-        className="flex flex-row items-center pr-5 cursor-pointer"
+        className="flex flex-row items-center pr-5 cursor-pointer p-3 rounded-2xl"
+
         onClick={() => setShowDetails(prev => !prev)}
       >
-        <img
+    
+       <Avatar
           alt={username}
-          src={avatar}
-          className="rounded-full object-cover object-center hidden sm:inline ml-2 mr-2 w-12 h-12  min-h-[3rem]"
-        />
+          src={avatar || undefined}
+          sx={{ width: 48, height: 48, marginX: 1 }}
+        >
+          {!avatar && username.charAt(0).toUpperCase()}
+        </Avatar>
+
+        
+
 
         <div className="flex flex-col">
           <p className="hidden md:inline">{username}</p>
@@ -88,30 +97,65 @@ export default function UserInfo() {
       </div>
 
       {showDetails && (
-        <div className="absolute top-16 right-0 bg-white shadow-lg rounded-lg p-4 w-64 z-10">
+        <div
+          className="absolute top-16 right-0 shadow-lg rounded-lg p-4 w-64 z-10"
+          style={{
+            backgroundColor: theme.bgColor,
+            color: theme.textColor,
+            border: `1px solid ${theme.borderColor}`,
+          }}
+        >
           <div className="flex flex-col items-center">
-            <img
-              src={avatar}
-              alt="avatar"
-              className="w-20 h-20 rounded-full mb-2 object-cover object-center"
-            />
 
-            <h2 className="text-lg font-semibold">{username}</h2>
-            <p className="text-sm text-gray-600">{email}</p>
-            <p className="text-sm text-gray-500 mt-2">Status: Active</p>
-            <p className="text-sm text-gray-500">Role: User</p>
+            <div className="relative group">
+              {/* Аватар */}
+              <Avatar
+                alt={username}
+                src={avatar || undefined}
+                sx={{ width: 80, height: 80 }}
+              >
+                {!avatar && username.charAt(0).toUpperCase()}
+              </Avatar>
 
-            {/* Upload avatar */}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarUpload}
-              className="mt-2 text-sm"
-            />
+              {/* Overlay on hover */}
+              <div
+                className="absolute rounded-full inset-0 flex items-center justify-center bg-gray-600 bg-opacity-40 opacity-0 group-hover:opacity-50 transition"
+              >
+                <IconButton
+                  component="label"
+                  sx={{ color: 'white' }}
+                >
+                  <PhotoCameraIcon />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleAvatarUpload}
+                  />
+                </IconButton>
+              </div>
+            </div>
+
+
+            <h2 className="text-lg font-semibold" style={{ color: theme.primaryColor }}>
+              {username}
+            </h2>
+            <p className="text-sm" style={{ color: theme.secondaryTextColor }}>
+              {email}
+            </p>
+            <p className="text-sm mt-2" style={{ color: theme.iconsColor }}>
+              Status: Active
+            </p>
+
+            
 
             <button
               onClick={handleLogout}
-              className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+              className="mt-4 px-4 py-2 rounded transition"
+              style={{
+                backgroundColor: theme.primaryColor,
+                color: theme.textColor,
+              }}
             >
               Logout
             </button>

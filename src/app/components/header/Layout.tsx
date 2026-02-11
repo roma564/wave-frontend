@@ -16,7 +16,7 @@ import ModeSlider from './ModeSlider';
 import { Mode } from '@/app/types/Mode';
 import { themeConfig } from '@/app/config/theme.config';
 import ThemeButton from './ThemeButton';
-import NewModeModal from '../mode/NewModeModal';
+import NewModeModal from './NewModeModal';
 
 
  
