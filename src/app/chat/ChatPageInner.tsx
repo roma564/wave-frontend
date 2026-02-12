@@ -293,7 +293,7 @@ export default function ChatPageInner() {
                             
                               <Avatar
                                 alt={`${caller?.name} ${caller?.lastname}`}
-                                src={caller?.avatar}
+                                src={caller?.avatar || undefined}
                                 sx={{
                                   width: 80,
                                   height: 80,
