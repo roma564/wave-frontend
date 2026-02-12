@@ -12,7 +12,7 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import MeetingListForDay from '../calendar/MeetingListForDay'
-import { useGetMeetingsQuery } from '@/app/lib/features/api/meetingSlice'
+import { useGetMeetingsForUserQuery, useGetMeetingsQuery } from '@/app/lib/features/api/meetingSlice'
 import dayjs from 'dayjs'
 
 
@@ -23,9 +23,9 @@ export default function ChatsList() {
   const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null;
 
   const value = dayjs() 
-  const { data: meetings = [], isLoading: isMeetingsLoading } = useGetMeetingsQuery()
 
 
+  const { data: meetings = [], isLoading: isMeetingsLoading , isError, refetch } = useGetMeetingsForUserQuery(String(CURRENT_USER_ID));
 
 
   const { data: allChats = [], isLoading } = CURRENT_USER_ID !== null

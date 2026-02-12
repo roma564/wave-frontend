@@ -9,15 +9,21 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo'
 
 import dayjs, { Dayjs } from 'dayjs'
-import { useGetMeetingsQuery } from '../lib/features/api/meetingSlice'
+import { useGetMeetingsForUserQuery, useGetMeetingsQuery } from '../lib/features/api/meetingSlice'
 import { Meeting } from '@/app/types/Meeting'
 import Link from 'next/link'
 import NewMeetingModal from '../components/calendar/NewMeetingModal'
 import MeetingListForDay from '../components/calendar/MeetingListForDay'
+import Cookies from 'js-cookie'
 
 function Page() {
+  const userIdFromCookie = Cookies.get('id')
+  const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
+  
+  
   const [value, setValue] = React.useState<Dayjs | null>(dayjs())
-  const { data: meetings = [], isLoading, isError, refetch } = useGetMeetingsQuery()
+  const { data: meetings = [], isLoading, isError, refetch } = useGetMeetingsForUserQuery(String(CURRENT_USER_ID));
+
 
   const handleDateSelect = (newValue: Dayjs | null) => {
     setValue(newValue)
