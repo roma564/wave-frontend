@@ -101,7 +101,9 @@ export default function NewMeetingModal({ onMeetingCreated }: Props) {
 
             <label className="block mb-2 text-sm font-medium">Оберіть учасників</label>
             <div className="mb-4 max-h-40 overflow-y-auto border rounded-md p-2 bg-white text-black">
-              {users.map((user) => (
+              {users
+              .filter((user) => user.id !== CURRENT_USER_ID)
+              .map((user) => (
                 <button
                   key={user.id}
                   onClick={() =>

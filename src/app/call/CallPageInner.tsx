@@ -55,7 +55,7 @@ export default function CallPageInner() {
     return (
       <div className="flex flex-col items-center justify-center h-screen gap-4"
            style={{ color: textColor, backgroundColor: bgColor }}>
-        <span className="text-lg font-medium">📞 Call initializing...</span>
+        <span className="text-lg font-medium">📞 Завантаження</span>
         <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2"
              style={{ borderColor: primaryColor }}></div>
       </div>

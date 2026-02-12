@@ -10,7 +10,7 @@ import { Message } from '@/app/types/Message';
 
 import { useGetMessageByChatIdQuery, useCreateMessageMutation } from '../lib/features/api/messageSlice'
 import { useSearchParams } from 'next/navigation'
-import { Button, TextField } from '@mui/material'
+import { Avatar, Button, TextField } from '@mui/material'
 // import ChatsList from '../components/chat_list/ChatsList'
 import Layout from '../components/header/Layout'
 import ChatHeader from '../components/chat_area/ChatHeader' 
@@ -35,6 +35,15 @@ import { Mode } from '../types/Mode';
 
 
 const URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+
+interface Caller {
+  id: number;
+  name: string;
+  lastname: string;
+  avatar?: string | null;
+}
+
+
 
 
 const socket = io(URL, {
@@ -70,7 +79,7 @@ export default function ChatPageInner() {
 
   // const CURRENT_USER_ID = 1
 
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
 
 
@@ -88,11 +97,13 @@ export default function ChatPageInner() {
 
    
 
-      //call
-      const [incomingCall, setIncomingCall] = useState<any>(null);
-      const [isCallActive, setIsCallActive] = useState(false); 
-      const [callerId, setCallerId] = useState<number | null>(null);
-      const [incomingCallId, setIncomingCallId] = useState<string | null>(null);
+  //call
+  const [incomingCall, setIncomingCall] = useState<any>(null);
+  const [isCallActive, setIsCallActive] = useState(false); 
+
+  const [incomingCallId, setIncomingCallId] = useState<string | null>(null);
+  const [caller, setCaller] = useState<Caller | null>(null);
+
 
     
 
@@ -102,21 +113,26 @@ export default function ChatPageInner() {
 
 
     useEffect(()=>{
+
+        // connect checker
         socket.on('connect', ()=> {
             console.log('Connected')
         })
-         // слухаємо подію дзвінка
+
+
+        // call event listener
         socket.on(`call-user-${CURRENT_USER_ID}`, (data) => {
         console.log('Incoming call event:', data);
 
-          if (data.type === 'CALL_REQUEST') {
-            setIsCallActive(true);
-            setCallerId(data.callerId);
-            setIncomingCallId(data.callId);
-          }
-        });
+        if (data.type === 'CALL_REQUEST') {
+          setIsCallActive(true);
+          setCaller(data.caller); 
+          setIncomingCallId(data.callId);
+        }
+      });
 
 
+          // message event listener
         socket.on(String(current_chat_id), (newMessage: Message) => {
           console.log('CHAT_ID event received')
           console.log(newMessage)
@@ -255,37 +271,74 @@ export default function ChatPageInner() {
                       
                       {/* <div className="absolute inset-0 bg-black bg-opacity-50"></div> */}
 
-                      {/* сама модалка */}
-                      <div className="relative bg-white rounded-lg shadow-lg p-8 w-[400px] text-center z-10">
-                        <p className="text-xl font-semibold mb-6">
-                           Вхідний дзвінок від користувача {callerId}
-                        </p>
-                         <audio autoPlay loop>
-                          <source src="/audio/ringthone.mp3" type="audio/mpeg" />
-                        </audio>
-                        <div className="flex justify-center gap-4">
-                          <button
-                            onClick={acceptCall}
-                            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
+                     
+                      {/* call modal */}
+                      <div className="fixed inset-0 flex items-center justify-center z-50">
+                          {/* затемнення фону */}
+                          <div className="absolute inset-0" style={{ backgroundColor: chatBgColorSecondary, opacity: 0.6 }}></div>
+
+                          {/* call modal */}
+                          <div
+                            className="relative rounded-lg shadow-lg p-8 w-[400px] text-center z-10"
+                            style={{ backgroundColor: chatBgColor }}
                           >
-                            Прийняти
-                          </button>
-                          <button
-                            onClick={() => {
-                              socket.emit('answerCall', {
-                                chatId: current_chat_id,
-                                userId: currentMode?.id,
-                                callId: incomingCallId,
-                                accepted: false,
-                              });
-                              setIsCallActive(false);
-                            }}
-                            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition"
-                          >
-                            Відхилити
-                          </button>
-                        </div>
+                            <p className="text-xl font-semibold mb-6 text-white">
+                              Вхідний дзвінок від 
+                            </p>
+
+                            <p className="text-xl font-semibold mb-6 text-white">
+                            {caller?.name} {caller?.lastname}
+                            </p>
+
+                            
+                              <Avatar
+                                alt={`${caller?.name} ${caller?.lastname}`}
+                                src={caller?.avatar}
+                                sx={{
+                                  width: 80,
+                                  height: 80,
+                                  margin: '0 auto',
+                                  mb: 2,
+                                  border: `3px solid ${chatBgColorSecondary}`,
+                                }}
+                              >
+                                {!caller?.avatar && caller?.name?.charAt(0).toUpperCase()}
+                              </Avatar>
+
+                            
+
+                            <audio autoPlay loop>
+                              <source src="/audio/ringthone.mp3" type="audio/mpeg" />
+                            </audio>
+
+                            <div className="flex justify-center gap-4 mt-4">
+                              <button
+                                onClick={acceptCall}
+                                className="px-6 py-3 rounded-lg transition"
+                                style={{ backgroundColor: 'green', color: 'white' }}
+                              >
+                                Прийняти
+                              </button>
+                              <button
+                                onClick={() => {
+                                  socket.emit('answerCall', {
+                                    chatId: current_chat_id,
+                                    userId: currentMode?.id,
+                                    callId: incomingCallId,
+                                    accepted: false,
+                                  });
+                                  setIsCallActive(false);
+                                }}
+                                className="px-6 py-3 rounded-lg transition"
+                                style={{ backgroundColor: 'red', color: 'white' }}
+                              >
+                                Відхилити
+                              </button>
+                            </div>
+                          </div>
                       </div>
+
+
                     </div>
                   )}
             
