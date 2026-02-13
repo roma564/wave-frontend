@@ -23,12 +23,17 @@ export default function MeetingListForDay({ meetings, selectedDate, isLoading }:
   const filtered = meetings.filter(m => dayjs(m.startDate).isSame(selectedDate, 'day'))
 
   return (
-    <div className="mt-4" style={{ color: textColor }}>
+    <div
+      className="mt-4 max-h-100 overflow-y-auto pr-10"
+      style={{ color: textColor }}
+    >
       <h3 className="font-bold">
-        Зустрічі на {selectedDate.format('DD.MM.YYYY')}
+        Зустрічі на {selectedDate.format("DD.MM.YYYY")}
       </h3>
 
-      {isLoading && <p style={{ color: secondaryTextColor }}>Завантаження...</p>}
+      {isLoading && (
+        <p style={{ color: secondaryTextColor }}>Завантаження...</p>
+      )}
 
       {filtered.map((m) => (
         <Link
@@ -43,7 +48,7 @@ export default function MeetingListForDay({ meetings, selectedDate, isLoading }:
         >
           <p className="font-semibold">{m.title}</p>
           <p className="text-sm" style={{ color: secondaryTextColor }}>
-            {dayjs(m.startDate).format('HH:mm')}
+            {dayjs(m.startDate).format("HH:mm")}
           </p>
           <p className="text-sm" style={{ color: secondaryTextColor }}>
             Власник: {m.owner.name} {m.owner.lastname}
@@ -51,5 +56,6 @@ export default function MeetingListForDay({ meetings, selectedDate, isLoading }:
         </Link>
       ))}
     </div>
+
   )
 }

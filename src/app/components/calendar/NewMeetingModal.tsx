@@ -26,13 +26,13 @@ export default function NewMeetingModal({ onMeetingCreated }: Props) {
 
   const CURRENT_USER_ID = Number(Cookies.get('id'))
   const currentMode: Mode | null = useAppSelector(state => state.mode.currentMode)
-  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE // fallback
+  const theme = currentMode?.theme ? themeConfig[currentMode.theme] : themeConfig.BLUE 
 
   const { bgColor, textColor, primaryColor } = theme
   const handleCreate = async () => {
   if (!title || selectedUserIds.length === 0 || !CURRENT_USER_ID) return
 
-  const selectedUsers = users.filter(u => selectedUserIds.includes(u.id))
+ 
 
   const payload = {
     title,
@@ -59,7 +59,7 @@ export default function NewMeetingModal({ onMeetingCreated }: Props) {
 
   return (
     <div className="relative">
-      <div className="flex justify-center">
+      <div className="flex justify-center m-10">
         <button
           onClick={() => setIsOpen(true)}
           style={{ backgroundColor: primaryColor }}
@@ -70,7 +70,7 @@ export default function NewMeetingModal({ onMeetingCreated }: Props) {
       </div>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
           <div
             className="rounded-lg shadow-xl p-6 w-full max-w-md"
             style={{ backgroundColor: bgColor, color: textColor }}

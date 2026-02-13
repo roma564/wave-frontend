@@ -26,8 +26,14 @@ export const modeSlice = createSlice({
         state.currentMode.theme = action.payload;
       }
     },
+    addChatToCurrentMode(state, action: PayloadAction<number>) {
+    if (state.currentMode) {
+      state.currentMode.chats = [...(state.currentMode.chats ?? []), action.payload]
+    }
+  }
+
   }
 })
 
-export const { setCurrentMode, clearCurrentMode, setModeThemeLocal } = modeSlice.actions
+export const { setCurrentMode, clearCurrentMode, setModeThemeLocal, addChatToCurrentMode } = modeSlice.actions
 export default modeSlice.reducer

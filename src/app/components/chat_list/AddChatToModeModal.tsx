@@ -1,16 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { useAppSelector } from '@/app/lib/hooks'
 import { useGetChatsByUserIdQuery } from '@/app/lib/features/api/chatSlice'
 import { useAddChatToModeMutation } from '@/app/lib/features/chatMode/modeApi'
 import { themeConfig } from '@/app/config/theme.config'
 import { Mode } from '@/app/types/Mode'
+import { Chat } from '@/app/types/Chat'
+import { addChatToCurrentMode } from '@/app/lib/features/chatMode/modeSlice'
+import { useDispatch } from 'react-redux'
 
 export default function AddChatToModeModal() {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedChatId, setSelectedChatId] = useState<number | null>(null)
+  const [chatList, setChatList] = useState<Chat[]>([])
 
   const CURRENT_USER_ID = Number(Cookies.get('id'))
 
@@ -26,8 +31,19 @@ export default function AddChatToModeModal() {
 
   const { bgColor, textColor, primaryColor } = theme
 
+  // ініціалізація локального стану з даних
+  useEffect(() => {
+    if (chats.length > 0) {
+      setChatList(chats)
+    }
+  }, [chats])
+
   const alreadyAdded = new Set(currentMode?.chats ?? [])
-  const availableChats = chats.filter(chat => !alreadyAdded.has(chat.id))
+  const availableChats = chatList.filter(chat => !alreadyAdded.has(chat.id))
+
+ 
+
+
 
   const handleAdd = async () => {
     if (!selectedChatId || !currentMode?.id) return
@@ -38,12 +54,16 @@ export default function AddChatToModeModal() {
         chatId: selectedChatId,
       }).unwrap()
 
+      // одразу оновлюємо Redux
+      dispatch(addChatToCurrentMode(selectedChatId))
+
       setSelectedChatId(null)
       setIsOpen(false)
     } catch (err) {
       console.error('Помилка додавання чату до режиму:', err)
     }
   }
+
 
   return (
     <div className="relative">

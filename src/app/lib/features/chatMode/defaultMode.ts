@@ -3,7 +3,7 @@ import { ThemeName } from '@/app/types/ThemeName'
 
 export const standartMode: Mode = {
   id: 0,
-  name: 'standartMode',
+  name: 'Усі чати',
   theme: ThemeName.BLUE, 
   chats: [],
   availableAnswers: ['Обійняти', 'Підтримати', 'Як справи?'],
