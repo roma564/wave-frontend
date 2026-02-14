@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const SpatialDashboard = () => {
   const contentRef = useRef<HTMLDivElement | null>(null);
+  
 
   useEffect(() => {
     if (contentRef.current) {

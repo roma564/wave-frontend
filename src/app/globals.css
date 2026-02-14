@@ -91,5 +91,12 @@ html {
 }
 
 
+.container {
+  @apply max-w-250 mx-auto px-6; 
+  
+}
+
+
+
 
 
