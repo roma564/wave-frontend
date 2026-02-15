@@ -21,7 +21,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import SpatialDashboard from "./components/landing_page/SpatialDashboard";
 import Footer from "./components/landing_page/Footer";
-import HeroWithImages from "./components/landing_page/HeroWithImages";
+import InteractiveSpace from "./components/landing_page/InteractiveSpace";
 import HeroSection from "./components/landing_page/HeroSection";
 
 
@@ -56,9 +56,10 @@ export default function Home() {
       <div className="flex flex-col bg-[#030712] ">
        
         <Header/>
+        
         <HeroSection/>
 
-        <HeroWithImages/>
+        <InteractiveSpace/>
 
         <KeyFeatures/>
 

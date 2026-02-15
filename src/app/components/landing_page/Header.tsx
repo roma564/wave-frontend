@@ -54,7 +54,8 @@ export default function Header() {
             >
               Можливості
             </button>
-            <button type="button" className="hover:text-[#A3B8FA] transition">
+            <button type="button" className="hover:text-[#A3B8FA] transition"
+            onClick={() => scrollToSection('spatial-dashboard')}>
               Автор
             </button>
             

@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
-export default function HeroWithImages() {
+export default function InteractiveSpace() {
   const containerRef = useRef<HTMLDivElement>(null);
   const img1Ref = useRef<HTMLImageElement>(null);
   const img2Ref = useRef<HTMLImageElement>(null);
@@ -70,7 +70,7 @@ export default function HeroWithImages() {
   }, []);
 
   return (
-    <div className="flex flex-col xl:flex-row container items-center justify-between w-full bg-[#030712] p-10">
+    <div id="interactive-space" className="flex flex-col xl:flex-row container items-center justify-between w-full bg-[#030712] p-10 mt-20 mb-30">
       <div className="flex flex-col max-w-sm text-white">
         <h1 className="text-5xl font-bold">Interactive Space</h1>
         <p className="mt-6 text-gray-400">

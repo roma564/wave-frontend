@@ -10,13 +10,13 @@ export default function FlyingMessages() {
 
     const positions = [
       { x: 120,  y: 180 },
-      { x: 350, y: 20 },
-      { x: 40, y: 100 },
-      { x: 280, y: 220 },
+      { x: 350, y: 40 },
+      { x: 40, y: 80 },
+      { x: 300, y: 0 },
       { x: 320, y: 90 },
       { x: 350, y: 160 },
-      { x: 50,  y: 220 },
-      { x: 70,  y: 20 }, //shield
+      { x: 70,  y: 180 },
+      { x: 70,  y: 0 }, //shield
     ];
 
     messages.forEach((msg, i) => {
@@ -39,11 +39,11 @@ export default function FlyingMessages() {
   }, []);
 
   return (
-    <div className="relative w-130 h-full overflow-hidden ml-15">
+    <div className="relative w-130 h-120 overflow-hidden ml-15 mt-0">
       <img src="/images/landing_page/flying_messages/message_1.png" className="message absolute w-12 h-12 object-contain glow" />
-      <img src="/images/landing_page/flying_messages/message_2.png" className="message absolute w-12 h-12 object-contain" />
+      <img src="/images/landing_page/flying_messages/message_2.png" className="message absolute w-8 h-8 object-contain" />
       <img src="/images/landing_page/flying_messages/message_3.png" className="message absolute w-12 h-12 object-contain" />
-      <img src="/images/landing_page/flying_messages/message_4.png" className="message absolute w-12 h-12 object-contain" />
+      <img src="/images/landing_page/flying_messages/message_4.png" className="message absolute w-8 h-8 object-contain" />
       <img src="/images/landing_page/flying_messages/message_5.png" className="message absolute w-12 h-12 object-contain" />
       <img src="/images/landing_page/flying_messages/message_6.png" className="message absolute w-12 h-12 object-contain" />
       <img src="/images/landing_page/flying_messages/message_7.png" className="message absolute w-12 h-12 object-contain" />
