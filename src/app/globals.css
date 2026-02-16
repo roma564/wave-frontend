@@ -2,6 +2,9 @@
 
 @import "tailwindcss";
 
+
+
+
 .font-dela {
   font-family: 'Dela Gothic One', sans-serif;
 }
@@ -44,6 +47,51 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+
+.primary-button {
+  @apply h-12 flex items-center justify-center gap-1 
+         bg-[#4F46E5] text-white text-sm font-exo2 
+         rounded-lg transition;
+}
+
+
+.primary-button-full {
+  @apply
+    w-full;
+}
+
+
+.bg-primary {
+  @apply bg-[#030712];
+}
+
+.gradient-header {
+  @apply bg-gradient-to-r from-white via-[#b89dd1] to-[#884ac2] bg-clip-text text-transparent;
+}
+
+
+.google-button {
+  @apply
+    w-full
+    py-3
+    flex
+    items-center
+    justify-center
+    gap-2
+    bg-transparent
+    border-2
+    rounded-2xl
+    cursor-pointer
+    border-[#DB4437]
+    text-[#DB4437]
+
+    transition
+    hover:text-[#c33d2f]
+    hover:border-[#c33d2f];
+}
+
+
 
 
 @keyframes slowGlow {

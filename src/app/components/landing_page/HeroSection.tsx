@@ -32,7 +32,7 @@ export default function HeroSection() {
         <div className="flex flex-col items-center xl:items-start">
           <div className="max-w-70">
             <h1 className="text-6xl w-full font-bold font-unbounded">Beyong</h1>
-            <h1 className="text-6xl italic font-bold font-unbounded bg-gradient-to-r from-white via-[#E2C6FD] to-[#C087F6] bg-clip-text text-transparent pb-2">
+            <h1 className="text-6xl italic font-bold font-unbounded gradient-header pb-2">
               Digital.
             </h1>
           </div>

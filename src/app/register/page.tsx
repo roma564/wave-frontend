@@ -1,24 +1,28 @@
 'use client';
-import Cookies from 'js-cookie';
 
-import { Button } from '@mui/material';
 import React, { useState } from 'react';
+import { Button } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
+import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function SignUpForm() {
+  const router = useRouter();
+
   const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
     withCredentials: true,
   });
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       const response = await api.post('/auth/register', {
         email,
@@ -26,12 +30,11 @@ export default function SignUpForm() {
         name,
         lastname,
       });
-  
+
       const { message, redirectUrl, tokens, user } = response.data;
-  
+
       alert(`Registered: ${message}`);
-  
-      // --- SET COOKIES (same as SignInForm) ---
+
       Cookies.set('access_token', tokens.access_token, { secure: true, sameSite: 'Strict' });
       Cookies.set('stream_token', tokens.stream_token, { secure: true, sameSite: 'Strict' });
       Cookies.set('id', String(user.id), { secure: true, sameSite: 'Strict' });
@@ -39,109 +42,116 @@ export default function SignUpForm() {
       Cookies.set('lastname', user.lastname, { secure: true, sameSite: 'Strict' });
       Cookies.set('email', user.email, { secure: true, sameSite: 'Strict' });
       Cookies.set('avatar', user.avatar || '', { secure: true, sameSite: 'Strict' });
-  
-      // redirect
-      window.location.href = redirectUrl;
+
+      router.push('/chat');
     } catch (error: any) {
       alert(`Registration failed: ${error.response?.data?.message || error.message}`);
     }
   };
-  
 
   const handleGoogleSignUp = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/google`;
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0d1730] px-4">
-      <div className="bg-[#304D69] shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-white">Sign Up</h2>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="bg-[#0F172A] shadow-glow-slow backdrop-blur-md border border-[#8FADCC] shadow-md rounded-xl px-8 pt-6 pb-8 w-full max-w-2xl">
 
-        <form onSubmit={handleRegister} noValidate>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
+      <h2 className="text-2xl font-bold mb-6 text-center gradient-header">Sign Up</h2>
+
+
+      <div className="flex flex-col md:flex-row md:space-x-10 space-y-10 md:space-y-0">
+
+        {/* Form */}
+        <form noValidate onSubmit={handleRegister} className="flex flex-col flex-1">
+
+          {/* First Name */}
+          <div className="mb-6">
+            <label className="block text-[#4F46E5] text-sm font-bold mb-2">
               First Name
             </label>
             <input
-              id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full py-2 bg-transparent border-b border-[#8FADCC] text-white focus:outline-none focus:border-blue-400 transition"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="lastname" className="block text-white text-sm font-bold mb-2">
+          {/* Last Name */}
+          <div className="mb-6">
+            <label className="block text-[#4F46E5] text-sm font-bold mb-2">
               Last Name
             </label>
             <input
-              id="lastname"
               type="text"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full py-2 bg-transparent border-b border-[#8FADCC] text-white focus:outline-none focus:border-blue-400 transition"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
+          {/* Email */}
+          <div className="mb-6">
+            <label className="block text-[#4F46E5] text-sm font-bold mb-2">
               Email
             </label>
             <input
-              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full py-2 bg-transparent border-b border-[#8FADCC] text-white focus:outline-none focus:border-blue-400 transition"
               required
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
+          {/* Password */}
+          <div className="mb-8">
+            <label className="block text-[#4F46E5] text-sm font-bold mb-2">
               Password
             </label>
             <input
-              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full py-2 bg-transparent border-b border-[#8FADCC] text-white focus:outline-none focus:border-blue-400 transition"
               required
             />
           </div>
 
-          <button
-            type="submit"
-            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full transition duration-200"
-          >
+          {/* Sign Up */}
+          <button className="primary-button primary-button-full shadow-glow-slow">
             Sign Up
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500 mb-2">or</p>
-          <Button
-            onClick={handleGoogleSignUp}
-            variant="contained"
-            startIcon={<GoogleIcon />}
-            sx={{
-              backgroundColor: '#DB4437',
-              '&:hover': { backgroundColor: '#c33d2f' },
-              color: '#fff',
-              textTransform: 'none',
-              fontWeight: 'bold',
-              width: '100%',
-              py: 1.5,
-            }}
+        {/* Sign In + Google */}
+        <div className="flex flex-col flex-1 justify-start text-center">
+
+          <p className="pb-2 text-white">Вже маєш аккаунт?</p>
+
+          <button
+            className="primary-button primary-button-full mb-4"
+            onClick={() => router.push('/login')}
           >
-            Sign up with Google
-          </Button>
+            Sign In
+          </button>
+
+          <p className="text-sm text-gray-400 mb-2">or</p>
+
+          <button className="google-button mx-auto" onClick={handleGoogleSignUp}>
+            <GoogleIcon className="text-[#DB4437]" />
+            <span>Sign up with Google</span>
+          </button>
+
         </div>
+
+
       </div>
     </div>
+</div>
+
   );
 }

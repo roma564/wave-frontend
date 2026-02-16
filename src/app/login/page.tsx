@@ -47,67 +47,76 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0d1730] px-4">
-      <div className="bg-[#304D69] border border-[#8FADCC] shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-white">Sign In</h2>
+    <div className="min-h-screen flex items-center justify-center bg-primary px-4 font-ubuntu">
 
-        <form onSubmit={handleCredentialsSignIn} noValidate>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
-              required
-            />
-          </div>
+      <div className="bg-[#0F172A] shadow-glow-slow backdrop-blur-md border border-[#8FADCC] shadow-md rounded-xl px-8 pt-6 pb-8 w-full max-w-sm">
 
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="shadow border rounded w-full py-2 px-3 text-white border-[#8FADCC] focus:outline-none focus:ring focus:border-blue-300"
-              required
-            />
-          </div>
+        <h2 className="text-2xl font-bold mb-6 text-center gradient-header ">Sign In</h2>
 
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full transition duration-200"
-          >
-            Sign In
-          </button>
-        </form>
+       <form noValidate onSubmit={handleCredentialsSignIn}>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500 mb-2">or</p>
-          <Button
-            onClick={handleGoogleSignIn}
-            variant="contained"
-            startIcon={<GoogleIcon />}
-            sx={{
-              backgroundColor: '#DB4437',
-              '&:hover': { backgroundColor: '#c33d2f' },
-              color: '#fff',
-              textTransform: 'none',
-              fontWeight: 'bold',
-              width: '100%',
-              py: 1.5,
-            }}
-          >
-            Sign in with Google
-          </Button>
+            {/* Email */}
+            <div className="mb-6">
+              <label className="block text-[#4F46E5] text-sm font-bold mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full py-2 bg-transparent border-b border-[#8FADCC] text-white focus:outline-none focus:border-blue-400 transition"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="mb-8">
+              <label className="block text-[#4F46E5] text-sm font-bold mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full py-2 bg-transparent border-b border-[#8FADCC] text-white focus:outline-none focus:border-blue-400 transition"
+              />
+            </div>
+
+            {/* Sign In */}
+            <button className="primary-button primary-button-full shadow-glow-slow">
+              Sign In
+            </button>
+          </form>
+
+              {/* Register */}
+              <div className="mt-6">
+                <p className="pb-2 text-white">Не маєш аккаунта?</p>
+                <button
+                  className="primary-button primary-button-full"
+                  onClick={() => router.push('/register')}
+                >
+                  Register
+                </button>
+              </div>
+
+
+              {/* Google */}
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-400 mb-2">or</p>
+
+                <div className="w-full">
+                  <button className="google-button" onClick={handleGoogleSignIn}>
+                    <GoogleIcon className="text-[#DB4437]" />
+                    <span>Sign in with Google</span>
+                  </button>
+                </div>
+              </div>
+
+
+        
+
         </div>
+
       </div>
-    </div>
+
   );
 }
