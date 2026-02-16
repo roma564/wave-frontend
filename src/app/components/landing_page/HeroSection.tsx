@@ -47,11 +47,12 @@ export default function HeroSection() {
               href="/chat"
               className="h-12 w-50 flex items-center justify-center gap-1 bg-[#4F46E5] text-white text-sm font-exo2 rounded-lg shadow-glow-slow transition"
             >
-              ПОЧАТИ ЛИСТУВАННЯ <SendIcon className="ml-2" fontSize="small" />
+              ПОЧАТИ CПІЛКУВАННЯ <SendIcon className="ml-2" fontSize="small" />
             </Link>
 
             <Link
-              href="/chat"
+              href="/"
+               onClick={() => scrollToSection('interactive-space')}
               className="h-12 w-40 flex items-center justify-center gap-1 border border-[#a5a2a2] bg-[#b9b9b90e] text-white text-sm font-exo2 rounded-lg "
             >
               ПЕРЕВАГИ

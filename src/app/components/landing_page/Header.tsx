@@ -1,6 +1,7 @@
 'use client';
 
 import MessageIcon from '@mui/icons-material/Message';
+import Link from 'next/link';
 
 
 
@@ -56,7 +57,7 @@ export default function Header() {
             </button>
             <button type="button" className="hover:text-[#A3B8FA] transition"
             onClick={() => scrollToSection('spatial-dashboard')}>
-              Автор
+              Global
             </button>
             
           </nav>
@@ -64,9 +65,11 @@ export default function Header() {
 
           {/* Кнопка */}
           <div>
-            <button className="bg-white text-[#0B1D3A] font-bold font-exo2 tracking-widest px-5 py-2 rounded-full text-sm transition hover:bg-yellow-300">
-              СПРОБУЙ
-            </button>
+            <Link href="/chat">
+              <button className="bg-white text-[#0B1D3A] font-bold font-exo2 tracking-widest px-5 py-2 rounded-full text-sm transition hover:bg-yellow-300">
+                СПРОБУЙ
+              </button>
+            </Link>
 
           </div>
         </div>

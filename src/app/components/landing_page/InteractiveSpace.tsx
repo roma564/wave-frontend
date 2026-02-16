@@ -72,10 +72,12 @@ export default function InteractiveSpace() {
   return (
     <div id="interactive-space" className="flex flex-col xl:flex-row container items-center justify-between w-full bg-[#030712] p-10 mt-20 mb-30">
       <div className="flex flex-col max-w-sm text-white">
-        <h1 className="text-5xl font-bold">Interactive Space</h1>
+        <h1 className="text-5xl font-bold">Організуй свій простір</h1>
         <p className="mt-6 text-gray-400">
-          Розділяй свій простір
+          Розділяй свій простір на власні режими — робочі, особисті чи тематичні. 
+          Тримай чати впорядкованими та завжди знаходь потрібні розмови без зайвого хаосу.
         </p>
+
       </div>
 
       <div
