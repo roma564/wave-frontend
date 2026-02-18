@@ -49,8 +49,9 @@ export default function SignUpForm() {
     }
   };
 
-  const handleGoogleSignUp = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/google`;
+  const handleGoogleSignIn = () => {
+
+    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/login/google`;
   };
 
   return (
@@ -141,7 +142,7 @@ export default function SignUpForm() {
 
           <p className="text-sm text-gray-400 mb-2">or</p>
 
-          <button className="google-button mx-auto" onClick={handleGoogleSignUp}>
+          <button className="google-button mx-auto" onClick={handleGoogleSignIn}>
             <GoogleIcon className="text-[#DB4437]" />
             <span>Sign up with Google</span>
           </button>
