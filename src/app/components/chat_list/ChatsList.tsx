@@ -39,6 +39,12 @@ export default function ChatsList() {
   const { bgColor, textColor, secondaryTextColor, primaryColor, chatListBgColor } = theme
 
   const isStandardMode = currentMode?.name === 'Усі чати'
+
+  const restrictedSmileMode = currentMode?.restrictedSmileMode
+  const scheduledCallMode = currentMode?.scheduledCallMode
+  const stickers = currentMode?.stickers
+
+
   const isMode = currentMode?.name === 'Усі чати'
 
   const chatIds = useMemo(() => {
@@ -77,7 +83,7 @@ export default function ChatsList() {
         
         : <AddChatToModeModal />}
 
-        {isStandardMode  && (
+        {scheduledCallMode  && (
           <>
             <div className="w-full max-h-64 overflow-y-auto px-2">
               <MeetingListForDay meetings={meetings} selectedDate={value} isLoading={isMeetingsLoading} />

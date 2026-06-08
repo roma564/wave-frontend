@@ -74,7 +74,7 @@ export default function ChatPageInner() {
   const userIdFromCookie = Cookies.get('id')
   const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
 
- 
+
   
 
   // const CURRENT_USER_ID = 1

@@ -29,6 +29,11 @@ export default function Form({ current_chat_id }: { current_chat_id: number }) {
   const userIdFromCookie = Cookies.get('id')
   const CURRENT_USER_ID = userIdFromCookie ? Number(userIdFromCookie) : null
 
+  const restrictedSmileMode = currentMode?.restrictedSmileMode
+
+  const stickers = currentMode?.stickers
+
+
   const handleSend = async () => {
     if (!messageText.trim() || !CURRENT_USER_ID || !current_chat_id) return;
 
@@ -76,20 +81,29 @@ export default function Form({ current_chat_id }: { current_chat_id: number }) {
         />
 
         {/* Emoji button з*/}
-        <Button 
-          onClick={() => setShowEmojiPicker(prev => !prev)} 
-          className="h-10  border-gray-300 rounded-none"
-        >
-          <EmojiEmotionsIcon style={{color:iconsColor}}/>
-        </Button>
+        
 
-        {/* Sticker button з */}
-        <Button 
-          onClick={() => setShowStickerPicker(prev => !prev)} 
-          className="h-10  border-gray-300 rounded-none"
-        >
-          <ToysIcon style={{color:iconsColor}}/>
-        </Button>
+        {!restrictedSmileMode  && (
+          <Button 
+              onClick={() => setShowEmojiPicker(prev => !prev)} 
+              className="h-10  border-gray-300 rounded-none"
+            >
+              <EmojiEmotionsIcon style={{color:iconsColor}}/>
+          </Button>
+        )}
+
+        {stickers  && (
+          <Button 
+            onClick={() => setShowStickerPicker(prev => !prev)} 
+            className="h-10  border-gray-300 rounded-none"
+          >
+            <ToysIcon style={{color:iconsColor}}/>
+          </Button>
+        )}
+
+
+  
+        
         
       </div>
 
